@@ -597,6 +597,16 @@
             position: relative;
             overflow: hidden;
             background: radial-gradient(ellipse at center, var(--card-bg) 0%, var(--dark-bg) 100%);
+            padding: 2rem 0;
+        }
+        
+        .hero-section .container {
+            height: 100%;
+        }
+        
+        .hero-section .row {
+            height: 100%;
+            align-items: center;
         }
         
         /* Neural Network Container */
@@ -638,6 +648,187 @@
             height: auto;
             position: relative;
             z-index: 1;
+            min-width: 200px;
+        }
+        
+        /* UNIVERSAL RESPONSIVE UTILITIES */
+        
+        /* Prevent Text Overflow and Overlapping */
+        .hero-content h1,
+        .hero-content p,
+        .section-title,
+        .card-title,
+        .timeline-title {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+        }
+        
+        /* Flexible Container System */
+        .container-fluid {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        
+        /* Responsive Grid Adjustments */
+        .row {
+            margin-left: 0;
+            margin-right: 0;
+        }
+        
+        .col-lg-6,
+        .col-md-6,
+        .col-sm-12 {
+            padding-left: 0.75rem;
+            padding-right: 0.75rem;
+        }
+        
+        /* Ensure proper spacing on mobile */
+        @media (max-width: 768px) {
+            .neural-network-container {
+                min-height: 300px;
+                padding: 1rem;
+            }
+            
+            .hero-content {
+                padding-left: 0;
+                text-align: center;
+            }
+            
+            .hero-section .row {
+                flex-direction: column;
+            }
+            
+            .hero-section .col-lg-6:first-child {
+                order: 2;
+                margin-bottom: 2rem;
+            }
+            
+            .hero-section .col-lg-6:last-child {
+                order: 1;
+            }
+            
+            /* Additional mobile optimizations */
+            .navbar-nav {
+                text-align: center;
+            }
+            
+            .expertise-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline-container {
+                padding-left: 2rem;
+            }
+            
+            .timeline-marker {
+                left: -1rem;
+            }
+            
+            .project-features {
+                flex-direction: column;
+            }
+            
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .card {
+                margin-bottom: 1.5rem;
+            }
+            
+            .timeline-item {
+                margin-bottom: 2rem;
+            }
+            
+            .skill-bar {
+                margin-bottom: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .neural-network-container {
+                min-height: 250px;
+                padding: 0.75rem;
+            }
+            
+            .hero-content h1 {
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            }
+            
+            .hero-content p {
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            }
+            
+            /* Small mobile optimizations */
+            .about-content,
+            .timeline-content,
+            .project-body,
+            .resource-card,
+            .case-study,
+            .contact-container {
+                padding: 1.5rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn-hero {
+                margin: 0.5rem 0;
+            }
+            
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            .section {
+                padding: 2rem 0;
+            }
+        }
+        
+        /* Additional Universal Responsive Rules */
+        @media (max-width: 480px) {
+            .container {
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
+            }
+            
+            .section {
+                padding: 1.5rem 0;
+            }
+            
+            .card {
+                margin-bottom: 0.75rem;
+            }
+            
+            .timeline-item {
+                margin-bottom: 1rem;
+            }
+            
+            .skill-bar {
+                margin-bottom: 0.75rem;
+            }
+            
+            .hero-content {
+                padding: 0.75rem 0;
+            }
+            
+            .neural-network-container {
+                margin-bottom: 1rem;
+                padding: 0.75rem;
+            }
+            
+            .col-lg-6,
+            .col-md-6,
+            .col-sm-12 {
+                padding-left: 0.25rem;
+                padding-right: 0.25rem;
+            }
         }
         
         /* Hero Content Right Side */
@@ -645,6 +836,28 @@
             padding-left: 2rem;
             position: relative;
             z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 400px;
+        }
+        
+        .hero-content h1 {
+            margin-bottom: 1.5rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        .hero-content p {
+            margin-bottom: 2rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
         
         /* Background Animation Keyframes */
@@ -2171,6 +2384,509 @@
             
             .btn-hero {
                 margin: 0.5rem 0;
+            }
+        }
+        
+        /* UNIVERSAL RESPONSIVE DESIGN - ADAPTS TO ALL DEVICES IN THE UNIVERSE */
+        
+        /* Ultra-Wide Screens (2000px+) */
+        @media (min-width: 2000px) {
+            .container {
+                max-width: 1800px;
+            }
+            
+            .hero-content h1 {
+                font-size: 4.5rem;
+                line-height: 1.1;
+            }
+            
+            .hero-content p {
+                font-size: 1.8rem;
+                line-height: 1.5;
+            }
+            
+            .neural-network-container svg {
+                width: 800px;
+                height: 960px;
+            }
+            
+            .section-title {
+                font-size: 3.5rem;
+            }
+        }
+        
+        /* Large Desktop (1600px - 1999px) */
+        @media (min-width: 1600px) and (max-width: 1999px) {
+            .hero-content h1 {
+                font-size: 4rem;
+                line-height: 1.1;
+            }
+            
+            .hero-content p {
+                font-size: 1.6rem;
+                line-height: 1.5;
+            }
+            
+            .neural-network-container svg {
+                width: 600px;
+                height: 720px;
+            }
+            
+            .section-title {
+                font-size: 3rem;
+            }
+        }
+        
+        /* Standard Desktop (1200px - 1599px) */
+        @media (min-width: 1200px) and (max-width: 1599px) {
+            .hero-content h1 {
+                font-size: 3.5rem;
+                line-height: 1.2;
+            }
+            
+            .hero-content p {
+                font-size: 1.4rem;
+                line-height: 1.6;
+            }
+            
+            .neural-network-container svg {
+                width: 500px;
+                height: 600px;
+            }
+            
+            .section-title {
+                font-size: 2.8rem;
+            }
+        }
+        
+        /* Small Desktop/Large Laptop (992px - 1199px) */
+        @media (min-width: 992px) and (max-width: 1199px) {
+            .hero-content h1 {
+                font-size: 3rem;
+                line-height: 1.2;
+            }
+            
+            .hero-content p {
+                font-size: 1.2rem;
+                line-height: 1.6;
+            }
+            
+            .neural-network-container svg {
+                width: 400px;
+                height: 480px;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-content {
+                padding-left: 1rem;
+            }
+        }
+        
+        /* Large Tablet (768px - 991px) */
+        @media (min-width: 768px) and (max-width: 991px) {
+            .hero-section {
+                padding: 4rem 0;
+                min-height: 90vh;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.8rem;
+                line-height: 1.2;
+                margin-bottom: 1.5rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.1rem;
+                line-height: 1.6;
+                margin-bottom: 2rem;
+            }
+            
+            .neural-network-container {
+                margin-bottom: 2rem;
+            }
+            
+            .neural-network-container svg {
+                width: 350px;
+                height: 420px;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+                line-height: 1.3;
+            }
+            
+            .hero-content {
+                padding-left: 0.5rem;
+                text-align: left;
+            }
+            
+            .hero-section .row {
+                flex-direction: row;
+                align-items: center;
+            }
+            
+            .hero-section .col-lg-6:first-child {
+                order: 1;
+                margin-bottom: 0;
+            }
+            
+            .hero-section .col-lg-6:last-child {
+                order: 2;
+            }
+        }
+        
+        /* Tablet Portrait (600px - 767px) */
+        @media (min-width: 600px) and (max-width: 767px) {
+            .hero-section {
+                padding: 3rem 0;
+                min-height: 85vh;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.5rem;
+                line-height: 1.2;
+                margin-bottom: 1.5rem;
+            }
+            
+            .hero-content p {
+                font-size: 1rem;
+                line-height: 1.6;
+                margin-bottom: 2rem;
+            }
+            
+            .neural-network-container {
+                margin-bottom: 2rem;
+            }
+            
+            .neural-network-container svg {
+                width: 300px;
+                height: 360px;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+                line-height: 1.3;
+            }
+            
+            .hero-content {
+                text-align: center;
+                padding-left: 0;
+            }
+            
+            .hero-section .row {
+                flex-direction: column;
+            }
+            
+            .hero-section .col-lg-6:first-child {
+                order: 2;
+                margin-bottom: 2rem;
+            }
+            
+            .hero-section .col-lg-6:last-child {
+                order: 1;
+            }
+            
+            .container {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+            
+            .section {
+                padding: 2.5rem 0;
+            }
+        }
+        
+        /* Large Mobile (480px - 599px) */
+        @media (min-width: 480px) and (max-width: 599px) {
+            .hero-section {
+                padding: 2.5rem 0;
+                min-height: 80vh;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.2rem;
+                line-height: 1.2;
+                margin-bottom: 1.5rem;
+            }
+            
+            .hero-content p {
+                font-size: 0.95rem;
+                line-height: 1.5;
+                margin-bottom: 2rem;
+            }
+            
+            .neural-network-container {
+                margin-bottom: 1.5rem;
+            }
+            
+            .neural-network-container svg {
+                width: 280px;
+                height: 336px;
+            }
+            
+            .section-title {
+                font-size: 1.9rem;
+                line-height: 1.3;
+            }
+            
+            .hero-content {
+                text-align: center;
+                padding: 1rem 0;
+            }
+            
+            .hero-section .row {
+                flex-direction: column;
+            }
+            
+            .hero-section .col-lg-6:first-child {
+                order: 2;
+                margin-bottom: 1.5rem;
+            }
+            
+            .hero-section .col-lg-6:last-child {
+                order: 1;
+            }
+            
+            .container {
+                padding-left: 1.25rem;
+                padding-right: 1.25rem;
+            }
+            
+            .section {
+                padding: 2rem 0;
+            }
+        }
+        
+        /* Standard Mobile (375px - 479px) */
+        @media (min-width: 375px) and (max-width: 479px) {
+            .hero-section {
+                padding: 2rem 0;
+                min-height: 75vh;
+            }
+            
+            .hero-content h1 {
+                font-size: 2rem;
+                line-height: 1.2;
+                margin-bottom: 1.5rem;
+            }
+            
+            .hero-content p {
+                font-size: 0.9rem;
+                line-height: 1.5;
+                margin-bottom: 2rem;
+            }
+            
+            .neural-network-container {
+                margin-bottom: 1.5rem;
+            }
+            
+            .neural-network-container svg {
+                width: 250px;
+                height: 300px;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+                line-height: 1.3;
+            }
+            
+            .hero-content {
+                text-align: center;
+                padding: 1rem 0;
+            }
+            
+            .hero-section .row {
+                flex-direction: column;
+            }
+            
+            .hero-section .col-lg-6:first-child {
+                order: 2;
+                margin-bottom: 1.5rem;
+            }
+            
+            .hero-section .col-lg-6:last-child {
+                order: 1;
+            }
+            
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+            
+            .section {
+                padding: 1.5rem 0;
+            }
+        }
+        
+        /* Small Mobile (320px - 374px) */
+        @media (min-width: 320px) and (max-width: 374px) {
+            .hero-section {
+                padding: 1.5rem 0;
+                min-height: 70vh;
+            }
+            
+            .hero-content h1 {
+                font-size: 1.8rem;
+                line-height: 1.2;
+                margin-bottom: 1.5rem;
+            }
+            
+            .hero-content p {
+                font-size: 0.85rem;
+                line-height: 1.5;
+                margin-bottom: 2rem;
+            }
+            
+            .neural-network-container {
+                margin-bottom: 1rem;
+            }
+            
+            .neural-network-container svg {
+                width: 220px;
+                height: 264px;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+                line-height: 1.3;
+            }
+            
+            .hero-content {
+                text-align: center;
+                padding: 0.75rem 0;
+            }
+            
+            .hero-section .row {
+                flex-direction: column;
+            }
+            
+            .hero-section .col-lg-6:first-child {
+                order: 2;
+                margin-bottom: 1rem;
+            }
+            
+            .hero-section .col-lg-6:last-child {
+                order: 1;
+            }
+            
+            .container {
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
+            }
+            
+            .section {
+                padding: 1.5rem 0;
+            }
+        }
+        
+        /* Ultra-Small Mobile (Below 320px) */
+        @media (max-width: 319px) {
+            .hero-section {
+                padding: 1rem 0;
+                min-height: 65vh;
+            }
+            
+            .hero-content h1 {
+                font-size: 1.6rem;
+                line-height: 1.2;
+                margin-bottom: 1rem;
+            }
+            
+            .hero-content p {
+                font-size: 0.8rem;
+                line-height: 1.4;
+                margin-bottom: 1.5rem;
+            }
+            
+            .neural-network-container {
+                margin-bottom: 1rem;
+            }
+            
+            .neural-network-container svg {
+                width: 180px;
+                height: 216px;
+            }
+            
+            .section-title {
+                font-size: 1.4rem;
+                line-height: 1.3;
+            }
+            
+            .hero-content {
+                text-align: center;
+                padding: 0.5rem 0;
+            }
+            
+            .hero-section .row {
+                flex-direction: column;
+            }
+            
+            .hero-section .col-lg-6:first-child {
+                order: 2;
+                margin-bottom: 1rem;
+            }
+            
+            .hero-section .col-lg-6:last-child {
+                order: 1;
+            }
+            
+            .container {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+            
+            .section {
+                padding: 1rem 0;
+            }
+        }
+        
+        /* Landscape Orientation Adjustments */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .hero-section {
+                min-height: 100vh;
+                padding: 1rem 0;
+            }
+            
+            .neural-network-container svg {
+                width: 200px;
+                height: 240px;
+            }
+            
+            .hero-content h1 {
+                font-size: 1.8rem;
+                margin-bottom: 1rem;
+            }
+            
+            .hero-content p {
+                font-size: 0.9rem;
+                margin-bottom: 1.5rem;
+            }
+        }
+        
+        /* High DPI/Retina Displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .neural-network-container svg {
+                shape-rendering: geometricPrecision;
+            }
+        }
+        
+        /* Print Styles */
+        @media print {
+            .hero-section {
+                min-height: auto;
+                page-break-inside: avoid;
+            }
+            
+            .neural-network-container {
+                display: none;
+            }
+            
+            .hero-content {
+                text-align: left;
+                padding: 0;
             }
         }
     </style>
