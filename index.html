@@ -597,7 +597,7 @@
             position: relative;
             overflow: hidden;
             background: radial-gradient(ellipse at center, var(--card-bg) 0%, var(--dark-bg) 100%);
-            padding: 2rem 0;
+            padding: 3rem 0;
         }
         
         .hero-section .container {
@@ -609,15 +609,31 @@
             align-items: center;
         }
         
+        /* Default Neural Network Size for Laptops */
+        .neural-network-container svg {
+            width: 500px;
+            height: 600px;
+        }
+        
+        /* Default Hero Content Spacing */
+        .hero-content h1 {
+            margin-bottom: 2rem;
+        }
+        
+        .hero-content p {
+            margin-bottom: 2.5rem;
+        }
+        
         /* Neural Network Container */
         .neural-network-container {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100%;
-            padding: 2rem;
+            padding: 2.5rem;
             position: relative;
             overflow: hidden;
+            min-height: 500px;
         }
         
         .neural-network-container::before {
@@ -662,6 +678,80 @@
             word-wrap: break-word;
             overflow-wrap: break-word;
             hyphens: auto;
+        }
+        
+        /* Ensure Perfect Mobile Centering */
+        @media (max-width: 991px) {
+            .hero-content {
+                text-align: center !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                margin: 0 auto !important;
+                width: 100% !important;
+            }
+            
+            .hero-content h1,
+            .hero-content p {
+                text-align: center !important;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+                align-items: center;
+            }
+        }
+        
+        /* Mobile Menu Button Fixes */
+        .navbar-toggler {
+            border: 2px solid var(--neon-green);
+            padding: 0.5rem 0.75rem;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-toggler:hover {
+            background: var(--neon-green);
+            border-color: var(--neon-green);
+        }
+        
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 0.25rem rgba(0, 255, 136, 0.25);
+            outline: none;
+        }
+        
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(0, 255, 136, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+        
+        /* Ensure Mobile Menu Works */
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                background: rgba(26, 26, 26, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 10px;
+                margin-top: 1rem;
+                padding: 1rem;
+                border: 1px solid var(--neon-green);
+            }
+            
+            .navbar-nav {
+                text-align: center;
+            }
+            
+            .nav-item {
+                margin: 0.5rem 0;
+            }
+            
+            .nav-link {
+                padding: 0.75rem 1rem;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+            }
+            
+            .nav-link:hover {
+                background: rgba(0, 255, 136, 0.1);
+                color: var(--neon-green);
+            }
         }
         
         /* Flexible Container System */
@@ -833,13 +923,14 @@
         
         /* Hero Content Right Side */
         .hero-content {
-            padding-left: 2rem;
+            padding-left: 3rem;
+            padding-right: 2rem;
             position: relative;
             z-index: 2;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            min-height: 400px;
+            min-height: 500px;
         }
         
         .hero-content h1 {
@@ -858,6 +949,29 @@
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
+        }
+        
+        /* Mobile Hero Content Centering */
+        @media (max-width: 991px) {
+            .hero-content {
+                padding-left: 0;
+                padding-right: 0;
+                text-align: center;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .hero-content h1,
+            .hero-content p {
+                text-align: center;
+                width: 100%;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+            }
         }
         
         /* Background Animation Keyframes */
@@ -2396,35 +2510,91 @@
             }
             
             .hero-content h1 {
-                font-size: 4.5rem;
+                font-size: 5rem;
                 line-height: 1.1;
+                margin-bottom: 3.5rem;
             }
             
             .hero-content p {
-                font-size: 1.8rem;
+                font-size: 2rem;
                 line-height: 1.5;
+                margin-bottom: 4rem;
             }
             
             .neural-network-container svg {
-                width: 800px;
-                height: 960px;
+                width: 900px;
+                height: 1080px;
             }
             
             .section-title {
                 font-size: 3.5rem;
+            }
+            
+            .hero-content {
+                padding-left: 5rem;
+                padding-right: 4rem;
+            }
+            
+            .hero-section {
+                padding: 6rem 0;
+                min-height: 100vh;
+            }
+            
+            .neural-network-container {
+                padding: 3rem;
             }
         }
         
         /* Large Desktop (1600px - 1999px) */
         @media (min-width: 1600px) and (max-width: 1999px) {
             .hero-content h1 {
-                font-size: 4rem;
+                font-size: 4.5rem;
                 line-height: 1.1;
+                margin-bottom: 3rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.8rem;
+                line-height: 1.5;
+                margin-bottom: 3.5rem;
+            }
+            
+            .neural-network-container svg {
+                width: 700px;
+                height: 840px;
+            }
+            
+            .section-title {
+                font-size: 3rem;
+            }
+            
+            .hero-content {
+                padding-left: 4rem;
+                padding-right: 3rem;
+            }
+            
+            .hero-section {
+                padding: 5rem 0;
+                min-height: 100vh;
+            }
+            
+            .neural-network-container {
+                padding: 2.5rem;
+            }
+        }
+        
+        /* Standard Desktop (1200px - 1599px) */
+        @media (min-width: 1200px) and (max-width: 1599px) {
+            .hero-content h1 {
+                font-size: 4rem;
+                line-height: 1.2;
+                margin-bottom: 2.5rem;
             }
             
             .hero-content p {
                 font-size: 1.6rem;
-                line-height: 1.5;
+                line-height: 1.6;
+                margin-bottom: 3rem;
             }
             
             .neural-network-container svg {
@@ -2433,47 +2603,41 @@
             }
             
             .section-title {
-                font-size: 3rem;
-            }
-        }
-        
-        /* Standard Desktop (1200px - 1599px) */
-        @media (min-width: 1200px) and (max-width: 1599px) {
-            .hero-content h1 {
-                font-size: 3.5rem;
-                line-height: 1.2;
-            }
-            
-            .hero-content p {
-                font-size: 1.4rem;
-                line-height: 1.6;
-            }
-            
-            .neural-network-container svg {
-                width: 500px;
-                height: 600px;
-            }
-            
-            .section-title {
                 font-size: 2.8rem;
+            }
+            
+            .hero-content {
+                padding-left: 3rem;
+                padding-right: 2rem;
+            }
+            
+            .hero-section {
+                padding: 4rem 0;
+                min-height: 95vh;
+            }
+            
+            .neural-network-container {
+                padding: 2rem;
             }
         }
         
         /* Small Desktop/Large Laptop (992px - 1199px) */
         @media (min-width: 992px) and (max-width: 1199px) {
             .hero-content h1 {
-                font-size: 3rem;
+                font-size: 3.5rem;
                 line-height: 1.2;
+                margin-bottom: 2rem;
             }
             
             .hero-content p {
-                font-size: 1.2rem;
+                font-size: 1.4rem;
                 line-height: 1.6;
+                margin-bottom: 2.5rem;
             }
             
             .neural-network-container svg {
-                width: 400px;
-                height: 480px;
+                width: 550px;
+                height: 660px;
             }
             
             .section-title {
@@ -2481,7 +2645,17 @@
             }
             
             .hero-content {
-                padding-left: 1rem;
+                padding-left: 2rem;
+                padding-right: 1rem;
+            }
+            
+            .hero-section {
+                padding: 3rem 0;
+                min-height: 90vh;
+            }
+            
+            .neural-network-container {
+                padding: 1.5rem;
             }
         }
         
@@ -2549,12 +2723,14 @@
                 font-size: 2.5rem;
                 line-height: 1.2;
                 margin-bottom: 1.5rem;
+                text-align: center;
             }
             
             .hero-content p {
                 font-size: 1rem;
                 line-height: 1.6;
                 margin-bottom: 2rem;
+                text-align: center;
             }
             
             .neural-network-container {
@@ -2574,6 +2750,9 @@
             .hero-content {
                 text-align: center;
                 padding-left: 0;
+                padding-right: 0;
+                margin: 0 auto;
+                width: 100%;
             }
             
             .hero-section .row {
@@ -2610,12 +2789,14 @@
                 font-size: 2.2rem;
                 line-height: 1.2;
                 margin-bottom: 1.5rem;
+                text-align: center;
             }
             
             .hero-content p {
                 font-size: 0.95rem;
                 line-height: 1.5;
                 margin-bottom: 2rem;
+                text-align: center;
             }
             
             .neural-network-container {
@@ -2635,6 +2816,10 @@
             .hero-content {
                 text-align: center;
                 padding: 1rem 0;
+                padding-left: 0;
+                padding-right: 0;
+                margin: 0 auto;
+                width: 100%;
             }
             
             .hero-section .row {
@@ -2671,12 +2856,14 @@
                 font-size: 2rem;
                 line-height: 1.2;
                 margin-bottom: 1.5rem;
+                text-align: center;
             }
             
             .hero-content p {
                 font-size: 0.9rem;
                 line-height: 1.5;
                 margin-bottom: 2rem;
+                text-align: center;
             }
             
             .neural-network-container {
@@ -2696,6 +2883,10 @@
             .hero-content {
                 text-align: center;
                 padding: 1rem 0;
+                padding-left: 0;
+                padding-right: 0;
+                margin: 0 auto;
+                width: 100%;
             }
             
             .hero-section .row {
@@ -2732,12 +2923,14 @@
                 font-size: 1.8rem;
                 line-height: 1.2;
                 margin-bottom: 1.5rem;
+                text-align: center;
             }
             
             .hero-content p {
                 font-size: 0.85rem;
                 line-height: 1.5;
                 margin-bottom: 2rem;
+                text-align: center;
             }
             
             .neural-network-container {
@@ -2757,6 +2950,10 @@
             .hero-content {
                 text-align: center;
                 padding: 0.75rem 0;
+                padding-left: 0;
+                padding-right: 0;
+                margin: 0 auto;
+                width: 100%;
             }
             
             .hero-section .row {
@@ -2793,12 +2990,14 @@
                 font-size: 1.6rem;
                 line-height: 1.2;
                 margin-bottom: 1rem;
+                text-align: center;
             }
             
             .hero-content p {
                 font-size: 0.8rem;
                 line-height: 1.4;
                 margin-bottom: 1.5rem;
+                text-align: center;
             }
             
             .neural-network-container {
@@ -2818,6 +3017,10 @@
             .hero-content {
                 text-align: center;
                 padding: 0.5rem 0;
+                padding-left: 0;
+                padding-right: 0;
+                margin: 0 auto;
+                width: 100%;
             }
             
             .hero-section .row {
@@ -2858,11 +3061,21 @@
             .hero-content h1 {
                 font-size: 1.8rem;
                 margin-bottom: 1rem;
+                text-align: center;
             }
             
             .hero-content p {
                 font-size: 0.9rem;
                 margin-bottom: 1.5rem;
+                text-align: center;
+            }
+            
+            .hero-content {
+                text-align: center;
+                padding-left: 0;
+                padding-right: 0;
+                margin: 0 auto;
+                width: 100%;
             }
         }
         
