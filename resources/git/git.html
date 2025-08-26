@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Workflow: Collaborative Development with Emergency Revert</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0366d6;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --dark: #24292e;
+            --light: #f6f8fa;
+            --terminal: #282c34;
+            --terminal-green: #4ec9b0;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: var(--light);
+            color: var(--dark);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .step-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            border-left: 4px solid #e1e4e8;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-card.completed {
+            border-left-color: var(--success);
+            background: linear-gradient(to right, rgba(40, 167, 69, 0.05), transparent);
+        }
+
+        .step-card.active {
+            border-left-color: var(--primary);
+            background: linear-gradient(to right, rgba(3, 102, 214, 0.05), transparent);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-number {
+            background: var(--primary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .step-card.completed .step-number {
+            background: var(--success);
+        }
+
+        .command-block {
+            background: var(--terminal);
+            color: var(--terminal-green);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            position: relative;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .command-block::before {
+            content: '$ ';
+            color: var(--warning);
+            font-weight: bold;
+        }
+
+        .command-block .comment {
+            color: #5c6370;
+            font-style: italic;
+        }
+
+        .diagram {
+            background: white;
+            border: 2px solid #e1e4e8;
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .branch-line {
+            height: 4px;
+            background: #e1e4e8;
+            position: relative;
+            margin: 2rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .branch-line.main {
+            background: var(--primary);
+        }
+
+        .branch-line.dev-test {
+            background: var(--warning);
+        }
+
+        .commit {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #e1e4e8;
+            position: absolute;
+            top: -8px;
+            transform: translateX(-50%);
+            transition: all 0.3s ease;
+        }
+
+        .commit.main {
+            border-color: var(--primary);
+        }
+
+        .commit.dev-test {
+            border-color: var(--warning);
+        }
+
+        .commit.current {
+            background: var(--success);
+            box-shadow: 0 0 10px var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        .commit.broken {
+            background: var(--danger);
+            box-shadow: 0 0 10px var(--danger);
+        }
+
+        .branch-label {
+            position: absolute;
+            top: -30px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .branch-label.main {
+            color: var(--primary);
+        }
+
+        .branch-label.dev-test {
+            color: var(--warning);
+        }
+
+        .scenario-box {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .scenario-box.error {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        .scenario-box.success {
+            background: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        .workflow-nav {
+            position: sticky;
+            top: 20px;
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .workflow-nav .nav-link {
+            color: var(--dark);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .workflow-nav .nav-link:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .workflow-nav .nav-link.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .workflow-nav .nav-link.completed {
+            background: var(--success);
+            color: white;
+        }
+
+        .workflow-nav .nav-link .step-indicator {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .terminal-output {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1rem;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 1rem 0;
+            max-height: 300px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .terminal-output .line {
+            margin: 0.2rem 0;
+            opacity: 0;
+            animation: fadeIn 0.3s forwards;
+        }
+
+        .terminal-output .success {
+            color: #4ec9b0;
+        }
+
+        .terminal-output .error {
+            color: #f48771;
+        }
+
+        .terminal-output .info {
+            color: #569cd6;
+        }
+
+        .terminal-output .comment {
+            color: #6a9955;
+        }
+
+        .btn-terminal {
+            background: var(--terminal);
+            color: var(--terminal-green);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-terminal:hover {
+            background: #3e4451;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-terminal:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-terminal .spinner {
+            display: none;
+            width: 14px;
+            height: 14px;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 0.5rem;
+        }
+
+        .btn-terminal.loading .spinner {
+            display: inline-block;
+        }
+
+        .progress-flow {
+            background: #e1e4e8;
+            height: 4px;
+            border-radius: 2px;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-flow-bar {
+            background: var(--primary);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .progress-flow-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .flow-arrow {
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            font-size: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .step-card.completed .flow-arrow {
+            opacity: 1;
+        }
+
+        .typing-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: var(--terminal-green);
+            animation: blink 1s infinite;
+            vertical-align: text-bottom;
+        }
+
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        .command-explanation {
+            background: #f8f9fa;
+            border-left: 3px solid var(--primary);
+            padding: 0.5rem 1rem;
+            margin: 0.5rem 0;
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="display-4 fw-bold mb-3">Git Workflow: Collaborative Development</h1>
+                    <p class="lead">Emergency Revert Scenarios & Best Practices for Production Environments</p>
+                    <div class="mt-4">
+                        <span class="badge bg-light text-dark me-2"><i class="fab fa-git-alt me-1"></i> Git</span>
+                        <span class="badge bg-light text-dark me-2"><i class="fas fa-users me-1"></i> Collaboration</span>
+                        <span class="badge bg-light text-dark me-2"><i class="fas fa-server me-1"></i> Production</span>
+                        <span class="badge bg-light text-dark"><i class="fas fa-shield-alt me-1"></i> Safety</span>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <i class="fas fa-code-branch fa-6x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <!-- Workflow Navigation -->
+            <div class="col-lg-3">
+                <div class="workflow-nav">
+                    <h5 class="mb-3">Workflow Progress</h5>
+                    <div class="progress-flow mb-3">
+                        <div class="progress-flow-bar" id="progressBar"></div>
+                    </div>
+                    <nav class="nav flex-column">
+                        <a class="nav-link active" href="#step1" data-step="1">
+                            <span class="step-indicator">1</span>
+                            Initial Setup
+                        </a>
+                        <a class="nav-link" href="#step2" data-step="2">
+                            <span class="step-indicator">2</span>
+                            Problem Scenario
+                        </a>
+                        <a class="nav-link" href="#step3" data-step="3">
+                            <span class="step-indicator">3</span>
+                            Emergency Revert
+                        </a>
+                        <a class="nav-link" href="#step4" data-step="4">
+                            <span class="step-indicator">4</span>
+                            Save Changes
+                        </a>
+                        <a class="nav-link" href="#step5" data-step="5">
+                            <span class="step-indicator">5</span>
+                            Sync Local
+                        </a>
+                        <a class="nav-link" href="#step6" data-step="6">
+                            <span class="step-indicator">6</span>
+                            Local Testing
+                        </a>
+                        <a class="nav-link" href="#step7" data-step="7">
+                            <span class="step-indicator">7</span>
+                            Fix & Test
+                        </a>
+                        <a class="nav-link" href="#step8" data-step="8">
+                            <span class="step-indicator">8</span>
+                            Merge to Main
+                        </a>
+                        <a class="nav-link" href="#step9" data-step="9">
+                            <span class="step-indicator">9</span>
+                            Clean Up
+                        </a>
+                    </nav>
+                </div>
+
+                <div class="mt-4">
+                    <h5>Legend</h5>
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="commit main me-2"></div>
+                        <span>Main Branch</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="commit dev-test me-2"></div>
+                        <span>Dev Test Branch</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="commit current me-2"></div>
+                        <span>Current HEAD</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="commit broken me-2"></div>
+                        <span>Broken Commit</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <!-- Overview -->
+                <div class="scenario-box">
+                    <h5><i class="fas fa-exclamation-triangle me-2"></i>Scenario Overview</h5>
+                    <p>We have a production environment running on the <code>main</code> branch. A developer pushed changes with minimal testing that broke production. We need to:</p>
+                    <ol>
+                        <li>Immediately revert main to previous stable state</li>
+                        <li>Save the problematic changes in a separate branch</li>
+                        <li>Fix the issues and test thoroughly</li>
+                        <li>Merge the fixed changes back to main</li>
+                    </ol>
+                </div>
+
+                <!-- Progress Indicator -->
+                <div class="text-center mb-4">
+                    <h5>Workflow Progress</h5>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="step-indicator me-2" id="currentStep">1</div>
+                        <span id="stepName">Initial Setup</span>
+                    </div>
+                </div>
+
+                <!-- Step 1: Initial Setup -->
+                <div id="step1" class="step-card" data-step="1">
+                    <div class="d-flex align-items-start">
+                        <div class="step-number">1</div>
+                        <div class="flex-grow-1">
+                            <h4>Initial Setup</h4>
+                            <p>Clone the repository and set up your local environment.</p>
+                            
+                            <div class="command-block">
+                                git clone https://github.com/username/project.git<br>
+                                cd project<br>
+                                git config --global user.name "Your Name"<br>
+                                git config --global user.email "your.email@example.com"<br>
+                                <span class="comment"># Create and switch to main branch</span><br>
+                                git checkout -b main<br>
+                                git push -u origin main
+                            </div>
+
+                            <div class="command-explanation">
+                                <i class="fas fa-info-circle me-1"></i>
+                                This sets up your local repository and ensures you're working with the main branch.
+                            </div>
+
+                            <div class="diagram">
+                                <div class="branch-line main" style="width: 100%;">
+                                    <div class="branch-label main">main</div>
+                                    <div class="commit main" style="left: 20%;"></div>
+                                    <div class="commit main current" style="left: 50%;"></div>
+                                    <div class="commit main" style="left: 80%;"></div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-terminal" onclick="executeStep(1)">
+                                <span class="spinner"></span>
+                                <i class="fas fa-play me-1"></i> Run Commands
+                            </button>
+                            <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Problem Scenario -->
+                <div id="step2" class="step-card" data-step="2">
+                    <div class="d-flex align-items-start">
+                        <div class="step-number">2</div>
+                        <div class="flex-grow-1">
+                            <h4>Making Changes with Minimal Testing</h4>
+                            <div class="scenario-box error">
+                                <i class="fas fa-times-circle me-2"></i>
+                                <strong>Problem:</strong> Developer pushes changes with minimal testing that break production.
+                            </div>
+                            
+                            <div class="command-block">
+                                <span class="comment"># Create a new feature branch</span><br>
+                                git checkout -b feature/new-login<br><br>
+                                <span class="comment"># Make changes to code</span><br>
+                                <span class="comment"># ... (edit files)</span><br><br>
+                                <span class="comment"># Add changes to staging area</span><br>
+                                git add .<br><br>
+                                <span class="comment"># Commit with minimal testing</span><br>
+                                git commit -m "Add new login functionality with minimal testing"<br><br>
+                                <span class="comment"># Push to remote</span><br>
+                                git push origin feature/new-login<br><br>
+                                <span class="comment"># Merge to main without proper review</span><br>
+                                git checkout main<br>
+                                git merge feature/new-login<br>
+                                git push origin main
+                            </div>
+
+                            <div class="command-explanation">
+                                <i class="fas fa-exclamation-triangle me-1"></i>
+                                This is where the problem occurs - changes are pushed to main without proper testing.
+                            </div>
+
+                            <div class="diagram">
+                                <div class="branch-line main" style="width: 100%;">
+                                    <div class="branch-label main">main</div>
+                                    <div class="commit main" style="left: 20%;"></div>
+                                    <div class="commit main" style="left: 50%;"></div>
+                                    <div class="commit main broken current" style="left: 80%;"></div>
+                                </div>
+                                <div class="branch-line dev-test" style="width: 60%; top: 60px;">
+                                    <div class="branch-label dev-test">feature/new-login</div>
+                                    <div class="commit dev-test" style="left: 50%;"></div>
+                                    <div class="commit dev-test" style="left: 80%;"></div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-terminal" onclick="executeStep(2)">
+                                <span class="spinner"></span>
+                                <i class="fas fa-play me-1"></i> Run Commands
+                            </button>
+                            <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Emergency Revert -->
+                <div id="step3" class="step-card" data-step="3">
+                    <div class="d-flex align-items-start">
+                        <div class="step-number">3</div>
+                        <div class="flex-grow-1">
+                            <h4>Emergency Response - Revert Main Branch</h4>
+                            <div class="scenario-box success">
+                                <i class="fas fa-check-circle me-2"></i>
+                                <strong>Action:</strong> Immediately revert main to previous stable state to fix production.
+                            </div>
+                            
+                            <div class="command-block">
+                                <span class="comment"># Identify the problematic commit</span><br>
+                                git log --oneline -5<br><br>
+                                <span class="comment"># Output:</span><br>
+                                <span class="comment"># a1b2c3d (HEAD -> main, origin/main) Add new login functionality with minimal testing</span><br>
+                                <span class="comment"># e4f5g6h Previous stable commit</span><br><br>
+                                <span class="comment"># Revert the problematic commit</span><br>
+                                git revert a1b2c3d<br><br>
+                                <span class="comment"># This opens an editor for commit message, save and exit</span><br><br>
+                                <span class="comment"># Push the revert to fix production immediately</span><br>
+                                git push origin main
+                            </div>
+
+                            <div class="command-explanation">
+                                <i class="fas fa-shield-alt me-1"></i>
+                                Using <code>git revert</code> is safer than <code>git reset</code> for shared branches as it doesn't rewrite history.
+                            </div>
+
+                            <div class="diagram">
+                                <div class="branch-line main" style="width: 100%;">
+                                    <div class="branch-label main">main</div>
+                                    <div class="commit main" style="left: 20%;"></div>
+                                    <div class="commit main" style="left: 50%;"></div>
+                                    <div class="commit main broken" style="left: 70%;"></div>
+                                    <div class="commit main current" style="left: 90%;"></div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-terminal" onclick="executeStep(3)">
+                                <span class="spinner"></span>
+                                <i class="fas fa-play me-1"></i> Run Commands
+                            </button>
+                            <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Save Changes -->
+                <div id="step4" class="step-card" data-step="4">
+                    <div class="d-flex align-items-start">
+                        <div class="step-number">4</div>
+                        <div class="flex-grow-1">
+                            <h4>Create dev_test Branch to Save Problematic Changes</h4>
+                            <p>Save the problematic changes in a separate branch for later fixing.</p>
+                            
+                            <div class="command-block">
+                                <span class="comment"># Create a new branch from the problematic commit</span><br>
+                                git checkout -b dev_test a1b2c3d<br><br>
+                                <span class="comment"># Push this branch to remote to save the work</span><br>
+                                git push origin dev_test
+                            </div>
+
+                            <div class="command-explanation">
+                                <i class="fas fa-save me-1"></i>
+                                This preserves the work that was done, even though it broke production.
+                            </div>
+
+                            <div class="diagram">
+                                <div class="branch-line main" style="width: 100%;">
+                                    <div class="branch-label main">main</div>
+                                    <div class="commit main" style="left: 20%;"></div>
+                                    <div class="commit main" style="left: 50%;"></div>
+                                    <div class="commit main broken" style="left: 70%;"></div>
+                                    <div class="commit main current" style="left: 90%;"></div>
+                                </div>
+                                <div class="branch-line dev-test" style="width: 60%; top: 60px;">
+                                    <div class="branch-label dev-test">dev_test</div>
+                                    <div class="commit dev-test current" style="left: 70%;"></div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-terminal" onclick="executeStep(4)">
+                                <span class="spinner"></span>
+                                <i class="fas fa-play me-1"></i> Run Commands
+                            </button>
+                            <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Sync Local -->
+                <div id="step5" class="step-card" data-step="5">
+                    <div class="d-flex align-items-start">
+                        <div class="step-number">5</div>
+                        <div class="flex-grow-1">
+                            <h4>Update Local Main with Remote Main</h4>
+                            <p>Ensure your local main branch is synchronized with the remote.</p>
+                            
+                            <div class="command-block">
+                                <span class="comment"># Switch to main branch</span><br>
+                                git checkout main<br><br>
+                                <span class="comment"># Pull the latest changes (including the revert)</span><br>
+                                git pull origin main<br><br>
+                                <span class="comment"># Verify main is at the reverted state</span><br>
+                                git log --oneline -3<br><br>
+                                <span class="comment"># Output:</span><br>
+                                <span class="comment"># f9g8h7i (HEAD -> main, origin/main) Revert "Add new login functionality with minimal testing"</span><br>
+                                <span class="comment"># e4f5g6h Previous stable commit</span>
+                            </div>
+
+                            <div class="command-explanation">
+                                <i class="fas fa-sync me-1"></i>
+                                This ensures everyone working on the project has the same state.
+                            </div>
+
+                            <div class="diagram">
+                                <div class="branch-line main" style="width: 100%;">
+                                    <div class="branch-label main">main</div>
+                                    <div class="commit main" style="left: 20%;"></div>
+                                    <div class="commit main" style="left: 50%;"></div>
+                                    <div class="commit main broken" style="left: 70%;"></div>
+                                    <div class="commit main current" style="left: 90%;"></div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-terminal" onclick="executeStep(5)">
+                                <span class="spinner"></span>
+                                <i class="fas fa-play me-1"></i> Run Commands
+                            </button>
+                            <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 6: Local Testing -->
+                <div id="step6" class="step-card" data-step="6">
+                    <div class="d-flex align-items-start">
+                        <div class="step-number">6</div>
+                        <div class="flex-grow-1">
+                            <h4>Move dev_test Branch to Local for Testing</h4>
+                            <p>Prepare the dev_test branch for local testing and fixes.</p>
+                            
+                            <div class="command-block">
+                                <span class="comment"># Switch to dev_test branch</span><br>
+                                git checkout dev_test<br><br>
+                                <span class="comment"># Pull the latest from remote dev_test</span><br>
+                                git pull origin dev_test<br><br>
+                                <span class="comment"># Create a local testing environment</span><br>
+                                <span class="comment"># (This might involve setting up local databases, services, etc.)</span>
+                            </div>
+
+                            <div class="command-explanation">
+                                <i class="fas fa-flask me-1"></i>
+                                Now you can safely test and fix the issues without affecting production.
+                            </div>
+
+                            <div class="diagram">
+                                <div class="branch-line main" style="width: 100%;">
+                                    <div class="branch-label main">main</div>
+                                    <div class="commit main" style="left: 20%;"></div>
+                                    <div class="commit main" style="left: 50%;"></div>
+                                    <div class="commit main broken" style="left: 70%;"></div>
+                                    <div class="commit main" style="left: 90%;"></div>
+                                </div>
+                                <div class="branch-line dev-test" style="width: 60%; top: 60px;">
+                                    <div class="branch-label dev-test">dev_test</div>
+                                    <div class="commit dev-test current" style="left: 70%;"></div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-terminal" onclick="executeStep(6)">
+                                <span class="spinner"></span>
+                                <i class="fas fa-play me-1"></i> Run Commands
+                            </button>
+                            <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 7: Fix and Test -->
+                <div id="step7" class="step-card" data-step="7">
+                    <div class="d-flex align-items-start">
+                        <div class="step-number">7</div>
+                        <div class="flex-grow-1">
+                            <h4>Fix Issues and Add Comprehensive Tests</h4>
+                            <div class="scenario-box success">
+                                <i class="fas fa-tools me-2"></i>
+                                <strong>Development:</strong> Fix the issues and add thorough testing.
+                            </div>
+                            
+                            <div class="command-block">
+                                <span class="comment"># Make necessary fixes to the code</span><br>
+                                <span class="comment"># ... (edit files to fix issues)</span><br><br>
+                                <span class="comment"># Add comprehensive test cases</span><br>
+                                <span class="comment"># ... (create test files)</span><br><br>
+                                <span class="comment"># Stage all changes</span><br>
+                                git add .<br><br>
+                                <span class="comment"># Commit the fixes</span><br>
+                                git commit -m "Fix login issues and add comprehensive tests"<br><br>
+                                <span class="comment"># Push updated dev_test to remote (optional, for collaboration)</span><br>
+                                git push origin dev_test
+                            </div>
+
+                            <div class="command-explanation">
+                                <i class="fas fa-check-double me-1"></i>
+                                Thorough testing prevents future production issues.
+                            </div>
+
+                            <div class="diagram">
+                                <div class="branch-line main" style="width: 100%;">
+                                    <div class="branch-label main">main</div>
+                                    <div class="commit main" style="left: 20%;"></div>
+                                    <div class="commit main" style="left: 50%;"></div>
+                                    <div class="commit main broken" style="left: 70%;"></div>
+                                    <div class="commit main" style="left: 90%;"></div>
+                                </div>
+                                <div class="branch-line dev-test" style="width: 80%; top: 60px;">
+                                    <div class="branch-label dev-test">dev_test</div>
+                                    <div class="commit dev-test" style="left: 70%;"></div>
+                                    <div class="commit dev-test current" style="left: 90%;"></div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-terminal" onclick="executeStep(7)">
+                                <span class="spinner"></span>
+                                <i class="fas fa-play me-1"></i> Run Commands
+                            </button>
+                            <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 8: Merge to Main -->
+                <div id="step8" class="step-card" data-step="8">
+                    <div class="d-flex align-items-start">
+                        <div class="step-number">8</div>
+                        <div class="flex-grow-1">
+                            <h4>Merge Fixed Changes to Main</h4>
+                            <div class="scenario-box success">
+                                <i class="fas fa-check-circle me-2"></i>
+                                <strong>Ready for Production:</strong> Merge the thoroughly tested changes.
+                            </div>
+                            
+                            <div class="command-block">
+                                <span class="comment"># Switch to main branch</span><br>
+                                git checkout main<br><br>
+                                <span class="comment"># Ensure main is up-to-date</span><br>
+                                git pull origin main<br><br>
+                                <span class="comment"># Merge the fixed dev_test branch</span><br>
+                                git merge dev_test<br><br>
+                                <span class="comment"># Push to remote main</span><br>
+                                git push origin main
+                            </div>
+
+                            <div class="command-explanation">
+                                <i class="fas fa-code-merge me-1"></i>
+                                The fixed changes are now ready for production deployment.
+                            </div>
+
+                            <div class="diagram">
+                                <div class="branch-line main" style="width: 100%;">
+                                    <div class="branch-label main">main</div>
+                                    <div class="commit main" style="left: 20%;"></div>
+                                    <div class="commit main" style="left: 50%;"></div>
+                                    <div class="commit main broken" style="left: 70%;"></div>
+                                    <div class="commit main" style="left: 85%;"></div>
+                                    <div class="commit main current" style="left: 95%;"></div>
+                                </div>
+                                <div class="branch-line dev-test" style="width: 80%; top: 60px;">
+                                    <div class="branch-label dev-test">dev_test</div>
+                                    <div class="commit dev-test" style="left: 70%;"></div>
+                                    <div class="commit dev-test" style="left: 90%;"></div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-terminal" onclick="executeStep(8)">
+                                <span class="spinner"></span>
+                                <i class="fas fa-play me-1"></i> Run Commands
+                            </button>
+                            <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 9: Clean Up -->
+                <div id="step9" class="step-card" data-step="9">
+                    <div class="d-flex align-items-start">
+                        <div class="step-number">9</div>
+                        <div class="flex-grow-1">
+                            <h4>Clean Up</h4>
+                            <p>Remove temporary branches that are no longer needed.</p>
+                            
+                            <div class="command-block">
+                                <span class="comment"># Delete the feature branch if no longer needed</span><br>
+                                git branch -d feature/new-login<br>
+                                git push origin --delete feature/new-login<br><br>
+                                <span class="comment"># Keep dev_test for now or delete if no longer needed</span><br>
+                                <span class="comment"># git branch -d dev_test</span><br>
+                                <span class="comment"># git push origin --delete dev_test</span>
+                            </div>
+
+                            <div class="command-explanation">
+                                <i class="fas fa-broom me-1"></i>
+                                Clean up keeps your repository organized and easy to navigate.
+                            </div>
+
+                            <div class="diagram">
+                                <div class="branch-line main" style="width: 100%;">
+                                    <div class="branch-label main">main</div>
+                                    <div class="commit main" style="left: 20%;"></div>
+                                    <div class="commit main" style="left: 50%;"></div>
+                                    <div class="commit main" style="left: 70%;"></div>
+                                    <div class="commit main" style="left: 85%;"></div>
+                                    <div class="commit main current" style="left: 95%;"></div>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-terminal" onclick="executeStep(9)">
+                                <span class="spinner"></span>
+                                <i class="fas fa-play me-1"></i> Run Commands
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Best Practices -->
+                <div class="step-card">
+                    <h4><i class="fas fa-lightbulb me-2"></i>Best Practices</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Always Do:</h6>
+                            <ul>
+                                <li>Test thoroughly before merging to main</li>
+                                <li>Use feature branches for development</li>
+                                <li>Implement CI/CD pipelines</li>
+                                <li>Communicate with your team</li>
+                                <li>Use pull requests for code review</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Never Do:</h6>
+                            <ul>
+                                <li>Push directly to main without testing</li>
+                                <li>Use <code>git reset --hard</code> on shared branches</li>
+                                <li>Force push without team consensus</li>
+                                <li>Delete branches without checking</li>
+                                <li>Ignore merge conflicts</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Terminal Output -->
+                <div class="terminal-output" id="terminalOutput">
+                    <div class="line info">Ready to execute Git commands. Click "Run Commands" on any step to see the output.</div>
+                    <span class="typing-cursor"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentStep = 0;
+        const totalSteps = 9;
+        const completedSteps = new Set();
+
+        // Command outputs for each step
+        const commandOutputs = {
+            1: [
+                { type: 'success', text: '$ git clone https://github.com/username/project.git' },
+                { type: 'info', text: 'Cloning into \'project\'...' },
+                { type: 'success', text: '$ cd project' },
+                { type: 'success', text: '$ git config --global user.name "Your Name"' },
+                { type: 'success', text: '$ git config --global user.email "your.email@example.com"' },
+                { type: 'success', text: '$ git checkout -b main' },
+                { type: 'info', text: 'Switched to a new branch \'main\'' },
+                { type: 'success', text: '$ git push -u origin main' },
+                { type: 'info', text: 'Branch \'main\' set up to track remote branch \'main\' from \'origin\'.' },
+                { type: 'success', text: '✅ Initial setup completed successfully!' }
+            ],
+            2: [
+                { type: 'success', text: '$ git checkout -b feature/new-login' },
+                { type: 'info', text: 'Switched to a new branch \'feature/new-login\'' },
+                { type: 'comment', text: '# ... (making changes to files)' },
+                { type: 'success', text: '$ git add .' },
+                { type: 'success', text: '$ git commit -m "Add new login functionality with minimal testing"' },
+                { type: 'info', text: '[feature/new-login a1b2c3d] Add new login functionality with minimal testing' },
+                { type: 'success', text: '$ git push origin feature/new-login' },
+                { type: 'info', text: 'To github.com:username/project.git' },
+                { type: 'info', text: ' * [new branch]      feature/new-login -> feature/new-login' },
+                { type: 'success', text: '$ git checkout main' },
+                { type: 'info', text: 'Switched to branch \'main\'' },
+                { type: 'success', text: '$ git merge feature/new-login' },
+                { type: 'info', text: 'Updating e4f5g6h..a1b2c3d' },
+                { type: 'success', text: '$ git push origin main' },
+                { type: 'info', text: 'To github.com:username/project.git' },
+                { type: 'info', text: '   e4f5g6h..a1b2c3d  main -> main' },
+                { type: 'error', text: '⚠️  Production is now broken!' }
+            ],
+            3: [
+                { type: 'success', text: '$ git log --oneline -5' },
+                { type: 'info', text: 'a1b2c3d (HEAD -> main, origin/main) Add new login functionality with minimal testing' },
+                { type: 'info', text: 'e4f5g6h Previous stable commit' },
+                { type: 'comment', text: '# ... (opening editor for revert commit message)' },
+                { type: 'success', text: '$ git revert a1b2c3d' },
+                { type: 'info', text: '[main f9g8h7i] Revert "Add new login functionality with minimal testing"' },
+                { type: 'success', text: '$ git push origin main' },
+                { type: 'info', text: 'To github.com:username/project.git' },
+                { type: 'info', text: '   a1b2c3d..f9g8h7i  main -> main' },
+                { type: 'success', text: '✅ Production is now restored!' }
+            ],
+            4: [
+                { type: 'success', text: '$ git checkout -b dev_test a1b2c3d' },
+                { type: 'info', text: 'Switched to a new branch \'dev_test\'' },
+                { type: 'success', text: '$ git push origin dev_test' },
+                { type: 'info', text: 'To github.com:username/project.git' },
+                { type: 'info', text: ' * [new branch]      dev_test -> dev_test' },
+                { type: 'success', text: '✅ Problematic changes saved in dev_test branch' }
+            ],
+            5: [
+                { type: 'success', text: '$ git checkout main' },
+                { type: 'info', text: 'Switched to branch \'main\'' },
+                { type: 'success', text: '$ git pull origin main' },
+                { type: 'info', text: 'Already up to date.' },
+                { type: 'success', text: '$ git log --oneline -3' },
+                { type: 'info', text: 'f9g8h7i (HEAD -> main, origin/main) Revert "Add new login functionality with minimal testing"' },
+                { type: 'info', text: 'e4f5g6h Previous stable commit' },
+                { type: 'success', text: '✅ Local main is synchronized with remote' }
+            ],
+            6: [
+                { type: 'success', text: '$ git checkout dev_test' },
+                { type: 'info', text: 'Switched to branch \'dev_test\'' },
+                { type: 'success', text: '$ git pull origin dev_test' },
+                { type: 'info', text: 'Already up to date.' },
+                { type: 'comment', text: '# Setting up local testing environment...' },
+                { type: 'success', text: '✅ Ready for local testing and fixes' }
+            ],
+            7: [
+                { type: 'comment', text: '# ... (fixing issues in code files)' },
+                { type: 'comment', text: '# ... (adding comprehensive test cases)' },
+                { type: 'success', text: '$ git add .' },
+                { type: 'success', text: '$ git commit -m "Fix login issues and add comprehensive tests"' },
+                { type: 'info', text: '[dev_test b2c3d4e] Fix login issues and add comprehensive tests' },
+                { type: 'success', text: '$ git push origin dev_test' },
+                { type: 'info', text: 'To github.com:username/project.git' },
+                { type: 'info', text: '   a1b2c3d..b2c3d4e  dev_test -> dev_test' },
+                { type: 'success', text: '✅ Issues fixed and thoroughly tested' }
+            ],
+            8: [
+                { type: 'success', text: '$ git checkout main' },
+                { type: 'info', text: 'Switched to branch \'main\'' },
+                { type: 'success', text: '$ git pull origin main' },
+                { type: 'info', text: 'Already up to date.' },
+                { type: 'success', text: '$ git merge dev_test' },
+                { type: 'info', text: 'Updating f9g8h7i..b2c3d4e' },
+                { type: 'success', text: '$ git push origin main' },
+                { type: 'info', text: 'To github.com:username/project.git' },
+                { type: 'info', text: '   f9g8h7i..b2c3d4e  main -> main' },
+                { type: 'success', text: '✅ Fixed changes merged to main and ready for production' }
+            ],
+            9: [
+                { type: 'success', text: '$ git branch -d feature/new-login' },
+                { type: 'info', text: 'Deleted branch feature/new-login (was a1b2c3d).' },
+                { type: 'success', text: '$ git push origin --delete feature/new-login' },
+                { type: 'info', text: 'To github.com:username/project.git' },
+                { type: 'info', text: ' - [deleted]         feature/new-login' },
+                { type: 'comment', text: '# dev_test branch kept for future reference' },
+                { type: 'success', text: '✅ Cleanup completed' },
+                { type: 'success', text: '🎉 Workflow completed successfully!' }
+            ]
+        };
+
+        // Execute step function
+        function executeStep(stepNumber) {
+            const button = document.querySelector(`#step${stepNumber} .btn-terminal`);
+            const terminal = document.getElementById('terminalOutput');
+            
+            // Disable button and show loading
+            button.disabled = true;
+            button.classList.add('loading');
+            
+            // Clear terminal
+            terminal.innerHTML = '<span class="typing-cursor"></span>';
+            
+            // Simulate command execution with typing effect
+            let lineIndex = 0;
+            const outputs = commandOutputs[stepNumber];
+            
+            function typeLine() {
+                if (lineIndex < outputs.length) {
+                    const line = outputs[lineIndex];
+                    const lineElement = document.createElement('div');
+                    lineElement.className = `line ${line.type}`;
+                    lineElement.textContent = line.text;
+                    
+                    // Remove cursor before adding new line
+                    const cursor = terminal.querySelector('.typing-cursor');
+                    if (cursor) {
+                        cursor.remove();
+                    }
+                    
+                    terminal.appendChild(lineElement);
+                    terminal.appendChild(cursor || document.createElement('span'));
+                    terminal.scrollTop = terminal.scrollHeight;
+                    
+                    lineIndex++;
+                    setTimeout(typeLine, 300); // Adjust typing speed
+                } else {
+                    // Re-enable button
+                    button.disabled = false;
+                    button.classList.remove('loading');
+                    
+                    // Mark step as completed
+                    markStepCompleted(stepNumber);
+                    
+                    // Auto-scroll to next step if not last
+                    if (stepNumber < totalSteps) {
+                        setTimeout(() => {
+                            const nextStep = document.getElementById(`step${stepNumber + 1}`);
+                            if (nextStep) {
+                                nextStep.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                        }, 1000);
+                    }
+                }
+            }
+            
+            // Start typing effect
+            setTimeout(typeLine, 500);
+        }
+
+        // Mark step as completed
+        function markStepCompleted(stepNumber) {
+            completedSteps.add(stepNumber);
+            
+            // Update step card
+            const stepCard = document.getElementById(`step${stepNumber}`);
+            stepCard.classList.add('completed');
+            
+            // Update navigation
+            const navLink = document.querySelector(`.workflow-nav .nav-link[data-step="${stepNumber}"]`);
+            if (navLink) {
+                navLink.classList.add('completed');
+            }
+            
+            // Update progress bar
+            updateProgress();
+            
+            // Update current step if this is the latest completed
+            if (stepNumber > currentStep) {
+                currentStep = stepNumber;
+                updateCurrentStepDisplay();
+            }
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const progressBar = document.getElementById('progressBar');
+            const progress = (completedSteps.size / totalSteps) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        // Update current step display
+        function updateCurrentStepDisplay() {
+            const currentStepElement = document.getElementById('currentStep');
+            const stepNameElement = document.getElementById('stepName');
+            
+            currentStepElement.textContent = currentStep;
+            
+            const stepNames = {
+                1: 'Initial Setup',
+                2: 'Problem Scenario',
+                3: 'Emergency Revert',
+                4: 'Save Changes',
+                5: 'Sync Local',
+                6: 'Local Testing',
+                7: 'Fix & Test',
+                8: 'Merge to Main',
+                9: 'Clean Up'
+            };
+            
+            stepNameElement.textContent = stepNames[currentStep] || 'Completed';
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('.workflow-nav .nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Update active state
+                document.querySelectorAll('.workflow-nav .nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Scroll to section
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Add animation to diagrams when scrolling into view
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.step-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(card);
+        });
+
+        // Initialize
+        updateCurrentStepDisplay();
+    </script>
+</body>
+</html>
