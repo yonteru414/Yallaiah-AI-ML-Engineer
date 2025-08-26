@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yallaiah Onteru - AI Engineer | GenAI, ML/DL, RAG, Agents, RL</title>
+    <title>Yallaiah Onteru - AI Engineer | Terminal Portfolio</title>
     <meta name="description" content="Professional AI Engineer Portfolio showcasing expertise in Generative AI, Machine Learning, RAG Systems, AI Agents, and Reinforcement Learning">
     
     <!-- Bootstrap CSS -->
@@ -11,40 +11,32 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- AOS Animation -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <style>
         :root {
-            /* Modern Color Palette */
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --secondary: #ec4899;
-            --accent: #06b6d4;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
+            /* Terminal Color Palette */
+            --terminal-bg: #0a0e1a;
+            --terminal-darker: #050810;
+            --terminal-light: #1a1f2e;
+            --terminal-border: #1e5c1e;
             
-            /* Neutrals */
-            --dark: #0f172a;
-            --dark-light: #1e293b;
-            --gray: #64748b;
-            --gray-light: #94a3b8;
-            --light: #f8fafc;
-            --white: #ffffff;
-            
-            /* Gradients */
-            --gradient-primary: linear-gradient(135deg, #6366f1, #ec4899);
-            --gradient-secondary: linear-gradient(135deg, #06b6d4, #10b981);
-            --gradient-accent: linear-gradient(135deg, #f59e0b, #ef4444);
-            --gradient-dark: linear-gradient(135deg, #0f172a, #1e293b);
+            /* Terminal Text Colors */
+            --terminal-green: #33ff33;
+            --terminal-bright-green: #44ff44;
+            --terminal-dim-green: #22cc22;
+            --terminal-yellow: #ffff33;
+            --terminal-cyan: #33ffff;
+            --terminal-red: #ff3333;
+            --terminal-white: #f0f0f0;
+            --terminal-gray: #a0a0a0;
             
             /* Effects */
-            --shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-            --border-radius: 1rem;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --glow: 0 0 5px rgba(51, 255, 51, 0.5);
+            --border-radius: 0.2rem;
+            --transition: all 0.2s ease;
         }
         
         * {
@@ -54,11 +46,12 @@
         }
         
         body {
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            color: var(--white);
-            background: var(--dark);
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            line-height: 1.4;
+            color: var(--terminal-green);
+            background: var(--terminal-bg);
             overflow-x: hidden;
+            font-size: 0.9rem;
         }
         
         /* Smooth Scrolling */
@@ -72,54 +65,100 @@
         }
         
         ::-webkit-scrollbar-track {
-            background: var(--dark-light);
+            background: var(--terminal-darker);
         }
         
         ::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 4px;
+            background: var(--terminal-dim-green);
+            border-radius: 0;
         }
         
         ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-dark);
+            background: var(--terminal-green);
+        }
+        
+        /* Terminal Window Styling */
+        .terminal {
+            background: var(--terminal-bg);
+            border: 1px solid var(--terminal-border);
+            border-radius: var(--border-radius);
+            box-shadow: 0 0 10px rgba(51, 255, 51, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .terminal-header {
+            background: var(--terminal-light);
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--terminal-border);
+        }
+        
+        .terminal-title {
+            color: var(--terminal-white);
+            font-weight: 500;
+            margin-left: 0.5rem;
+        }
+        
+        .terminal-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .terminal-button.close {
+            background: #ff5f56;
+        }
+        
+        .terminal-button.minimize {
+            background: #ffbd2e;
+        }
+        
+        .terminal-button.maximize {
+            background: #27c93f;
+        }
+        
+        .terminal-body {
+            padding: 1rem;
+            min-height: 200px;
         }
         
         /* Navigation */
         .navbar {
-            background: rgba(15, 23, 42, 0.95) !important;
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(99, 102, 241, 0.1);
-            transition: var(--transition);
-            padding: 1rem 0;
-        }
-        
-        .navbar.scrolled {
-            background: rgba(15, 23, 42, 0.98) !important;
-            box-shadow: var(--shadow);
+            background: var(--terminal-darker) !important;
+            border-bottom: 1px solid var(--terminal-border);
+            padding: 0.5rem 0;
         }
         
         .navbar-brand {
-            font-weight: 800;
-            font-size: 1.5rem;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--terminal-green) !important;
+            text-shadow: var(--glow);
         }
         
         .nav-link {
-            color: var(--gray-light) !important;
+            color: var(--terminal-gray) !important;
             font-weight: 500;
-            margin: 0 0.5rem;
-            padding: 0.5rem 1rem !important;
-            border-radius: 0.5rem;
+            margin: 0 0.3rem;
+            padding: 0.3rem 0.8rem !important;
+            border-radius: 0;
             transition: var(--transition);
+            border: 1px solid transparent;
         }
         
         .nav-link:hover,
         .nav-link.active {
-            color: var(--white) !important;
-            background: rgba(99, 102, 241, 0.1);
+            color: var(--terminal-green) !important;
+            background: rgba(51, 255, 51, 0.1);
+            border: 1px solid var(--terminal-border);
+            text-shadow: var(--glow);
         }
         
         /* Hero Section */
@@ -128,202 +167,149 @@
             display: flex;
             align-items: center;
             position: relative;
-            background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.1) 0%, var(--dark) 70%);
+            background: var(--terminal-bg);
             overflow: hidden;
         }
         
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%236366f1" fill-opacity="0.03"><circle cx="30" cy="30" r="1"/></g></svg>');
-            z-index: 1;
-        }
-        
-        .hero-content {
-            position: relative;
-            z-index: 2;
-        }
-        
-        .hero h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.2;
-        }
-        
-        .hero .lead {
-            font-size: 1.25rem;
-            color: var(--gray-light);
-            margin-bottom: 2rem;
-            max-width: 600px;
-        }
-        
-        .btn-primary {
-            background: var(--gradient-primary);
-            border: none;
-            padding: 0.75rem 2rem;
-            border-radius: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.025em;
-            transition: var(--transition);
-            box-shadow: var(--shadow);
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-            background: var(--gradient-primary);
-        }
-        
-        .btn-outline-primary {
-            border: 2px solid var(--primary);
-            color: var(--primary);
-            padding: 0.75rem 2rem;
-            border-radius: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.025em;
-            transition: var(--transition);
-            background: transparent;
-        }
-        
-        .btn-outline-primary:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-        
-        /* Animated Background */
-        .floating-shapes {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .hero-terminal {
             width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
         }
         
-        .shape {
-            position: absolute;
-            opacity: 0.1;
-            animation: float 20s infinite ease-in-out;
+        .terminal-line {
+            margin-bottom: 0.8rem;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
         }
         
-        .shape:nth-child(1) {
-            top: 20%;
-            left: 10%;
-            animation-delay: 0s;
+        .terminal-prompt {
+            color: var(--terminal-green);
+            margin-right: 0.5rem;
         }
         
-        .shape:nth-child(2) {
-            top: 40%;
-            right: 10%;
-            animation-delay: 5s;
+        .terminal-command {
+            color: var(--terminal-yellow);
         }
         
-        .shape:nth-child(3) {
-            bottom: 30%;
-            left: 20%;
-            animation-delay: 10s;
+        .terminal-output {
+            color: var(--terminal-white);
+            margin-left: 1.5rem;
+            margin-top: 0.3rem;
         }
         
-        @keyframes float {
-            0%, 100% {
-                transform: translate(0px, 0px) rotate(0deg);
-            }
-            33% {
-                transform: translate(30px, -30px) rotate(120deg);
-            }
-            66% {
-                transform: translate(-20px, 20px) rotate(240deg);
-            }
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1rem;
+            background: var(--terminal-green);
+            animation: blink 1s infinite;
+            vertical-align: text-bottom;
+        }
+        
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .terminal-btn {
+            display: inline-block;
+            background: transparent;
+            color: var(--terminal-green);
+            border: 1px solid var(--terminal-border);
+            padding: 0.5rem 1rem;
+            margin-right: 1rem;
+            margin-top: 0.5rem;
+            text-decoration: none;
+            transition: var(--transition);
+            font-family: inherit;
+            font-size: inherit;
+        }
+        
+        .terminal-btn:hover {
+            background: rgba(51, 255, 51, 0.1);
+            border-color: var(--terminal-green);
+            color: var(--terminal-bright-green);
+            text-shadow: var(--glow);
+            text-decoration: none;
+        }
+        
+        .terminal-btn i {
+            margin-right: 0.5rem;
         }
         
         /* Sections */
         .section {
-            padding: 5rem 0;
+            padding: 3rem 0;
             position: relative;
+            background: var(--terminal-bg);
         }
         
         .section-title {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
             position: relative;
         }
         
         .section-title h2 {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 800;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -1rem;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: var(--gradient-primary);
-            border-radius: 2px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--terminal-green);
+            text-shadow: var(--glow);
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--terminal-border);
+            background: rgba(51, 255, 51, 0.05);
         }
         
         /* Cards */
         .card {
-            background: var(--dark-light);
-            border: 1px solid rgba(99, 102, 241, 0.1);
+            background: var(--terminal-light);
+            border: 1px solid var(--terminal-border);
             border-radius: var(--border-radius);
             transition: var(--transition);
             height: 100%;
             overflow: hidden;
+            margin-bottom: 1.5rem;
         }
         
         .card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--primary);
+            border-color: var(--terminal-green);
+            box-shadow: 0 0 10px rgba(51, 255, 51, 0.3);
         }
         
         .card-body {
-            padding: 2rem;
+            padding: 1.5rem;
         }
         
         .card-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--gradient-primary);
-            border-radius: 1rem;
+            width: 40px;
+            height: 40px;
+            background: rgba(51, 255, 51, 0.1);
+            border: 1px solid var(--terminal-border);
+            border-radius: var(--border-radius);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 1.5rem;
-            color: var(--white);
+            margin-bottom: 1rem;
+            color: var(--terminal-green);
         }
         
         .card-title {
-            color: var(--white);
+            color: var(--terminal-green);
             font-weight: 700;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
         }
         
         .card-text {
-            color: var(--gray-light);
-            margin-bottom: 1.5rem;
+            color: var(--terminal-gray);
+            margin-bottom: 1rem;
         }
         
         /* Tech Stack */
@@ -331,133 +317,138 @@
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
         
         .tech-tag {
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--primary);
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-            border: 1px solid rgba(99, 102, 241, 0.2);
+            background: rgba(51, 255, 51, 0.1);
+            color: var(--terminal-green);
+            padding: 0.2rem 0.6rem;
+            border-radius: var(--border-radius);
+            font-size: 0.8rem;
+            border: 1px solid var(--terminal-border);
+            font-family: inherit;
         }
         
         /* Timeline */
         .timeline {
             position: relative;
-            padding-left: 3rem;
+            padding-left: 2rem;
         }
         
         .timeline::before {
             content: '';
             position: absolute;
-            left: 1rem;
+            left: 0.5rem;
             top: 0;
             bottom: 0;
             width: 2px;
-            background: var(--gradient-primary);
+            background: var(--terminal-border);
         }
         
         .timeline-item {
             position: relative;
-            margin-bottom: 3rem;
-            padding-left: 2rem;
+            margin-bottom: 2rem;
+            padding-left: 1.5rem;
         }
         
         .timeline-item::before {
             content: '';
             position: absolute;
-            left: -2.5rem;
-            top: 0.5rem;
-            width: 1rem;
-            height: 1rem;
-            background: var(--primary);
+            left: -1rem;
+            top: 0.3rem;
+            width: 0.6rem;
+            height: 0.6rem;
+            background: var(--terminal-green);
             border-radius: 50%;
-            box-shadow: 0 0 0 4px var(--dark-light);
+            box-shadow: var(--glow);
         }
         
         .timeline-content {
-            background: var(--dark-light);
-            padding: 2rem;
+            background: var(--terminal-light);
+            padding: 1.5rem;
             border-radius: var(--border-radius);
-            border: 1px solid rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--terminal-border);
         }
         
         .timeline-content h4 {
-            color: var(--white);
+            color: var(--terminal-green);
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
+            font-size: 1.1rem;
         }
         
         .timeline-content h5 {
-            color: var(--primary);
+            color: var(--terminal-cyan);
             font-weight: 600;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
         }
         
         .timeline-date {
-            color: var(--accent);
+            color: var(--terminal-yellow);
             font-weight: 500;
-            font-size: 0.875rem;
-            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            margin-bottom: 0.8rem;
         }
         
         /* Stats */
         .stats {
-            background: var(--gradient-primary);
-            padding: 4rem 0;
-            margin: 4rem 0;
+            background: rgba(51, 255, 51, 0.05);
+            border: 1px solid var(--terminal-border);
+            padding: 2rem;
+            margin: 2rem 0;
             border-radius: var(--border-radius);
         }
         
         .stat-item {
             text-align: center;
-            color: var(--white);
+            color: var(--terminal-white);
         }
         
         .stat-number {
-            font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--terminal-green);
+            text-shadow: var(--glow);
+            margin-bottom: 0.3rem;
         }
         
         .stat-label {
             font-weight: 600;
-            opacity: 0.9;
+            color: var(--terminal-gray);
         }
         
         /* Skills */
         .skill-item {
-            background: var(--dark-light);
+            background: var(--terminal-light);
             padding: 1.5rem;
             border-radius: var(--border-radius);
-            border: 1px solid rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--terminal-border);
             transition: var(--transition);
             height: 100%;
+            margin-bottom: 1.5rem;
         }
         
         .skill-item:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: var(--shadow);
+            border-color: var(--terminal-green);
+            box-shadow: 0 0 10px rgba(51, 255, 51, 0.3);
         }
         
         .skill-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--gradient-secondary);
-            border-radius: 0.75rem;
+            width: 40px;
+            height: 40px;
+            background: rgba(51, 255, 51, 0.1);
+            border: 1px solid var(--terminal-border);
+            border-radius: var(--border-radius);
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 1rem;
-            color: var(--white);
+            color: var(--terminal-green);
         }
         
         .skill-name {
-            color: var(--white);
+            color: var(--terminal-green);
             font-weight: 600;
             margin-bottom: 0.5rem;
         }
@@ -465,162 +456,189 @@
         .skill-progress {
             width: 100%;
             height: 6px;
-            background: rgba(99, 102, 241, 0.1);
-            border-radius: 3px;
+            background: var(--terminal-darker);
+            border-radius: 0;
             overflow: hidden;
             margin-bottom: 0.5rem;
         }
         
         .skill-bar {
             height: 100%;
-            background: var(--gradient-primary);
-            border-radius: 3px;
+            background: var(--terminal-green);
+            border-radius: 0;
             transition: width 2s ease-in-out;
+            box-shadow: var(--glow);
         }
         
         .skill-percentage {
-            color: var(--gray-light);
-            font-size: 0.875rem;
+            color: var(--terminal-gray);
+            font-size: 0.85rem;
         }
         
         /* Projects Grid */
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
         
         .project-card {
-            background: var(--dark-light);
-            border: 1px solid rgba(99, 102, 241, 0.1);
+            background: var(--terminal-light);
+            border: 1px solid var(--terminal-border);
             border-radius: var(--border-radius);
             overflow: hidden;
             transition: var(--transition);
         }
         
         .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--primary);
+            border-color: var(--terminal-green);
+            box-shadow: 0 0 10px rgba(51, 255, 51, 0.3);
         }
         
         .project-header {
-            padding: 2rem 2rem 1rem;
+            padding: 1.5rem 1.5rem 0.8rem;
         }
         
         .project-icon {
-            width: 50px;
-            height: 50px;
-            background: var(--gradient-primary);
-            border-radius: 0.75rem;
+            width: 40px;
+            height: 40px;
+            background: rgba(51, 255, 51, 0.1);
+            border: 1px solid var(--terminal-border);
+            border-radius: var(--border-radius);
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 1rem;
-            color: var(--white);
+            color: var(--terminal-green);
         }
         
         .project-title {
-            color: var(--white);
+            color: var(--terminal-green);
             font-weight: 700;
             margin-bottom: 0.5rem;
+            font-size: 1.1rem;
         }
         
         .project-description {
-            color: var(--gray-light);
-            margin-bottom: 1.5rem;
+            color: var(--terminal-gray);
+            margin-bottom: 1rem;
         }
         
         .project-footer {
-            padding: 1rem 2rem 2rem;
+            padding: 0.8rem 1.5rem 1.5rem;
         }
         
         .project-links {
             display: flex;
-            gap: 1rem;
+            gap: 0.8rem;
         }
         
         .project-link {
-            padding: 0.5rem 1rem;
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            background: rgba(51, 255, 51, 0.1);
+            color: var(--terminal-green);
             text-decoration: none;
-            border-radius: 0.5rem;
+            border-radius: var(--border-radius);
             font-weight: 500;
             transition: var(--transition);
-            border: 1px solid rgba(99, 102, 241, 0.2);
+            border: 1px solid var(--terminal-border);
+            font-family: inherit;
+            font-size: 0.85rem;
         }
         
         .project-link:hover {
-            background: var(--primary);
-            color: var(--white);
+            background: rgba(51, 255, 51, 0.2);
+            border-color: var(--terminal-green);
+            color: var(--terminal-bright-green);
+            text-shadow: var(--glow);
         }
         
         /* Contact */
         .contact-card {
-            background: var(--dark-light);
-            border: 1px solid rgba(99, 102, 241, 0.1);
+            background: var(--terminal-light);
+            border: 1px solid var(--terminal-border);
             border-radius: var(--border-radius);
-            padding: 2rem;
+            padding: 1.5rem;
             text-align: center;
             transition: var(--transition);
+            margin-bottom: 1.5rem;
         }
         
         .contact-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: var(--shadow);
+            border-color: var(--terminal-green);
+            box-shadow: 0 0 10px rgba(51, 255, 51, 0.3);
         }
         
         .contact-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--gradient-primary);
+            width: 50px;
+            height: 50px;
+            background: rgba(51, 255, 51, 0.1);
+            border: 1px solid var(--terminal-border);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 1rem;
-            color: var(--white);
+            color: var(--terminal-green);
         }
         
         .contact-title {
-            color: var(--white);
+            color: var(--terminal-green);
             font-weight: 600;
             margin-bottom: 0.5rem;
         }
         
         .contact-info {
-            color: var(--gray-light);
+            color: var(--terminal-gray);
         }
         
         .contact-info a {
-            color: var(--primary);
+            color: var(--terminal-green);
             text-decoration: none;
         }
         
         .contact-info a:hover {
-            color: var(--white);
+            color: var(--terminal-bright-green);
+            text-shadow: var(--glow);
         }
         
         /* Footer */
         .footer {
-            background: var(--dark-light);
-            padding: 2rem 0;
+            background: var(--terminal-darker);
+            padding: 1.5rem 0;
             text-align: center;
-            border-top: 1px solid rgba(99, 102, 241, 0.1);
+            border-top: 1px solid var(--terminal-border);
+        }
+        
+        /* Form Elements */
+        .form-control {
+            background: var(--terminal-darker);
+            border: 1px solid var(--terminal-border);
+            color: var(--terminal-green);
+            border-radius: var(--border-radius);
+            font-family: inherit;
+        }
+        
+        .form-control:focus {
+            background: var(--terminal-darker);
+            border-color: var(--terminal-green);
+            color: var(--terminal-green);
+            box-shadow: 0 0 5px rgba(51, 255, 51, 0.3);
+        }
+        
+        .form-floating label {
+            color: var(--terminal-gray);
         }
         
         /* Responsive Design */
         @media (max-width: 768px) {
             .hero {
-                text-align: center;
                 padding: 2rem 0;
             }
             
             .section {
-                padding: 3rem 0;
+                padding: 2rem 0;
             }
             
             .projects-grid {
@@ -628,18 +646,18 @@
             }
             
             .timeline {
-                padding-left: 2rem;
-            }
-            
-            .timeline-item {
                 padding-left: 1.5rem;
             }
             
-            .btn-primary,
-            .btn-outline-primary {
+            .timeline-item {
+                padding-left: 1rem;
+            }
+            
+            .terminal-btn {
                 display: block;
                 width: 100%;
-                margin-bottom: 1rem;
+                margin-right: 0;
+                margin-bottom: 0.5rem;
             }
         }
         
@@ -647,7 +665,7 @@
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
@@ -657,22 +675,6 @@
         
         .animate-fade-in-up {
             animation: fadeInUp 0.6s ease-out forwards;
-        }
-        
-        /* Utility Classes */
-        .text-gradient {
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .bg-dark-light {
-            background-color: var(--dark-light);
-        }
-        
-        .border-primary {
-            border-color: rgba(99, 102, 241, 0.1) !important;
         }
         
         /* Loading Animation */
@@ -693,7 +695,7 @@
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#home">
-                Yallaiah Onteru
+                <i class="fas fa-terminal me-2"></i>Yallaiah_Onteru
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -701,161 +703,177 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#home">Home</a>
+                        <a class="nav-link active" href="#home">~</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#about">About</a>
+                        <a class="nav-link" href="#about">about</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#experience">Experience</a>
+                        <a class="nav-link" href="#experience">experience</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#projects">Projects</a>
+                        <a class="nav-link" href="#projects">projects</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#skills">Skills</a>
+                        <a class="nav-link" href="#skills">skills</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#resources">Resources</a>
+                        <a class="nav-link" href="#resources">resources</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#contact">Contact</a>
+                        <a class="nav-link" href="#contact">contact</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
+    
     <!-- Hero Section -->
     <section id="home" class="hero">
-        <div class="floating-shapes">
-            <div class="shape">
-                <i class="fas fa-brain fa-3x" style="color: var(--primary);"></i>
-            </div>
-            <div class="shape">
-                <i class="fas fa-robot fa-3x" style="color: var(--secondary);"></i>
-            </div>
-            <div class="shape">
-                <i class="fas fa-microchip fa-3x" style="color: var(--accent);"></i>
-            </div>
-        </div>
-        
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 hero-content">
-                    <h1 class="loading" data-aos="fade-up" data-aos-delay="100">
-                        AI Engineer & ML Specialist
-                    </h1>
-                    <p class="lead loading" data-aos="fade-up" data-aos-delay="200">
-                        Building the future of AI with cutting-edge solutions in Generative AI, Machine Learning, RAG systems, and AI agents. Transforming businesses through intelligent automation.
-                    </p>
-                    <div class="d-flex flex-column flex-md-row gap-3 loading" data-aos="fade-up" data-aos-delay="300">
-                        <a href="#contact" class="btn btn-primary">
-                            <i class="fas fa-rocket me-2"></i>Get In Touch
-                        </a>
-                        <a href="#projects" class="btn btn-outline-primary">
-                            <i class="fas fa-eye me-2"></i>View Projects
-                        </a>
+            <div class="hero-terminal terminal">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <div class="terminal-button close"></div>
+                        <div class="terminal-button minimize"></div>
+                        <div class="terminal-button maximize"></div>
                     </div>
+                    <div class="terminal-title">portfolio@yallaiah:~$</div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="text-center loading" data-aos="fade-left" data-aos-delay="400">
-                        <div class="stats">
-                            <div class="row">
-                                <div class="col-6 col-md-3">
-                                    <div class="stat-item">
-                                        <div class="stat-number" data-target="5">0</div>
-                                        <div class="stat-label">Years Exp</div>
+                <div class="terminal-body">
+                    <div class="terminal-line" style="animation-delay: 0.2s;">
+                        <span class="terminal-prompt">portfolio@yallaiah:~$</span>
+                        <span class="terminal-command">./welcome.sh</span>
+                    </div>
+                    <div class="terminal-line" style="animation-delay: 0.7s;">
+                        <div class="terminal-output">
+                            <h1 style="color: var(--terminal-green); font-weight: 700; margin-bottom: 1rem;">AI Engineer & ML Specialist</h1>
+                            <p style="color: var(--terminal-white); margin-bottom: 1.5rem;">
+                                Building the future of AI with cutting-edge solutions in Generative AI, Machine Learning, RAG systems, and AI agents. Transforming businesses through intelligent automation.
+                            </p>
+                            <div class="stats">
+                                <div class="row">
+                                    <div class="col-6 col-md-3">
+                                        <div class="stat-item">
+                                            <div class="stat-number" data-target="5">0</div>
+                                            <div class="stat-label">Years Exp</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <div class="stat-item">
-                                        <div class="stat-number" data-target="20">0</div>
-                                        <div class="stat-label">AI Projects</div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="stat-item">
+                                            <div class="stat-number" data-target="20">0</div>
+                                            <div class="stat-label">AI Projects</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <div class="stat-item">
-                                        <div class="stat-number" data-target="15">0</div>
-                                        <div class="stat-label">Technologies</div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="stat-item">
+                                            <div class="stat-number" data-target="15">0</div>
+                                            <div class="stat-label">Technologies</div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-6 col-md-3">
-                                    <div class="stat-item">
-                                        <div class="stat-number" data-target="25">0</div>
-                                        <div class="stat-label">Skills</div>
+                                    <div class="col-6 col-md-3">
+                                        <div class="stat-item">
+                                            <div class="stat-number" data-target="25">0</div>
+                                            <div class="stat-label">Skills</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <div style="margin-top: 1.5rem;">
+                                <a href="#contact" class="terminal-btn">
+                                    <i class="fas fa-envelope"></i>Get In Touch
+                                </a>
+                                <a href="#projects" class="terminal-btn">
+                                    <i class="fas fa-folder-open"></i>View Projects
+                                </a>
+                            </div>
                         </div>
+                    </div>
+                    <div class="terminal-line" style="animation-delay: 1.2s;">
+                        <span class="terminal-prompt">portfolio@yallaiah:~$</span>
+                        <span class="terminal-cursor"></span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    
     <!-- About Section -->
     <section id="about" class="section">
         <div class="container">
             <div class="section-title" data-aos="fade-up">
-                <h2>About Me</h2>
+                <h2>$ cat about.txt</h2>
             </div>
             
-            <div class="row align-items-center">
-                <div class="col-lg-6" data-aos="fade-right">
-                    <h3 class="text-gradient mb-4">Passionate AI Engineer & ML Specialist</h3>
-                    <p class="lead mb-4" style="color: var(--gray-light);">
-                        I'm a passionate AI Engineer with <strong>5+ years</strong> of experience building and deploying 
-                        cutting-edge AI solutions in production environments. My expertise spans the entire AI/ML spectrum 
-                        from traditional machine learning to the latest generative AI technologies.
-                    </p>
-                    <p style="color: var(--gray-light);">
-                        I specialize in creating intelligent systems that solve real-world business problems, from 
-                        conversational AI agents to predictive analytics platforms. My work bridges the gap between 
-                        cutting-edge research and practical implementation.
-                    </p>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <div class="terminal-button close"></div>
+                        <div class="terminal-button minimize"></div>
+                        <div class="terminal-button maximize"></div>
+                    </div>
+                    <div class="terminal-title">about.txt</div>
                 </div>
-                <div class="col-lg-6" data-aos="fade-left">
-                    <div class="row g-4">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <div class="card-icon">
-                                        <i class="fas fa-brain"></i>
-                                    </div>
-                                    <h5 class="card-title">Deep Learning</h5>
-                                    <p class="card-text">PyTorch, TensorFlow, Transformers</p>
-                                </div>
-                            </div>
+                <div class="terminal-body">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6" data-aos="fade-right">
+                            <p style="color: var(--terminal-green); font-weight: 700; margin-bottom: 1rem; font-size: 1.2rem;">Passionate AI Engineer & ML Specialist</p>
+                            <p style="color: var(--terminal-white); margin-bottom: 1rem;">
+                                I'm a passionate AI Engineer with <strong style="color: var(--terminal-yellow);">5+ years</strong> of experience building and deploying 
+                                cutting-edge AI solutions in production environments. My expertise spans the entire AI/ML spectrum 
+                                from traditional machine learning to the latest generative AI technologies.
+                            </p>
+                            <p style="color: var(--terminal-white);">
+                                I specialize in creating intelligent systems that solve real-world business problems, from 
+                                conversational AI agents to predictive analytics platforms. My work bridges the gap between 
+                                cutting-edge research and practical implementation.
+                            </p>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <div class="card-icon">
-                                        <i class="fas fa-robot"></i>
+                        <div class="col-lg-6" data-aos="fade-left">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            <div class="card-icon">
+                                                <i class="fas fa-brain"></i>
+                                            </div>
+                                            <h5 class="card-title">Deep Learning</h5>
+                                            <p class="card-text">PyTorch, TensorFlow, Transformers</p>
+                                        </div>
                                     </div>
-                                    <h5 class="card-title">AI Agents</h5>
-                                    <p class="card-text">LangChain, LangGraph, RAG</p>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <div class="card-icon">
-                                        <i class="fas fa-chart-line"></i>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            <div class="card-icon">
+                                                <i class="fas fa-robot"></i>
+                                            </div>
+                                            <h5 class="card-title">AI Agents</h5>
+                                            <p class="card-text">LangChain, LangGraph, RAG</p>
+                                        </div>
                                     </div>
-                                    <h5 class="card-title">ML Engineering</h5>
-                                    <p class="card-text">XGBoost, Scikit-learn, MLOps</p>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <div class="card-icon">
-                                        <i class="fas fa-cloud"></i>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            <div class="card-icon">
+                                                <i class="fas fa-chart-line"></i>
+                                            </div>
+                                            <h5 class="card-title">ML Engineering</h5>
+                                            <p class="card-text">XGBoost, Scikit-learn, MLOps</p>
+                                        </div>
                                     </div>
-                                    <h5 class="card-title">Cloud & DevOps</h5>
-                                    <p class="card-text">AWS, GCP, Docker, K8s</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            <div class="card-icon">
+                                                <i class="fas fa-cloud"></i>
+                                            </div>
+                                            <h5 class="card-title">Cloud & DevOps</h5>
+                                            <p class="card-text">AWS, GCP, Docker, K8s</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -864,102 +882,116 @@
             </div>
         </div>
     </section>
+    
     <!-- Experience Section -->
-    <section id="experience" class="section bg-dark-light">
+    <section id="experience" class="section">
         <div class="container">
             <div class="section-title" data-aos="fade-up">
-                <h2>Professional Experience</h2>
+                <h2>$ ls -la experience/</h2>
             </div>
             
-            <div class="timeline">
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
-                    <div class="timeline-content">
-                        <h4>AI Developer</h4>
-                        <h5>Northwestern Mutual</h5>
-                        <div class="timeline-date">
-                            <i class="fas fa-calendar me-2"></i>Feb 2025 - Present
-                        </div>
-                        <p>Building AI agents using PyTorch and TensorFlow for customer conversations and underwriting automation. 
-                        Deployed LLMs with Python and cloud infrastructure for high-stakes financial interactions.</p>
-                        <div class="tech-stack">
-                            <span class="tech-tag">PyTorch</span>
-                            <span class="tech-tag">TensorFlow</span>
-                            <span class="tech-tag">AWS</span>
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Docker</span>
-                        </div>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <div class="terminal-button close"></div>
+                        <div class="terminal-button minimize"></div>
+                        <div class="terminal-button maximize"></div>
                     </div>
+                    <div class="terminal-title">experience/</div>
                 </div>
-                
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
-                    <div class="timeline-content">
-                        <h4>LLM Developer (Internship)</h4>
-                        <h5>Spartex AI</h5>
-                        <div class="timeline-date">
-                            <i class="fas fa-calendar me-2"></i>Jun 2024 – Feb 2025
+                <div class="terminal-body">
+                    <div class="timeline">
+                        <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
+                            <div class="timeline-content">
+                                <h4>AI Developer</h4>
+                                <h5>Northwestern Mutual</h5>
+                                <div class="timeline-date">
+                                    <i class="fas fa-calendar me-2"></i>Feb 2025 - Present
+                                </div>
+                                <p>Building AI agents using PyTorch and TensorFlow for customer conversations and underwriting automation. 
+                                Deployed LLMs with Python and cloud infrastructure for high-stakes financial interactions.</p>
+                                <div class="tech-stack">
+                                    <span class="tech-tag">PyTorch</span>
+                                    <span class="tech-tag">TensorFlow</span>
+                                    <span class="tech-tag">AWS</span>
+                                    <span class="tech-tag">Python</span>
+                                    <span class="tech-tag">Docker</span>
+                                </div>
+                            </div>
                         </div>
-                        <p>Fine-tuned GPT-4 and BERT models using Hugging Face Transformers. Built RAG pipelines with 
-                        LangChain, FAISS, and Pinecone for fast AI responses.</p>
-                        <div class="tech-stack">
-                            <span class="tech-tag">GPT-4</span>
-                            <span class="tech-tag">BERT</span>
-                            <span class="tech-tag">LangChain</span>
-                            <span class="tech-tag">FAISS</span>
-                            <span class="tech-tag">Pinecone</span>
+                        
+                        <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
+                            <div class="timeline-content">
+                                <h4>LLM Developer (Internship)</h4>
+                                <h5>Spartex AI</h5>
+                                <div class="timeline-date">
+                                    <i class="fas fa-calendar me-2"></i>Jun 2024 – Feb 2025
+                                </div>
+                                <p>Fine-tuned GPT-4 and BERT models using Hugging Face Transformers. Built RAG pipelines with 
+                                LangChain, FAISS, and Pinecone for fast AI responses.</p>
+                                <div class="tech-stack">
+                                    <span class="tech-tag">GPT-4</span>
+                                    <span class="tech-tag">BERT</span>
+                                    <span class="tech-tag">LangChain</span>
+                                    <span class="tech-tag">FAISS</span>
+                                    <span class="tech-tag">Pinecone</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="300">
-                    <div class="timeline-content">
-                        <h4>Machine Learning Engineer</h4>
-                        <h5>Ola</h5>
-                        <div class="timeline-date">
-                            <i class="fas fa-calendar me-2"></i>Oct 2020 – Sep 2023
+                        
+                        <div class="timeline-item" data-aos="fade-up" data-aos-delay="300">
+                            <div class="timeline-content">
+                                <h4>Machine Learning Engineer</h4>
+                                <h5>Ola</h5>
+                                <div class="timeline-date">
+                                    <i class="fas fa-calendar me-2"></i>Oct 2020 – Sep 2023
+                                </div>
+                                <p>Built demand forecasting models with Prophet and LSTM. Developed ML pipelines using scikit-learn 
+                                and TensorFlow for ride data processing and customer behavior prediction.</p>
+                                <div class="tech-stack">
+                                    <span class="tech-tag">Prophet</span>
+                                    <span class="tech-tag">LSTM</span>
+                                    <span class="tech-tag">Scikit-learn</span>
+                                    <span class="tech-tag">TensorFlow</span>
+                                    <span class="tech-tag">GCP</span>
+                                </div>
+                            </div>
                         </div>
-                        <p>Built demand forecasting models with Prophet and LSTM. Developed ML pipelines using scikit-learn 
-                        and TensorFlow for ride data processing and customer behavior prediction.</p>
-                        <div class="tech-stack">
-                            <span class="tech-tag">Prophet</span>
-                            <span class="tech-tag">LSTM</span>
-                            <span class="tech-tag">Scikit-learn</span>
-                            <span class="tech-tag">TensorFlow</span>
-                            <span class="tech-tag">GCP</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="timeline-item" data-aos="fade-up" data-aos-delay="400">
-                    <div class="timeline-content">
-                        <h4>Azure Data Engineer</h4>
-                        <h5>ICICI Bank</h5>
-                        <div class="timeline-date">
-                            <i class="fas fa-calendar me-2"></i>Feb 2019 – Sep 2020
-                        </div>
-                        <p>Supported integration of Salesforce CRM and banking systems into Azure Synapse Analytics. Built data 
-                        ingestion pipelines with Azure Data Factory and implemented data governance policies.</p>
-                        <div class="tech-stack">
-                            <span class="tech-tag">Azure</span>
-                            <span class="tech-tag">Azure Data Factory</span>
-                            <span class="tech-tag">Azure Synapse</span>
-                            <span class="tech-tag">SQL</span>
-                            <span class="tech-tag">Power BI</span>
+                        
+                        <div class="timeline-item" data-aos="fade-up" data-aos-delay="400">
+                            <div class="timeline-content">
+                                <h4>Azure Data Engineer</h4>
+                                <h5>ICICI Bank</h5>
+                                <div class="timeline-date">
+                                    <i class="fas fa-calendar me-2"></i>Feb 2019 – Sep 2020
+                                </div>
+                                <p>Supported integration of Salesforce CRM and banking systems into Azure Synapse Analytics. Built data 
+                                ingestion pipelines with Azure Data Factory and implemented data governance policies.</p>
+                                <div class="tech-stack">
+                                    <span class="tech-tag">Azure</span>
+                                    <span class="tech-tag">Azure Data Factory</span>
+                                    <span class="tech-tag">Azure Synapse</span>
+                                    <span class="tech-tag">SQL</span>
+                                    <span class="tech-tag">Power BI</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    
     <!-- Projects Section -->
     <section id="projects" class="section">
         <div class="container">
             <div class="section-title" data-aos="fade-up">
-                <h2>Projects Portfolio</h2>
+                <h2>$ find projects/ -type f -name "*.py"</h2>
             </div>
             
             <!-- GenAI & RAG Projects -->
-            <div class="mb-5">
-                <h3 class="text-center mb-4 text-gradient" data-aos="fade-up">GenAI Agent & RAG Projects</h3>
+            <div class="mb-4">
+                <h3 class="text-center mb-3" style="color: var(--terminal-green); font-weight: 700;" data-aos="fade-up">GenAI Agent & RAG Projects</h3>
                 <div class="projects-grid">
                     <div class="project-card" data-aos="fade-up" data-aos-delay="100">
                         <div class="project-header">
@@ -1115,8 +1147,8 @@
             </div>
             
             <!-- ML Projects -->
-            <div class="mb-5">
-                <h3 class="text-center mb-4 text-gradient" data-aos="fade-up">ML Projects (XGBoost & Traditional ML)</h3>
+            <div class="mb-4">
+                <h3 class="text-center mb-3" style="color: var(--terminal-green); font-weight: 700;" data-aos="fade-up">ML Projects (XGBoost & Traditional ML)</h3>
                 <div class="projects-grid">
                     <div class="project-card" data-aos="fade-up" data-aos-delay="100">
                         <div class="project-header">
@@ -1171,17 +1203,17 @@
             </div>
             
             <!-- Featured Project -->
-            <div class="mb-5">
-                <h3 class="text-center mb-4 text-gradient" data-aos="fade-up">Featured Project</h3>
+            <div class="mb-4">
+                <h3 class="text-center mb-3" style="color: var(--terminal-green); font-weight: 700;" data-aos="fade-up">Featured Project</h3>
                 <div class="row justify-content-center">
                     <div class="col-lg-8">
-                        <div class="project-card" data-aos="zoom-in" style="border: 2px solid var(--accent);">
+                        <div class="project-card" data-aos="zoom-in" style="border: 2px solid var(--terminal-cyan);">
                             <div class="project-header text-center">
-                                <div class="project-icon mx-auto" style="width: 80px; height: 80px;">
-                                    <i class="fas fa-cloud fa-2x"></i>
+                                <div class="project-icon mx-auto" style="width: 60px; height: 60px;">
+                                    <i class="fas fa-cloud fa-lg"></i>
                                 </div>
                                 <h4 class="project-title">Cloud Optimus – Intelligent Cloud Resource Advisor</h4>
-                                <p class="project-description lead">Revolutionary cloud cost optimization platform using predictive analytics, anomaly detection, and intelligent automation.</p>
+                                <p class="project-description">Revolutionary cloud cost optimization platform using predictive analytics, anomaly detection, and intelligent automation.</p>
                             </div>
                             <div class="project-footer text-center">
                                 <div class="tech-stack justify-content-center">
@@ -1206,8 +1238,8 @@
             </div>
             
             <!-- Deep Learning Projects -->
-            <div class="mb-5">
-                <h3 class="text-center mb-4 text-gradient" data-aos="fade-up">Deep Learning Projects</h3>
+            <div class="mb-4">
+                <h3 class="text-center mb-3" style="color: var(--terminal-green); font-weight: 700;" data-aos="fade-up">Deep Learning Projects</h3>
                 <div class="projects-grid">
                     <div class="project-card" data-aos="fade-up" data-aos-delay="100">
                         <div class="project-header">
@@ -1262,314 +1294,355 @@
             </div>
         </div>
     </section>
+    
     <!-- Skills Section -->
-    <section id="skills" class="section bg-dark-light">
+    <section id="skills" class="section">
         <div class="container">
             <div class="section-title" data-aos="fade-up">
-                <h2>Technical Skills</h2>
+                <h2>$ cat skills.txt</h2>
             </div>
             
-            <div class="row g-4">
-                <!-- AI & ML Skills -->
-                <div class="col-lg-4 col-md-6">
-                    <div class="skill-item" data-aos="fade-up" data-aos-delay="100">
-                        <div class="skill-icon">
-                            <i class="fas fa-brain"></i>
-                        </div>
-                        <h5 class="skill-name">Deep Learning</h5>
-                        <div class="skill-progress">
-                            <div class="skill-bar" style="width: 95%"></div>
-                        </div>
-                        <div class="skill-percentage">95%</div>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <div class="terminal-button close"></div>
+                        <div class="terminal-button minimize"></div>
+                        <div class="terminal-button maximize"></div>
                     </div>
+                    <div class="terminal-title">skills.txt</div>
                 </div>
-                
-                <div class="col-lg-4 col-md-6">
-                    <div class="skill-item" data-aos="fade-up" data-aos-delay="200">
-                        <div class="skill-icon">
-                            <i class="fas fa-robot"></i>
+                <div class="terminal-body">
+                    <div class="row g-3">
+                        <!-- AI & ML Skills -->
+                        <div class="col-lg-4 col-md-6">
+                            <div class="skill-item" data-aos="fade-up" data-aos-delay="100">
+                                <div class="skill-icon">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <h5 class="skill-name">Deep Learning</h5>
+                                <div class="skill-progress">
+                                    <div class="skill-bar" style="width: 95%"></div>
+                                </div>
+                                <div class="skill-percentage">95%</div>
+                            </div>
                         </div>
-                        <h5 class="skill-name">AI Agents</h5>
-                        <div class="skill-progress">
-                            <div class="skill-bar" style="width: 90%"></div>
+                        
+                        <div class="col-lg-4 col-md-6">
+                            <div class="skill-item" data-aos="fade-up" data-aos-delay="200">
+                                <div class="skill-icon">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <h5 class="skill-name">AI Agents</h5>
+                                <div class="skill-progress">
+                                    <div class="skill-bar" style="width: 90%"></div>
+                                </div>
+                                <div class="skill-percentage">90%</div>
+                            </div>
                         </div>
-                        <div class="skill-percentage">90%</div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6">
-                    <div class="skill-item" data-aos="fade-up" data-aos-delay="300">
-                        <div class="skill-icon">
-                            <i class="fas fa-chart-line"></i>
+                        
+                        <div class="col-lg-4 col-md-6">
+                            <div class="skill-item" data-aos="fade-up" data-aos-delay="300">
+                                <div class="skill-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <h5 class="skill-name">Traditional ML</h5>
+                                <div class="skill-progress">
+                                    <div class="skill-bar" style="width: 92%"></div>
+                                </div>
+                                <div class="skill-percentage">92%</div>
+                            </div>
                         </div>
-                        <h5 class="skill-name">Traditional ML</h5>
-                        <div class="skill-progress">
-                            <div class="skill-bar" style="width: 92%"></div>
+                        
+                        <div class="col-lg-4 col-md-6">
+                            <div class="skill-item" data-aos="fade-up" data-aos-delay="400">
+                                <div class="skill-icon">
+                                    <i class="fab fa-python"></i>
+                                </div>
+                                <h5 class="skill-name">Python</h5>
+                                <div class="skill-progress">
+                                    <div class="skill-bar" style="width: 98%"></div>
+                                </div>
+                                <div class="skill-percentage">98%</div>
+                            </div>
                         </div>
-                        <div class="skill-percentage">92%</div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6">
-                    <div class="skill-item" data-aos="fade-up" data-aos-delay="400">
-                        <div class="skill-icon">
-                            <i class="fab fa-python"></i>
+                        
+                        <div class="col-lg-4 col-md-6">
+                            <div class="skill-item" data-aos="fade-up" data-aos-delay="500">
+                                <div class="skill-icon">
+                                    <i class="fas fa-cloud"></i>
+                                </div>
+                                <h5 class="skill-name">Cloud Platforms</h5>
+                                <div class="skill-progress">
+                                    <div class="skill-bar" style="width: 88%"></div>
+                                </div>
+                                <div class="skill-percentage">88%</div>
+                            </div>
                         </div>
-                        <h5 class="skill-name">Python</h5>
-                        <div class="skill-progress">
-                            <div class="skill-bar" style="width: 98%"></div>
+                        
+                        <div class="col-lg-4 col-md-6">
+                            <div class="skill-item" data-aos="fade-up" data-aos-delay="600">
+                                <div class="skill-icon">
+                                    <i class="fab fa-docker"></i>
+                                </div>
+                                <h5 class="skill-name">DevOps</h5>
+                                <div class="skill-progress">
+                                    <div class="skill-bar" style="width: 85%"></div>
+                                </div>
+                                <div class="skill-percentage">85%</div>
+                            </div>
                         </div>
-                        <div class="skill-percentage">98%</div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6">
-                    <div class="skill-item" data-aos="fade-up" data-aos-delay="500">
-                        <div class="skill-icon">
-                            <i class="fas fa-cloud"></i>
-                        </div>
-                        <h5 class="skill-name">Cloud Platforms</h5>
-                        <div class="skill-progress">
-                            <div class="skill-bar" style="width: 88%"></div>
-                        </div>
-                        <div class="skill-percentage">88%</div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6">
-                    <div class="skill-item" data-aos="fade-up" data-aos-delay="600">
-                        <div class="skill-icon">
-                            <i class="fab fa-docker"></i>
-                        </div>
-                        <h5 class="skill-name">DevOps</h5>
-                        <div class="skill-progress">
-                            <div class="skill-bar" style="width: 85%"></div>
-                        </div>
-                        <div class="skill-percentage">85%</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    
     <!-- Resources Section -->
     <section id="resources" class="section">
         <div class="container">
             <div class="section-title" data-aos="fade-up">
-                <h2>Learning Resources</h2>
+                <h2>$ ls resources/</h2>
             </div>
             
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
-                    <div class="card" data-aos="fade-up" data-aos-delay="100">
-                        <div class="card-body text-center">
-                            <div class="card-icon">
-                                <i class="fas fa-book"></i>
-                            </div>
-                            <h5 class="card-title">LangChain</h5>
-                            <p class="card-text">Langchain tutorials for building AI applications</p>
-                            <a href="resources/Langchain/Langchain-index.html" class="btn btn-outline-primary btn-sm">
-                                <i class="fas fa-external-link-alt me-1"></i>Documentation
-                            </a>
-                        </div>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <div class="terminal-button close"></div>
+                        <div class="terminal-button minimize"></div>
+                        <div class="terminal-button maximize"></div>
                     </div>
+                    <div class="terminal-title">resources/</div>
                 </div>
-                
-                <div class="col-lg-4 col-md-6">
-                    <div class="card" data-aos="fade-up" data-aos-delay="200">
-                        <div class="card-body text-center">
-                            <div class="card-icon">
-                                <i class="fas fa-project-diagram"></i>
+                <div class="terminal-body">
+                    <div class="row g-3">
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card" data-aos="fade-up" data-aos-delay="100">
+                                <div class="card-body text-center">
+                                    <div class="card-icon">
+                                        <i class="fas fa-book"></i>
+                                    </div>
+                                    <h5 class="card-title">LangChain</h5>
+                                    <p class="card-text">Langchain tutorials for building AI applications</p>
+                                    <a href="resources/Langchain/Langchain-index.html" class="terminal-btn">
+                                        <i class="fas fa-external-link-alt me-1"></i>Documentation
+                                    </a>
+                                </div>
                             </div>
-                            <h5 class="card-title">LangGraph</h5>
-                            <p class="card-text">Multi-agent workflow framework for complex AI applications</p>
-                            <a href="resources/langgraph/langgraph-index.html" class="btn btn-outline-primary btn-sm">
-                                <i class="fas fa-external-link-alt me-1"></i>Documentation
-                            </a>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6">
-                    <div class="card" data-aos="fade-up" data-aos-delay="300">
-                        <div class="card-body text-center">
-                            <div class="card-icon">
-                                <i class="fas fa-search"></i>
+                        
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card" data-aos="fade-up" data-aos-delay="200">
+                                <div class="card-body text-center">
+                                    <div class="card-icon">
+                                        <i class="fas fa-project-diagram"></i>
+                                    </div>
+                                    <h5 class="card-title">LangGraph</h5>
+                                    <p class="card-text">Multi-agent workflow framework for complex AI applications</p>
+                                    <a href="resources/langgraph/langgraph-index.html" class="terminal-btn">
+                                        <i class="fas fa-external-link-alt me-1"></i>Documentation
+                                    </a>
+                                </div>
                             </div>
-                            <h5 class="card-title">RAG Cookbook</h5>
-                            <p class="card-text">Comprehensive guide to Retrieval-Augmented Generation</p>
-                            <a href="resources/ragcookbook/ragcookbook-index.html" class="btn btn-outline-primary btn-sm">
-                                <i class="fas fa-external-link-alt me-1"></i>Documentation
-                            </a>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6">
-                    <div class="card" data-aos="fade-up" data-aos-delay="400">
-                        <div class="card-body text-center">
-                            <div class="card-icon">
-                                <i class="fas fa-database"></i>
+                        
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card" data-aos="fade-up" data-aos-delay="300">
+                                <div class="card-body text-center">
+                                    <div class="card-icon">
+                                        <i class="fas fa-search"></i>
+                                    </div>
+                                    <h5 class="card-title">RAG Cookbook</h5>
+                                    <p class="card-text">Comprehensive guide to Retrieval-Augmented Generation</p>
+                                    <a href="resources/ragcookbook/ragcookbook-index.html" class="terminal-btn">
+                                        <i class="fas fa-external-link-alt me-1"></i>Documentation
+                                    </a>
+                                </div>
                             </div>
-                            <h5 class="card-title">Vector DBs</h5>
-                            <p class="card-text">FAISS, Pinecone and other vector database solutions</p>
-                            <a href="resources/vectordb/vectordb-index.html" class="btn btn-outline-primary btn-sm">
-                                <i class="fas fa-external-link-alt me-1"></i>Documentation
-                            </a>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6">
-                    <div class="card" data-aos="fade-up" data-aos-delay="500">
-                        <div class="card-body text-center">
-                            <div class="card-icon">
-                                <i class="fas fa-brain"></i>
+                        
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card" data-aos="fade-up" data-aos-delay="400">
+                                <div class="card-body text-center">
+                                    <div class="card-icon">
+                                        <i class="fas fa-database"></i>
+                                    </div>
+                                    <h5 class="card-title">Vector DBs</h5>
+                                    <p class="card-text">FAISS, Pinecone and other vector database solutions</p>
+                                    <a href="resources/vectordb/vectordb-index.html" class="terminal-btn">
+                                        <i class="fas fa-external-link-alt me-1"></i>Documentation
+                                    </a>
+                                </div>
                             </div>
-                            <h5 class="card-title">RL Applications</h5>
-                            <p class="card-text">Reinforcement learning applications in business</p>
-                            <a href="resources/rainforcementlearning-applications/rlApplications-index.html" class="btn btn-outline-primary btn-sm">
-                                <i class="fas fa-external-link-alt me-1"></i>Documentation
-                            </a>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 col-md-6">
-                    <div class="card" data-aos="fade-up" data-aos-delay="600">
-                        <div class="card-body text-center">
-                            <div class="card-icon">
-                                <i class="fas fa-chart-line"></i>
+                        
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card" data-aos="fade-up" data-aos-delay="500">
+                                <div class="card-body text-center">
+                                    <div class="card-icon">
+                                        <i class="fas fa-brain"></i>
+                                    </div>
+                                    <h5 class="card-title">RL Applications</h5>
+                                    <p class="card-text">Reinforcement learning applications in business</p>
+                                    <a href="resources/rainforcementlearning-applications/rlApplications-index.html" class="terminal-btn">
+                                        <i class="fas fa-external-link-alt me-1"></i>Documentation
+                                    </a>
+                                </div>
                             </div>
-                            <h5 class="card-title">MLOps</h5>
-                            <p class="card-text">MLflow & W&B for machine learning operations</p>
-                            <a href="resources/mlops-guide.html" class="btn btn-outline-primary btn-sm">
-                                <i class="fas fa-external-link-alt me-1"></i>Documentation
-                            </a>
+                        </div>
+                        
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card" data-aos="fade-up" data-aos-delay="600">
+                                <div class="card-body text-center">
+                                    <div class="card-icon">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <h5 class="card-title">MLOps</h5>
+                                    <p class="card-text">MLflow & W&B for machine learning operations</p>
+                                    <a href="resources/mlops-guide.html" class="terminal-btn">
+                                        <i class="fas fa-external-link-alt me-1"></i>Documentation
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    
     <!-- Contact Section -->
-    <section id="contact" class="section bg-dark-light">
+    <section id="contact" class="section">
         <div class="container">
             <div class="section-title" data-aos="fade-up">
-                <h2>Get In Touch</h2>
+                <h2>$ ./contact.sh</h2>
             </div>
             
-            <div class="row g-4 justify-content-center">
-                <div class="col-lg-3 col-md-6">
-                    <div class="contact-card" data-aos="fade-up" data-aos-delay="100">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <h5 class="contact-title">Email</h5>
-                        <div class="contact-info">
-                            <a href="mailto:yonteru414@gmail.com">yonteru.ai.engineer@gmail.com</a>
-                        </div>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-buttons">
+                        <div class="terminal-button close"></div>
+                        <div class="terminal-button minimize"></div>
+                        <div class="terminal-button maximize"></div>
                     </div>
+                    <div class="terminal-title">contact.sh</div>
                 </div>
-                
-                <div class="col-lg-3 col-md-6">
-                    <div class="contact-card" data-aos="fade-up" data-aos-delay="200">
-                        <div class="contact-icon">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <h5 class="contact-title">Phone</h5>
-                        <div class="contact-info">
-                            <a href="tel:414-275-0857">414-275-0857</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-3 col-md-6">
-                    <div class="contact-card" data-aos="fade-up" data-aos-delay="300">
-                        <div class="contact-icon">
-                            <i class="fab fa-linkedin"></i>
-                        </div>
-                        <h5 class="contact-title">LinkedIn</h5>
-                        <div class="contact-info">
-                            <a href="https://linkedin.com/in/yallaiah-onteru" target="_blank">Connect with me</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-3 col-md-6">
-                    <div class="contact-card" data-aos="fade-up" data-aos-delay="400">
-                        <div class="contact-icon">
-                            <i class="fab fa-github"></i>
-                        </div>
-                        <h5 class="contact-title">GitHub</h5>
-                        <div class="contact-info">
-                            <a href="https://github.com/yonteru414" target="_blank">View my projects</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Contact Form -->
-            <div class="row justify-content-center mt-5">
-                <div class="col-lg-8">
-                    <div class="card" data-aos="fade-up" data-aos-delay="500">
-                        <div class="card-body">
-                            <h4 class="text-center mb-4 text-gradient">Send me a message</h4>
-                            <form id="contactForm">
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <div class="form-floating">
-                                            <input type="text" class="form-control bg-dark text-white border-primary" id="name" placeholder="Your Name" required>
-                                            <label for="name" style="color: var(--gray-light);">Your Name</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating">
-                                            <input type="email" class="form-control bg-dark text-white border-primary" id="email" placeholder="Your Email" required>
-                                            <label for="email" style="color: var(--gray-light);">Your Email</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-floating">
-                                            <input type="text" class="form-control bg-dark text-white border-primary" id="subject" placeholder="Subject" required>
-                                            <label for="subject" style="color: var(--gray-light);">Subject</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-floating">
-                                            <textarea class="form-control bg-dark text-white border-primary" id="message" placeholder="Your Message" style="height: 120px" required></textarea>
-                                            <label for="message" style="color: var(--gray-light);">Your Message</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 text-center">
-                                        <button type="submit" class="btn btn-primary">
-                                            <i class="fas fa-paper-plane me-2"></i>Send Message
-                                        </button>
-                                    </div>
+                <div class="terminal-body">
+                    <div class="row g-3 justify-content-center">
+                        <div class="col-lg-3 col-md-6">
+                            <div class="contact-card" data-aos="fade-up" data-aos-delay="100">
+                                <div class="contact-icon">
+                                    <i class="fas fa-envelope"></i>
                                 </div>
-                            </form>
+                                <h5 class="contact-title">Email</h5>
+                                <div class="contact-info">
+                                    <a href="mailto:yonteru414@gmail.com">yonteru.ai.engineer@gmail.com</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-3 col-md-6">
+                            <div class="contact-card" data-aos="fade-up" data-aos-delay="200">
+                                <div class="contact-icon">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <h5 class="contact-title">Phone</h5>
+                                <div class="contact-info">
+                                    <a href="tel:414-275-0857">414-275-0857</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-3 col-md-6">
+                            <div class="contact-card" data-aos="fade-up" data-aos-delay="300">
+                                <div class="contact-icon">
+                                    <i class="fab fa-linkedin"></i>
+                                </div>
+                                <h5 class="contact-title">LinkedIn</h5>
+                                <div class="contact-info">
+                                    <a href="https://linkedin.com/in/yallaiah-onteru" target="_blank">Connect with me</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-3 col-md-6">
+                            <div class="contact-card" data-aos="fade-up" data-aos-delay="400">
+                                <div class="contact-icon">
+                                    <i class="fab fa-github"></i>
+                                </div>
+                                <h5 class="contact-title">GitHub</h5>
+                                <div class="contact-info">
+                                    <a href="https://github.com/yonteru414" target="_blank">View my projects</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contact Form -->
+                    <div class="row justify-content-center mt-4">
+                        <div class="col-lg-8">
+                            <div class="card" data-aos="fade-up" data-aos-delay="500">
+                                <div class="card-body">
+                                    <h4 class="text-center mb-3" style="color: var(--terminal-green); font-weight: 700;">Send me a message</h4>
+                                    <form id="contactForm">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control" id="name" placeholder="Your Name" required>
+                                                    <label for="name" style="color: var(--terminal-gray);">Your Name</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <input type="email" class="form-control" id="email" placeholder="Your Email" required>
+                                                    <label for="email" style="color: var(--terminal-gray);">Your Email</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control" id="subject" placeholder="Subject" required>
+                                                    <label for="subject" style="color: var(--terminal-gray);">Subject</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-floating">
+                                                    <textarea class="form-control" id="message" placeholder="Your Message" style="height: 120px" required></textarea>
+                                                    <label for="message" style="color: var(--terminal-gray);">Your Message</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 text-center">
+                                                <button type="submit" class="terminal-btn">
+                                                    <i class="fas fa-paper-plane me-2"></i>Send Message
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6">
                     <p class="mb-0">
-                        <span class="text-gradient">Crafting intelligent solutions through AI & Machine Learning</span>
+                        <span style="color: var(--terminal-green);">Crafting intelligent solutions through AI & Machine Learning</span>
                     </p>
                 </div>
                 <div class="col-md-6 text-end">
-                    <p class="mb-0" style="color: var(--gray-light);">
+                    <p class="mb-0" style="color: var(--terminal-gray);">
                         © 2025 Yallaiah Onteru. All rights reserved.
                     </p>
                 </div>
             </div>
         </div>
     </footer>
+    
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- AOS Animation -->
@@ -1578,8 +1651,8 @@
     <script>
         // Initialize AOS
         AOS.init({
-            duration: 1000,
-            easing: 'ease-out-cubic',
+            duration: 800,
+            easing: 'ease-out',
             once: true,
             offset: 50
         });
@@ -1717,79 +1790,18 @@
                 
                 // Show success message
                 submitBtn.innerHTML = '<i class="fas fa-check me-2"></i>Message Sent!';
-                submitBtn.classList.remove('btn-primary');
-                submitBtn.classList.add('btn-success');
+                submitBtn.style.borderColor = 'var(--terminal-green)';
                 
                 setTimeout(() => {
                     submitBtn.innerHTML = originalText;
-                    submitBtn.classList.remove('btn-success');
-                    submitBtn.classList.add('btn-primary');
+                    submitBtn.style.borderColor = '';
                     submitBtn.disabled = false;
                 }, 3000);
             }, 2000);
         });
         
-        // Parallax effect for hero section
-        window.addEventListener('scroll', function() {
-            const scrolled = window.pageYOffset;
-            const parallax = document.querySelector('.hero');
-            const speed = scrolled * 0.5;
-            
-            if (parallax) {
-                parallax.style.transform = `translateY(${speed}px)`;
-            }
-        });
-        
-        // Project card hover effects
-        const projectCards = document.querySelectorAll('.project-card, .card');
-        projectCards.forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-10px)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
-            });
-        });
-        
-        // Dynamic background particles
-        function createParticle() {
-            const particle = document.createElement('div');
-            particle.style.position = 'fixed';
-            particle.style.width = '4px';
-            particle.style.height = '4px';
-            particle.style.backgroundColor = 'var(--primary)';
-            particle.style.borderRadius = '50%';
-            particle.style.pointerEvents = 'none';
-            particle.style.zIndex = '1';
-            particle.style.opacity = '0.3';
-            
-            const startX = Math.random() * window.innerWidth;
-            const startY = window.innerHeight;
-            
-            particle.style.left = startX + 'px';
-            particle.style.top = startY + 'px';
-            
-            document.body.appendChild(particle);
-            
-            const animation = particle.animate([
-                { transform: 'translateY(0px)', opacity: 0.3 },
-                { transform: `translateY(-${window.innerHeight + 100}px)`, opacity: 0 }
-            ], {
-                duration: Math.random() * 3000 + 2000,
-                easing: 'linear'
-            });
-            
-            animation.onfinish = () => {
-                particle.remove();
-            };
-        }
-        
-        // Create particles periodically
-        setInterval(createParticle, 300);
-        
-        // Typing animation for hero title
-        function typeWriter(element, text, speed = 100) {
+        // Terminal typing effect
+        function typeTerminal(element, text, speed = 50) {
             let i = 0;
             element.innerHTML = '';
             
@@ -1804,97 +1816,28 @@
             type();
         }
         
-        // Initialize typing animation when page loads
-        window.addEventListener('load', function() {
-            const heroTitle = document.querySelector('.hero h1');
-            if (heroTitle) {
-                const originalText = heroTitle.textContent;
-                setTimeout(() => {
-                    typeWriter(heroTitle, originalText, 50);
-                }, 500);
-            }
-        });
-        
-        // Mobile menu improvements
-        const navbarToggler = document.querySelector('.navbar-toggler');
-        const navbarCollapse = document.querySelector('.navbar-collapse');
-        
-        if (navbarToggler && navbarCollapse) {
-            // Close mobile menu when clicking on a link
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.addEventListener('click', () => {
-                    if (navbarCollapse.classList.contains('show')) {
-                        navbarToggler.click();
-                    }
-                });
-            });
-        }
-        
-        // Form validation enhancements
-        const formInputs = document.querySelectorAll('#contactForm input, #contactForm textarea');
-        formInputs.forEach(input => {
-            input.addEventListener('focus', function() {
-                this.parentElement.style.borderColor = 'var(--primary)';
-            });
-            
-            input.addEventListener('blur', function() {
-                this.parentElement.style.borderColor = 'rgba(99, 102, 241, 0.1)';
-            });
-        });
-        
-        // Keyboard navigation improvements
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Tab') {
-                document.body.classList.add('keyboard-navigation');
-            }
-        });
-        
-        document.addEventListener('mousedown', function() {
-            document.body.classList.remove('keyboard-navigation');
-        });
-        
-        // Performance optimization: Lazy loading for project images
-        if ('IntersectionObserver' in window) {
-            const imageObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        img.src = img.dataset.src;
-                        img.classList.remove('lazy');
-                        imageObserver.unobserve(img);
-                    }
-                });
-            });
-            
-            const lazyImages = document.querySelectorAll('img[data-src]');
-            lazyImages.forEach(img => imageObserver.observe(img));
-        }
-        
-        // Add custom cursor for interactive elements
-        document.querySelectorAll('a, button, .card, .project-card').forEach(element => {
-            element.addEventListener('mouseenter', function() {
-                document.body.style.cursor = 'pointer';
-            });
-            
-            element.addEventListener('mouseleave', function() {
-                document.body.style.cursor = 'default';
-            });
-        });
-        
         // Console welcome message
         console.log(`
-        🚀 Welcome to Yallaiah Onteru's Portfolio!
+        🚀 Welcome to Yallaiah Onteru's Terminal Portfolio!
         
         AI Engineer | GenAI, ML/DL, RAG, Agents, RL
         
-        Built with ❤️ using:
-        - HTML5 & CSS3
-        - Bootstrap 5
-        - Vanilla JavaScript
-        - AOS Animations
+        Commands:
+        - about      : View my background
+        - experience : Check my work history
+        - projects   : Explore my projects
+        - skills     : See my technical skills
+        - resources  : Access learning materials
+        - contact    : Get in touch with me
         
-        Contact: yonteru414@gmail.com
+        Built with 💻 in Terminal Style
         `);
+        
+        // Add terminal-like keyboard sound effect on click (optional)
+        document.addEventListener('click', function() {
+            // This is a placeholder for keyboard sound effect
+            // You can add an actual sound file if desired
+        });
     </script>
 </body>
 </html>
