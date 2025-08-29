@@ -1,1 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Mathematics Index</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #2c3e8f;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .grid-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .topic-card {
+            flex: 1 1 300px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #4a6cf7, #2c3e8f);
+            color: white;
+            padding: 18px 20px;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .content-grid:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .subtopic {
+            font-weight: 600;
+            color: #2c3e8f;
+        }
+        
+        .application {
+            color: #555;
+            line-height: 1.4;
+        }
+        
+        .link-placeholder {
+            color: #4a6cf7;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            background-color: #f0f4ff;
+            transition: background-color 0.2s;
+        }
+        
+        .link-placeholder:hover {
+            background-color: #e0e8ff;
+        }
+        
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            
+            .topic-card {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Business Mathematics Index</h1>
+        <p>Practical applications of mathematical concepts in business contexts</p>
+    </div>
+    
+    <div class="grid-container">
+        <!-- Matrices Card -->
+        <div class="topic-card">
+            <div class="card-header">Matrices</div>
+            <div class="card-content">
+                <div class="content-grid">
+                    <div class="subtopic">Matrix Operations</div>
+                    <div class="application">Supply chain optimization</div>
+                    <div><a href="matrices-operations.html" class="link-placeholder">[link]</a></div>
+                </div>
+                <div class="content-grid">
+                    <div class="subtopic">Matrix Inversion</div>
+                    <div class="application">Resource allocation models</div>
+                    <div><a href="matrices-inversion.html" class="link-placeholder">[link]</a></div>
+                </div>
+                <div class="content-grid">
+                    <div class="subtopic">Linear Systems</div>
+                    <div class="application">Production planning</div>
+                    <div><a href="matrices-linear-systems.html" class="link-placeholder">[link]</a></div>
+                </div>
+                <div class="content-grid">
+                    <div class="subtopic">Markov Chains</div>
+                    <div class="application">Customer retention forecasting</div>
+                    <div><a href="matrices-markov-chains.html" class="link-placeholder">[link]</a></div>
+                </div>
+                <div class="content-grid">
+                    <div class="subtopic">Input-Output Analysis</div>
+                    <div class="application">Economic impact studies</div>
+                    <div><a href="matrices-input-output.html" class="link-placeholder">[link]</a></div>
+                </div>
+            </div>
+        </div>
 
+        <!-- Derivatives Card -->
+        <div class="topic-card">
+            <div class="card-header">Derivatives</div>
+            <div class="card-content">
+                <div class="content-grid">
+                    <div class="subtopic">Marginal Cost/Revenue</div>
+                    <div class="application">Pricing strategy optimization</div>
+                    <div><a href="derivatives-marginal.html" class="link-placeholder">[link]</a></div>
+                </div>
+                <div class="content-grid">
+                    <div class="subtopic">Elasticity of Demand</div>
+                    <div class="application">Market responsiveness analysis</div>
+                    <div><a href="derivatives-elasticity.html" class="link-placeholder">[link]</a></div>
+                </div>
+                <div class="content-grid">
+                    <div class="subtopic">Optimization</div>
+                    <div class="application">Profit maximization</div>
+                    <div><a href="derivatives-optimization.html" class="link-placeholder">[link]</a></div>
+                </div>
+                <div class="content-grid">
+                    <div class="subtopic">Sensitivity Analysis</div>
+                    <div class="application">Risk assessment in investments</div>
+                    <div><a href="derivatives-sensitivity.html" class="link-placeholder">[link]</a></div>
+                </div>
+                <div class="content-grid">
+                    <div class="subtopic">Rate of Change</div>
+                    <div class="application">Inventory depletion forecasting</div>
+                    <div><a href="derivatives-rate-change.html" class="link-placeholder">[link]</a></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Integration Card -->
+        <div class="topic-card">
+            <div class="card-header">Integration</div>
+            <div class="card-content">
+                <div class="content-grid">
+                    <div class="subtopic">Area Under Curve</div>
+                    <div class="application">Consumer surplus calculation</div>
+                    <div><a href="integration-area-curve.html" class="link-placeholder">[link]</a></div>
+                </div>
+                <div class="content-grid">
+                    <div class="subtopic">Accumulated Change</div>
+                    <div class="application">Total revenue/cost projection</div>
+                    <div><a href="integration-accumulated.html" class="link-placeholder">[link]</a></div>
+                </div>
+                <div class="content-grid">
+                    <div class="subtopic">Probability Distributions</div>
+                    <div class="application">Risk modeling in finance</div>
+                    <div><a href="integration-probability.html" class="link-placeholder">[link]</a></div>
+                </div>
+                <div class="content-grid">
+                    <div class="subtopic">Expected Value</div>
+                    <div class="application">Investment return analysis</div>
+                    <div><a href="integration-expected-value.html" class="link-placeholder">[link]</a></div>
+                </div>
+                <div class="content-grid">
+                    <div class="subtopic">Continuous Cash Flow</div>
+                    <div class="application">Net present value (NPV) calculations</div>
+                    <div><a href="integration-cash-flow.html" class="link-placeholder">[link]</a></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Probability Card -->
+        <div class="topic-card">
+            <div class="card-header">Probability & Combinatorics</div>
+            <div class="card-content">
+                <div class="content-grid">
+                    <div class="subtopic">Probability Distributions</div>
+                    <div class="application">Quality control defect rates</div>
+                    <div><a href="probability-distributions.html" class="link-placeholder">[link]</a></div>
+                </div>
+                <div class="content-grid">
+                    <div class="subtopic">Permutations</div>
+                    <div class="application">Product bundling options</div>
+                    <div><a href="probability-permutations.html" class="link-placeholder">[link]</a></div>
+                </div>
+                <div class="content-grid">
+                    <div class="subtopic">Combinations</div>
+                    <div class="application">Team formation scenarios</div>
+                    <div><a href="probability-combinations.html" class="link-placeholder">[link]</a></div>
+                </div>
+                <div class="content-grid">
+                    <div class="subtopic">Bayes' Theorem</div>
+                    <div class="application">Market segmentation analysis</div>
+                    <div><a href="probability-bayes.html" class="link-placeholder">[link]</a></div>
+                </div>
+                <div class="content-grid">
+                    <div class="subtopic">Decision Trees</div>
+                    <div class="application">Project risk evaluation</div>
+                    <div><a href="probability-decision-trees.html" class="link-placeholder">[link]</a></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Card -->
+        <div class="topic-card">
+            <div class="card-header">Statistics</div>
+            <div class="card-content">
+                <div class="content-grid">
+                    <div class="subtopic">Regression Analysis</div>
+                    <div class="application">Sales forecasting</div>
+                    <div><a href="statistics-regression.html" class="link-placeholder">[link]</a></div>
+                </div>
+                <div class="content-grid">
+                    <div class="subtopic">Hypothesis Testing</div>
+                    <div class="application">A/B testing for marketing campaigns</div>
+                    <div><a href="statistics-hypothesis.html" class="link-placeholder">[link]</a></div>
+                </div>
+                <div class="content-grid">
+                    <div class="subtopic">Time Series Analysis</div>
+                    <div class="application">Demand forecasting</div>
+                    <div><a href="statistics-time-series.html" class="link-placeholder">[link]</a></div>
+                </div>
+                <div class="content-grid">
+                    <div class="subtopic">ANOVA</div>
+                    <div class="application">Process efficiency comparison</div>
+                    <div><a href="statistics-anova.html" class="link-placeholder">[link]</a></div>
+                </div>
+                <div class="content-grid">
+                    <div class="subtopic">Confidence Intervals</div>
+                    <div class="application">Market research reliability</div>
+                    <div><a href="statistics-confidence.html" class="link-placeholder">[link]</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
