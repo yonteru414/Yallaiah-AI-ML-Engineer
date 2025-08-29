@@ -1,1 +1,1354 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ride Demand Prediction & Customer Behavior Forecasting</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e8f;
+            --secondary: #4a6cf7;
+            --accent: #ff6b6b;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #6c757d;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --info: #17a2b8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        
+        .nav-tab {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .nav-tab:hover {
+            background-color: #f0f4ff;
+        }
+        
+        .nav-tab.active {
+            background-color: #f0f4ff;
+            border-bottom: 3px solid var(--secondary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .card-header i {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin-right: 15px;
+        }
+        
+        .card-header h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+        
+        .card-header .badge {
+            margin-left: auto;
+            background: var(--secondary);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .card-body h3 {
+            color: var(--primary);
+            margin: 20px 0 10px;
+            font-size: 1.4rem;
+        }
+        
+        .card-body p {
+            margin-bottom: 15px;
+        }
+        
+        .card-body ul, .card-body ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .card-body li {
+            margin-bottom: 8px;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9rem;
+        }
+        
+        .data-table th, .data-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .data-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .data-table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .code-block {
+            background: #f8f9fa;
+            border-left: 4px solid var(--secondary);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+            font-family: 'Courier New', Courier, monospace;
+            overflow-x: auto;
+        }
+        
+        .code-block pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+        
+        .highlight {
+            background-color: #fff9c4;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        .step-box {
+            background: #f0f4ff;
+            border-left: 4px solid var(--secondary);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .step-box h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .transform-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .transform-step {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            position: relative;
+        }
+        
+        .transform-step h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .transform-step .arrow {
+            position: absolute;
+            right: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary);
+            font-size: 1.5rem;
+            z-index: 1;
+        }
+        
+        .formula {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            text-align: center;
+            font-style: italic;
+        }
+        
+        .pipeline-diagram {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 30px 0;
+        }
+        
+        .pipeline-step {
+            background: white;
+            border: 2px solid var(--secondary);
+            border-radius: 10px;
+            padding: 15px 25px;
+            margin: 10px 0;
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .pipeline-step::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 15px solid var(--secondary);
+        }
+        
+        .pipeline-step:last-child::after {
+            display: none;
+        }
+        
+        .model-comparison {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .model-card {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .model-header {
+            background: var(--primary);
+            color: white;
+            padding: 12px 15px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .model-body {
+            padding: 15px;
+        }
+        
+        .model-body ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .model-body li {
+            margin-bottom: 8px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-tab {
+                min-width: 120px;
+                padding: 12px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .transform-step .arrow {
+                display: none;
+            }
+            
+            .pipeline-step {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Ride Demand Prediction & Customer Behavior Forecasting</h1>
+            <p>A comprehensive guide to forecasting ride demand and predicting customer behavior using advanced machine learning techniques</p>
+        </header>
+        
+        <div class="nav-tabs">
+            <div class="nav-tab active" data-tab="overview">Overview</div>
+            <div class="nav-tab" data-tab="data">Data Sources</div>
+            <div class="nav-tab" data-tab="pipeline">Solution Pipeline</div>
+            <div class="nav-tab" data-tab="transformations">Transformations</div>
+            <div class="nav-tab" data-tab="models">Models</div>
+            <div class="nav-tab" data-tab="evaluation">Evaluation</div>
+            <div class="nav-tab" data-tab="implementation">Implementation</div>
+        </div>
+        
+        <div class="tab-content active" id="overview">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-bullseye"></i>
+                    <h2>Problem Statement</h2>
+                    <span class="badge">Business Case</span>
+                </div>
+                <div class="card-body">
+                    <p><strong>Business:</strong> Ride-sharing operator (zones across a city).</p>
+                    <p><strong>Goals:</strong></p>
+                    <ol>
+                        <li>Forecast ride <span class="highlight">demand per zone</span> every 15 minutes (short horizon: next 1–4 hours; medium horizon: next day).</li>
+                        <li>Predict <span class="highlight">probability a given customer</span> will request a ride in the next hour.</li>
+                        <li>Convert forecasts into <span class="highlight">driver allocation</span> actions (how many drivers needed & where).</li>
+                    </ol>
+                    <p><strong>Why hard:</strong> data is noisy, seasonal (daily/weekly), has irregular spikes (events, weather), lots of zeros for customers (sparse), non-stationary trends, and potential data leakage pitfalls.</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-lightbulb"></i>
+                    <h2>Solution Overview</h2>
+                    <span class="badge">High-Level</span>
+                </div>
+                <div class="card-body">
+                    <p>Our solution combines multiple machine learning techniques to address different aspects of the forecasting challenge:</p>
+                    <div class="model-comparison">
+                        <div class="model-card">
+                            <div class="model-header">Prophet</div>
+                            <div class="model-body">
+                                <ul>
+                                    <li>Captures long-term trends</li>
+                                    <li>Models regular seasonality (daily/weekly)</li>
+                                    <li>Accounts for holiday/event spikes</li>
+                                    <li>Provides interpretable components</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="model-card">
+                            <div class="model-header">Gradient Boosting</div>
+                            <div class="model-body">
+                                <ul>
+                                    <li>Captures nonlinear interactions</li>
+                                    <li>Handles short-term patterns</li>
+                                    <li>Uses engineered features (lags, rolling stats)</li>
+                                    <li>Excels at complex feature relationships</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="model-card">
+                            <div class="model-header">LSTM</div>
+                            <div class="model-body">
+                                <ul>
+                                    <li>Models sequential customer behavior</li>
+                                    <li>Learns temporal patterns</li>
+                                    <li>Predicts individual customer actions</li>
+                                    <li>Handles sparse customer data</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="data">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-database"></i>
+                    <h2>Data Sources & Canonical Schemas</h2>
+                    <span class="badge">Raw Inputs</span>
+                </div>
+                <div class="card-body">
+                    <h3>a. Raw ride events (transactional)</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ride_id</th>
+                                <th>timestamp</th>
+                                <th>zone_id</th>
+                                <th>customer_id</th>
+                                <th>price</th>
+                                <th>surge</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>r1</td>
+                                <td>2025-08-20 08:02:10</td>
+                                <td>Z1</td>
+                                <td>C77</td>
+                                <td>12.50</td>
+                                <td>1.0</td>
+                            </tr>
+                            <tr>
+                                <td>r2</td>
+                                <td>2025-08-20 08:03:41</td>
+                                <td>Z1</td>
+                                <td>C15</td>
+                                <td>12.50</td>
+                                <td>1.0</td>
+                            </tr>
+                            <tr>
+                                <td>r3</td>
+                                <td>2025-08-20 08:08:03</td>
+                                <td>Z2</td>
+                                <td>C88</td>
+                                <td>13.75</td>
+                                <td>1.0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <h3>b. Weather / exogenous (time-indexed)</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ts</th>
+                                <th>temp_f</th>
+                                <th>precip_in</th>
+                                <th>wind_mph</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2025-08-20 08:00</td>
+                                <td>58</td>
+                                <td>0.00</td>
+                                <td>5</td>
+                            </tr>
+                            <tr>
+                                <td>2025-08-20 08:15</td>
+                                <td>59</td>
+                                <td>0.00</td>
+                                <td>5</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <h3>c. Events / holiday calendar</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>date</th>
+                                <th>event_name</th>
+                                <th>zone_id</th>
+                                <th>is_major</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2025-08-20</td>
+                                <td>StadiumConcert</td>
+                                <td>Z1</td>
+                                <td>1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <h3>d. Customer activity log (for behavior model)</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>customer_id</th>
+                                <th>timestamp</th>
+                                <th>zone_id</th>
+                                <th>requested_ride</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>C77</td>
+                                <td>2025-08-20 08:02:10</td>
+                                <td>Z1</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td>C77</td>
+                                <td>2025-08-19 08:00:00</td>
+                                <td>Z1</td>
+                                <td>0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="pipeline">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-sitemap"></i>
+                    <h2>High-Level Solution Architecture</h2>
+                    <span class="badge">Pipeline</span>
+                </div>
+                <div class="card-body">
+                    <div class="pipeline-diagram">
+                        <div class="pipeline-step">1. Ingest & normalize raw events, timezone, dedupe</div>
+                        <div class="pipeline-step">2. Aggregate events into fixed buckets (15-min) per zone → demand_15min</div>
+                        <div class="pipeline-step">3. Add exogenous regressors (weather forecast, events, holiday flags)</div>
+                        <div class="pipeline-step">4. Feature engineering: lags, rolling means, cyclical time encodings, encodings for zone/customer</div>
+                        <div class="pipeline-step">5. Modeling: Prophet, GBM, LSTM</div>
+                        <div class="pipeline-step">6. Ensemble demand predictions where useful; combine with customer probabilities for targeted operations</div>
+                        <div class="pipeline-step">7. Decisioning: convert forecasts to driver allocation and actions</div>
+                        <div class="pipeline-step">8. Monitoring & retrain: track error, drift, and operational metrics</div>
+                    </div>
+                    
+                    <h3>Detailed Pipeline Steps</h3>
+                    <ol>
+                        <li><strong>Ingest & normalize:</strong> Raw events are ingested, normalized to a consistent timezone, and deduplicated to ensure data quality.</li>
+                        <li><strong>Aggregate:</strong> Events are aggregated into fixed 15-minute buckets per zone to create a regular time series for demand forecasting.</li>
+                        <li><strong>Add exogenous regressors:</strong> Weather forecasts, event calendars, and holiday flags are joined to the aggregated data to provide external factors that influence demand.</li>
+                        <li><strong>Feature engineering:</strong> Time-based features (lags, rolling statistics), cyclical time encodings, and categorical encodings for zones and customers are created to enrich the dataset.</li>
+                        <li><strong>Modeling:</strong> Three different models are trained:
+                            <ul>
+                                <li>Prophet (per zone) for trend, seasonality, and holiday effects</li>
+                                <li>GBM (LightGBM/XGBoost) for feature interactions and short-term patterns</li>
+                                <li>LSTM (per-customer sequences) for individual behavior prediction</li>
+                            </ul>
+                        </li>
+                        <li><strong>Ensemble:</strong> Predictions from different models are combined to leverage their individual strengths and improve overall forecast accuracy.</li>
+                        <li><strong>Decisioning:</strong> Forecasts are converted into actionable driver allocation decisions using business rules and optimization techniques.</li>
+                        <li><strong>Monitoring & retrain:</strong> Model performance is continuously monitored, and models are retrained periodically to maintain accuracy as patterns evolve.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="transformations">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-exchange-alt"></i>
+                    <h2>Data Transformations</h2>
+                    <span class="badge">Deep Dive</span>
+                </div>
+                <div class="card-body">
+                    <h3>4.A Prophet (decomposition, per zone)</h3>
+                    <p><strong>Goal:</strong> Capture long-term trend, regular seasonality (daily/weekly), and holiday/event spikes.</p>
+                    
+                    <div class="step-box">
+                        <h4>1) Aggregate → Prophet's input</h4>
+                        <p><strong>Before (events):</strong></p>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>timestamp</th>
+                                    <th>zone_id</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2025-08-20 08:02:10</td>
+                                    <td>Z1</td>
+                                </tr>
+                                <tr>
+                                    <td>2025-08-20 08:03:41</td>
+                                    <td>Z1</td>
+                                </tr>
+                                <tr>
+                                    <td>2025-08-20 08:08:03</td>
+                                    <td>Z2</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <p><strong>Transform (aggregation → 15-min buckets):</strong></p>
+                        <div class="code-block">
+                            <pre>df['ds'] = df.timestamp.dt.floor('15T')
+d = df.groupby(['ds','zone_id']).size().reset_index(name='rides')</pre>
+                        </div>
+                        
+                        <p><strong>After:</strong></p>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ds</th>
+                                    <th>zone_id</th>
+                                    <th>rides</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2025-08-20 08:00</td>
+                                    <td>Z1</td>
+                                    <td>12</td>
+                                </tr>
+                                <tr>
+                                    <td>2025-08-20 08:15</td>
+                                    <td>Z1</td>
+                                    <td>15</td>
+                                </tr>
+                                <tr>
+                                    <td>2025-08-20 08:30</td>
+                                    <td>Z1</td>
+                                    <td>21</td>
+                                </tr>
+                                <tr>
+                                    <td>2025-08-20 08:00</td>
+                                    <td>Z2</td>
+                                    <td>9</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <p><strong>Why:</strong> Prophet expects a regular time index (ds) and a target y (we rename rides→y). Aggregation reduces event noise and lets Prophet model periodicities.</p>
+                        <p><strong>What Prophet learns here:</strong> Overall trend (growth/decline), weekly/daily cycles (rush hour, weekends).</p>
+                    </div>
+                    
+                    <div class="step-box">
+                        <h4>2) Add regressors (weather, events)</h4>
+                        <p><strong>Transform (join exogenous variables):</strong></p>
+                        <div class="code-block">
+                            <pre>prophet_df = demand_15min.rename(columns={'rides':'y'})
+prophet_df = prophet_df.merge(weather_forecast, on='ds', how='left')
+prophet_df['is_holiday'] = prophet_df.ds.dt.date.isin(holiday_dates).astype(int)
+prophet_df = prophet_df.merge(events_flag, on=['ds','zone_id'], how='left').fillna(0)</pre>
+                        </div>
+                        
+                        <p><strong>After (sample row):</strong></p>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ds</th>
+                                    <th>zone_id</th>
+                                    <th>y</th>
+                                    <th>temp_f</th>
+                                    <th>precip_in</th>
+                                    <th>is_holiday</th>
+                                    <th>event_flag</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2025-08-20 08:00</td>
+                                    <td>Z1</td>
+                                    <td>12</td>
+                                    <td>58</td>
+                                    <td>0.00</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>2025-08-20 08:15</td>
+                                    <td>Z1</td>
+                                    <td>15</td>
+                                    <td>59</td>
+                                    <td>0.00</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>2025-08-20 20:00</td>
+                                    <td>Z1</td>
+                                    <td>80</td>
+                                    <td>65</td>
+                                    <td>0.00</td>
+                                    <td>0</td>
+                                    <td>1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <p><strong>Why:</strong> Prophet can include regressors so the model can attribute spikes/dips to known causes (e.g., temperature drop or a concert).</p>
+                        <p><strong>What we achieve:</strong> Better separation of seasonal vs event-driven spikes and better forecasts around events.</p>
+                    </div>
+                    
+                    <h3>4.B Gradient Boosted Trees (LightGBM / XGBoost)</h3>
+                    <p><strong>Goal:</strong> Capture nonlinear interactions and short-term patterns using engineered features (lags, rolling stats).</p>
+                    
+                    <div class="step-box">
+                        <h4>1) From aggregated demand → lag/rolling features</h4>
+                        <p><strong>Before:</strong></p>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ds</th>
+                                    <th>zone_id</th>
+                                    <th>rides</th>
+                                    <th>temp_f</th>
+                                    <th>event_flag</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2025-08-20 07:30</td>
+                                    <td>Z1</td>
+                                    <td>10</td>
+                                    <td>57</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>2025-08-20 07:45</td>
+                                    <td>Z1</td>
+                                    <td>11</td>
+                                    <td>57</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>2025-08-20 08:00</td>
+                                    <td>Z1</td>
+                                    <td>12</td>
+                                    <td>58</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>2025-08-20 08:15</td>
+                                    <td>Z1</td>
+                                    <td>15</td>
+                                    <td>59</td>
+                                    <td>0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <p><strong>Transform: create lags & rollings (pandas):</strong></p>
+                        <div class="code-block">
+                            <pre>group = df.groupby('zone_id')
+df['rides_lag_1']   = group.rides.shift(1)
+df['rides_lag_4']   = group.rides.shift(4)         # 1 hour ago (15m buckets)
+df['rides_lag_96']  = group.rides.shift(96)        # same time yesterday
+df['roll_mean_4']   = group.rides.shift(1).rolling(4).mean()
+df['roll_std_4']    = group.rides.shift(1).rolling(4).std()
+df['minute_of_day'] = df.ds.dt.hour*60 + df.ds.dt.minute
+df['dow']           = df.ds.dt.weekday</pre>
+                        </div>
+                        
+                        <p><strong>After (sample row):</strong></p>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ds</th>
+                                    <th>zone_id</th>
+                                    <th>rides</th>
+                                    <th>rides_lag_1</th>
+                                    <th>rides_lag_4</th>
+                                    <th>rides_lag_96</th>
+                                    <th>roll_mean_4</th>
+                                    <th>minute_of_day</th>
+                                    <th>dow</th>
+                                    <th>temp_f</th>
+                                    <th>event_flag</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2025-08-20 08:15</td>
+                                    <td>Z1</td>
+                                    <td>15</td>
+                                    <td>12</td>
+                                    <td>11</td>
+                                    <td>13</td>
+                                    <td>11.5</td>
+                                    <td>495</td>
+                                    <td>2</td>
+                                    <td>59</td>
+                                    <td>0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <p><strong>Why:</strong> Trees don't have memory; we give them explicit historical signals. Lags tell "what happened recently"; rollings give smoothed trends; same-time-yesterday helps capture daily seasonality.</p>
+                        <p><strong>What GBM gains:</strong> Ability to split on conditions like "if rides_lag_1 > 10 and dow in {4,5} and event_flag==1 then predict high".</p>
+                    </div>
+                    
+                    <h3>4.C LSTM (per-customer sequence model)</h3>
+                    <p><strong>Goal:</strong> Learn sequential customer behavior (temporal patterns that indicate a user is likely to request next hour).</p>
+                    
+                    <div class="step-box">
+                        <h4>1) Build a regular time grid per customer (imputation)</h4>
+                        <p>Raw logs are sparse. LSTM needs fixed-length sequences, so we build a uniform grid (e.g., hourly or 15-min).</p>
+                        <p><strong>Before (sparse events):</strong></p>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>customer_id</th>
+                                    <th>timestamp</th>
+                                    <th>requested_ride</th>
+                                    <th>zone_id</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>C77</td>
+                                    <td>2025-08-20 08:02:10</td>
+                                    <td>1</td>
+                                    <td>Z1</td>
+                                </tr>
+                                <tr>
+                                    <td>C77</td>
+                                    <td>2025-08-19 08:00:00</td>
+                                    <td>0</td>
+                                    <td>Z1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <p><strong>Transform: reindex per customer to hourly grid + fill missing with 0:</strong></p>
+                        <div class="code-block">
+                            <pre># pseudo
+for cust in customers:
+  idx = pd.date_range(start, end, freq='1H')
+  cust_df = cust_events.set_index('timestamp').reindex(idx, fill_value=0).reset_index()</pre>
+                        </div>
+                        
+                        <p><strong>After (hourly grid for C77):</strong></p>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>as_of</th>
+                                    <th>requested_ride</th>
+                                    <th>hour</th>
+                                    <th>dow</th>
+                                    <th>zone_id</th>
+                                    <th>temp_f</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2025-08-20 04:00</td>
+                                    <td>0</td>
+                                    <td>4</td>
+                                    <td>2</td>
+                                    <td>Z1</td>
+                                    <td>54</td>
+                                </tr>
+                                <tr>
+                                    <td>2025-08-20 05:00</td>
+                                    <td>0</td>
+                                    <td>5</td>
+                                    <td>2</td>
+                                    <td>Z1</td>
+                                    <td>55</td>
+                                </tr>
+                                <tr>
+                                    <td>2025-08-20 06:00</td>
+                                    <td>0</td>
+                                    <td>6</td>
+                                    <td>2</td>
+                                    <td>Z1</td>
+                                    <td>57</td>
+                                </tr>
+                                <tr>
+                                    <td>2025-08-20 07:00</td>
+                                    <td>0</td>
+                                    <td>7</td>
+                                    <td>2</td>
+                                    <td>Z1</td>
+                                    <td>58</td>
+                                </tr>
+                                <tr>
+                                    <td>2025-08-20 08:00</td>
+                                    <td>1</td>
+                                    <td>8</td>
+                                    <td>2</td>
+                                    <td>Z1</td>
+                                    <td>59</td>
+                                </tr>
+                                <tr>
+                                    <td>2025-08-20 09:00</td>
+                                    <td>0</td>
+                                    <td>9</td>
+                                    <td>2</td>
+                                    <td>Z1</td>
+                                    <td>63</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <p><strong>Why:</strong> LSTM expects a timestep sequence. Imputation with zeros is correct because "no request" is meaningful.</p>
+                    </div>
+                    
+                    <div class="step-box">
+                        <h4>2) Build sequences and labels (sliding window)</h4>
+                        <p>Window length L (e.g., 6 hours) → each sample X is shape (L, F); label is requested_ride at t+1 (binary).</p>
+                        <p><strong>Example for L=6 predicting 10:00:</strong></p>
+                        <div class="code-block">
+                            <pre>X (6×F) = rows for 04:00–09:00 (features per step)
+y = requested_ride at 10:00 (0 or 1)</pre>
+                        </div>
+                        
+                        <p><strong>Numeric view (small):</strong></p>
+                        <p>Suppose we encode requested_ride and hour and zone_embedding (dim 2):</p>
+                        <div class="code-block">
+                            <pre>X =
+[
+ [0, 4, z_e1, z_e2],
+ [0, 5, z_e1, z_e2],
+ [0, 6, z_e1, z_e2],
+ [0, 7, z_e1, z_e2],
+ [1, 8, z_e1, z_e2],
+ [0, 9, z_e1, z_e2],
+]
+y = 1</pre>
+                        </div>
+                        
+                        <p><strong>Shapes:</strong> X → (6, F) per sample; batch (N, 6, F) for training.</p>
+                        <p><strong>Why:</strong> LSTM learns temporal patterns like "customer tends to request after a sequence of inactivity followed by a short event or at a certain hour".</p>
+                    </div>
+                    
+                    <div class="step-box">
+                        <h4>3) LSTM internals (conceptual, with gates)</h4>
+                        <p>LSTM cell math (compact):</p>
+                        <div class="formula">
+                            forget gate: f<sub>t</sub> = σ(W<sub>f</sub> x<sub>t</sub> + U<sub>f</sub> h<sub>t-1</sub> + b<sub>f</sub>)<br>
+                            input gate: i<sub>t</sub> = σ(W<sub>i</sub> x<sub>t</sub> + U<sub>i</sub> h<sub>t-1</sub> + b<sub>i</sub>)<br>
+                            candidate cell: c̃<sub>t</sub> = tanh(W<sub>c</sub> x<sub>t</sub> + U<sub>c</sub> h<sub>t-1</sub> + b<sub>c</sub>)<br>
+                            cell state: c<sub>t</sub> = f<sub>t</sub> ⊙ c<sub>t-1</sub> + i<sub>t</sub> ⊙ c̃<sub>t</sub><br>
+                            output: h<sub>t</sub> = o<sub>t</sub> ⊙ tanh(c<sub>t</sub>)
+                        </div>
+                        
+                        <p><strong>What happens in practice:</strong></p>
+                        <ul>
+                            <li><strong>Forget gate</strong> removes irrelevant older signals (e.g., a ride weeks ago).</li>
+                            <li><strong>Input gate</strong> controls how much new info to keep (e.g., a recent ride).</li>
+                            <li><strong>Cell state</strong> stores long-term trends (e.g., daily commute).</li>
+                            <li><strong>Output gate</strong> controls what the downstream dense layer sees.</li>
+                        </ul>
+                        <p><strong>Outcome:</strong> Final h_last is mapped to probability via sigmoid.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="models">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-brain"></i>
+                    <h2>Model Details</h2>
+                    <span class="badge">Deep Dive</span>
+                </div>
+                <div class="card-body">
+                    <h3>Full End-to-End Transformation (Toy Example)</h3>
+                    <p><strong>Raw few events (zone Z1 & 2 customers C1,C2):</strong></p>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ride_id</th>
+                                <th>timestamp</th>
+                                <th>zone_id</th>
+                                <th>customer_id</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>r1</td>
+                                <td>2025-08-20 07:56:10</td>
+                                <td>Z1</td>
+                                <td>C1</td>
+                            </tr>
+                            <tr>
+                                <td>r2</td>
+                                <td>2025-08-20 08:02:41</td>
+                                <td>Z1</td>
+                                <td>C2</td>
+                            </tr>
+                            <tr>
+                                <td>r3</td>
+                                <td>2025-08-20 08:05:00</td>
+                                <td>Z2</td>
+                                <td>C3</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="transform-box">
+                        <div class="transform-step">
+                            <h4>Step A — Aggregate to 15-min buckets per zone</h4>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ds</th>
+                                        <th>zone_id</th>
+                                        <th>rides</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2025-08-20 07:45</td>
+                                        <td>Z1</td>
+                                        <td>1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2025-08-20 08:00</td>
+                                        <td>Z1</td>
+                                        <td>1</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2025-08-20 08:00</td>
+                                        <td>Z2</td>
+                                        <td>1</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="arrow"><i class="fas fa-arrow-right"></i></div>
+                        </div>
+                        <div class="transform-step">
+                            <h4>Step B — Create lags & rolling (for GBM)</h4>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ds</th>
+                                        <th>zone_id</th>
+                                        <th>rides</th>
+                                        <th>rides_lag_1</th>
+                                        <th>rides_lag_4</th>
+                                        <th>roll_mean_4</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2025-08-20 08:00</td>
+                                        <td>Z1</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                        <td>0</td>
+                                        <td>0.25</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="arrow"><i class="fas fa-arrow-right"></i></div>
+                        </div>
+                        <div class="transform-step">
+                            <h4>Step C — Prepare Prophet input</h4>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>ds</th>
+                                        <th>y</th>
+                                        <th>temp_f</th>
+                                        <th>is_holiday</th>
+                                        <th>event_flag</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2025-08-20 08:00</td>
+                                        <td>1</td>
+                                        <td>59</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="arrow"><i class="fas fa-arrow-right"></i></div>
+                        </div>
+                        <div class="transform-step">
+                            <h4>Step D — Prepare LSTM per-customer hourly grid</h4>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>as_of</th>
+                                        <th>customer_id</th>
+                                        <th>requested_ride</th>
+                                        <th>hour</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2025-08-20 07:00</td>
+                                        <td>C1</td>
+                                        <td>0</td>
+                                        <td>7</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2025-08-20 08:00</td>
+                                        <td>C1</td>
+                                        <td>1</td>
+                                        <td>8</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <p><strong>Model outputs (toy):</strong></p>
+                    <ul>
+                        <li>Prophet (Z1 @ 08:15) → yhat=1.8 (interval 1–3)</li>
+                        <li>GBM (Z1 @ 08:15) → pred=2.2</li>
+                        <li>Ensemble (0.4*Prophet + 0.6*GBM) → forecast=2.04 → round/ceil to needed_rides=3 for planning.</li>
+                    </ul>
+                    
+                    <p><strong>Conversion to drivers:</strong></p>
+                    <p>If avg service time per ride = 25 minutes and bucket=15 min:</p>
+                    <ul>
+                        <li>required_driver_minutes = forecast * avg_service_time = 2.04*25 ≈ 51 minutes</li>
+                        <li>needed_drivers = ceil( required_driver_minutes / bucket_duration_minutes ) = ceil(51 / 15) = 4 drivers assigned to that zone/time block (this simplistic formula can be replaced with queueing model).</li>
+                    </ul>
+                    
+                    <h3>Ensembling & Final Decisioning</h3>
+                    <p><strong>Why ensemble?</strong> Different models capture different signals:</p>
+                    <ul>
+                        <li>Prophet: smooth seasonality, interpretable trend, intervals.</li>
+                        <li>GBM: complex interactions and short-term spikes.</li>
+                        <li>LSTM: individual customer behavior (different use case — targeted actions).</li>
+                    </ul>
+                    
+                    <p><strong>Simple ensemble (weighted average):</strong></p>
+                    <div class="code-block">
+                        <pre>ensemble = alpha * prophet_yhat + (1-alpha) * gbm_pred</pre>
+                    </div>
+                    <p>Pick alpha via validation (minimize MAE/RMSE).</p>
+                    
+                    <p><strong>Stacking:</strong> Fit meta-model on validation predictions to learn optimal blend.</p>
+                    
+                    <p><strong>Decisioning rules (example):</strong></p>
+                    <ul>
+                        <li>If zone_forecast > threshold → trigger surge pricing & reposition drivers.</li>
+                        <li>If customer_prob > p_target and margin positive → send targeted promo to reduce cancellation/no-show risk.</li>
+                        <li>Always apply safety buffer: needed_drivers = max(1, ceil(ensemble * safety_factor))</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="evaluation">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-chart-line"></i>
+                    <h2>Evaluation & Metrics</h2>
+                    <span class="badge">Performance</span>
+                </div>
+                <div class="card-body">
+                    <h3>Demand forecast (regression)</h3>
+                    <ul>
+                        <li><strong>MAE (mean absolute error)</strong> — interpretable scale (rides).</li>
+                        <li><strong>RMSE</strong> — penalizes big misses (spikes).</li>
+                        <li><strong>MAPE</strong> — percent error (beware zeros).</li>
+                        <li><strong>Coverage</strong> (how often actual falls inside yhat_lower..yhat_upper) — interval quality.</li>
+                    </ul>
+                    
+                    <h3>Customer behavior (classification)</h3>
+                    <ul>
+                        <li><strong>AUC-ROC</strong> — ranking quality.</li>
+                        <li><strong>Precision@k / Top-k lift</strong> — value of targeting top customers.</li>
+                        <li><strong>PR-AUC</strong> — important if positives are rare.</li>
+                        <li><strong>Calibration</strong> (Brier score / reliability plot) — are probabilities meaningful?</li>
+                    </ul>
+                    
+                    <h3>Operational metrics</h3>
+                    <ul>
+                        <li>Average wait time (before/after model).</li>
+                        <li>Driver utilization.</li>
+                        <li>Cost of repositioning vs. wait-time improvement.</li>
+                    </ul>
+                    
+                    <h3>Common pitfalls & defenses</h3>
+                    <ol>
+                        <li><strong>Data leakage:</strong> creating lag features incorrectly (peeking into future).
+                            <div class="step-box">
+                                <strong>Defense:</strong> Compute lags/rolling using .shift() and window closed left; strict time-based split.
+                            </div>
+                        </li>
+                        <li><strong>Sparse customer sequences / cold starts:</strong> new customers have no history.
+                            <div class="step-box">
+                                <strong>Defense:</strong> Use global or cluster statistics; fallback to GBM or Prophet for zone-level actions.
+                            </div>
+                        </li>
+                        <li><strong>Event & holiday coverage:</strong> missing event flags will make spikes unpredictable.
+                            <div class="step-box">
+                                <strong>Defense:</strong> Maintain event calendar & ingest ticket/venue schedules.
+                            </div>
+                        </li>
+                        <li><strong>Non-stationarity (trend changes):</strong> model trained on old behavior may fail.
+                            <div class="step-box">
+                                <strong>Defense:</strong> Retrain regularly; use online updates or shorter training windows.
+                            </div>
+                        </li>
+                        <li><strong>Bias from imputation:</strong> filling customer grid with zeros is meaningful (no request) but be careful with interpolations for continuous signals (temp).
+                            <div class="step-box">
+                                <strong>Defense:</strong> Use appropriate imputation strategies for different feature types.
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="implementation">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-cogs"></i>
+                    <h2>Implementation & Operations</h2>
+                    <span class="badge">Production</span>
+                </div>
+                <div class="card-body">
+                    <h3>Operationalization & Monitoring</h3>
+                    <ul>
+                        <li><strong>Data pipeline:</strong> idempotent ETL, schema validation, timestamp normalization.</li>
+                        <li><strong>Model registry:</strong> version, training data window, validation metrics.</li>
+                        <li><strong>Retrain cadence:</strong> nightly for short-term models; weekly/monthly for long-term trend models.</li>
+                        <li><strong>Real-time vs batch:</strong> serve GBM/Prophet in batch for short horizons; LSTM for on-demand user scoring.</li>
+                        <li><strong>Monitoring:</strong> drift detection (feature means, PSI), label delay tracking, alert on rising MAE.</li>
+                        <li><strong>A/B test</strong> any operational policy before full roll-out (e.g., driver reassign).</li>
+                    </ul>
+                    
+                    <h3>Compact pseudocode snippets</h3>
+                    
+                    <h4>Aggregate to 15-min buckets</h4>
+                    <div class="code-block">
+                        <pre>df['ds'] = pd.to_datetime(df.timestamp).dt.floor('15T')
+d = df.groupby(['ds','zone_id']).size().reset_index(name='rides')</pre>
+                    </div>
+                    
+                    <h4>Make lag/rolling features</h4>
+                    <div class="code-block">
+                        <pre>g = d.sort_values('ds').groupby('zone_id')
+d['lag_1'] = g.rides.shift(1)
+d['lag_4'] = g.rides.shift(4)
+d['roll_mean_4'] = g.rides.shift(1).rolling(4).mean()</pre>
+                    </div>
+                    
+                    <h4>Build customer sequences (sliding windows)</h4>
+                    <div class="code-block">
+                        <pre># assume cust_df: index=as_of sorted, columns features
+window = 6
+for i in range(window, len(cust_df)-1):
+    X = cust_df.iloc[i-window:i][features].values  # shape (window, F)
+    y = cust_df.iloc[i+1]['requested_ride']
+    # add to dataset</pre>
+                    </div>
+                    
+                    <h4>Ensemble</h4>
+                    <div class="code-block">
+                        <pre>alpha = 0.4
+ensemble = alpha*prophet_yhat + (1-alpha)*gbm_pred</pre>
+                    </div>
+                    
+                    <h3>Summary of Transformations</h3>
+                    <ul>
+                        <li><strong>Aggregation:</strong> cuts event noise, reveals periodic patterns for time-series models.</li>
+                        <li><strong>Exogenous joining (weather/events):</strong> explains anomalies, improves peak prediction.</li>
+                        <li><strong>Lag & rolling features:</strong> give memory to non-sequential models (GBM), enable detection of sudden trends.</li>
+                        <li><strong>Cyclical time encodings (minute_of_day, sin/cos):</strong> let models learn circular patterns like hours of day without discontinuities.</li>
+                        <li><strong>Target/zone encodings:</strong> introduce zone-level priors for cold-start resilience.</li>
+                        <li><strong>Sequence building & embedding:</strong> present temporal history in a way LSTM can ingest and learn user routines.</li>
+                        <li><strong>Ensembling:</strong> combines interpretable long-term patterns with short-term reactive signals for robust forecasts.</li>
+                        <li><strong>Postprocessing (business rules):</strong> convert forecasts into safe, actionable driver assignments.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 Ride Demand Prediction & Customer Behavior Forecasting Documentation</p>
+        </div>
+    </div>
+    
+    <script>
+        // Tab functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.nav-tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    // Remove active class from all tabs and contents
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked tab and corresponding content
+                    tab.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
