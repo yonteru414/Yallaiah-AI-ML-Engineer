@@ -1,298 +1,605 @@
-eigne<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Business Mathematics Index</title>
+    <title>Business Mathematics & AI Index</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            box-sizing: border-box;
         }
         
         body {
-            background-color: #f5f7fa;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f1f5f9;
             padding: 20px;
-            color: #333;
         }
         
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .header h1 {
-            color: #2c3e8f;
-            margin-bottom: 10px;
-            font-size: 2.5rem;
-        }
-        
-        .header p {
-            color: #666;
-            font-size: 1.1rem;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .grid-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 25px;
+        .container {
             max-width: 1400px;
             margin: 0 auto;
         }
         
-        .topic-card {
-            flex: 1 1 300px;
-            background: white;
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .math-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+        
+        .math-box {
+            background-color: white;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            box-shadow: var(--shadow);
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
         
-        .topic-card:hover {
+        .math-box:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            box-shadow: var(--shadow-lg);
         }
         
-        .card-header {
-            background: linear-gradient(135deg, #4a6cf7, #2c3e8f);
+        .box-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            padding: 18px 20px;
-            font-size: 1.4rem;
+            padding: 15px 20px;
+            font-size: 1.2rem;
             font-weight: 600;
         }
         
-        .card-content {
+        .box-content {
             padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
         }
         
-        .content-grid {
-            display: grid;
-            grid-template-columns: 1fr 2fr 1fr;
-            gap: 12px;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .content-grid:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-        
-        .subtopic {
+        .topic-title {
+            font-size: 1.1rem;
             font-weight: 600;
-            color: #2c3e8f;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
         }
         
         .application {
-            color: #555;
-            line-height: 1.4;
+            color: var(--gray);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            flex-grow: 1;
         }
         
-        .link-placeholder {
-            color: #4a6cf7;
+        .box-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            background-color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 6px;
             text-decoration: none;
             font-weight: 500;
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 4px;
-            background-color: #f0f4ff;
-            transition: background-color 0.2s;
+            font-size: 0.9rem;
+            transition: background-color 0.2s ease;
+            align-self: flex-start;
         }
         
-        .link-placeholder:hover {
-            background-color: #e0e8ff;
+        .box-link:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin: 30px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .section-title:first-of-type {
+            margin-top: 0;
+        }
+        
+        .section-description {
+            color: var(--gray);
+            margin-bottom: 20px;
+            font-size: 1rem;
         }
         
         @media (max-width: 768px) {
-            .content-grid {
+            .math-grid {
                 grid-template-columns: 1fr;
-                gap: 8px;
-            }
-            
-            .topic-card {
-                flex: 1 1 100%;
             }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Business Mathematics Index</h1>
-        <p>Practical applications of mathematical concepts in business contexts</p>
-    </div>
-    
-    <div class="grid-container">
-        <!-- Matrices Card -->
-        <div class="topic-card">
-            <div class="card-header">Matrices</div>
-            <div class="card-content">
-                <div class="content-grid">
-                    <div class="subtopic">Matrix Operations</div>
-                    <div class="application">Supply chain optimization</div>
-                    <div><a href="matrices-operations.html" class="link-placeholder">[link]</a></div>
-                </div>
-                 <div class="content-grid">
-                    <div class="subtopic">Eigen-Values & Eigne-Vectors</div>
-                    <div class="application">Economic impact studies</div>
-                    <div><a href="resources/maths/eigne-values-eigen-vectors.html" class="link-placeholder">click here</a></div>
-                </div>
-                <div class="content-grid">
-                    <div class="subtopic">Matrix Inversion</div>
-                    <div class="application">Resource allocation models</div>
-                    <div><a href="matrices-inversion.html" class="link-placeholder">[link]</a></div>
-                </div>
-                <div class="content-grid">
-                    <div class="subtopic">Linear Systems</div>
-                    <div class="application">Production planning</div>
-                    <div><a href="matrices-linear-systems.html" class="link-placeholder">[link]</a></div>
-                </div>
-                <div class="content-grid">
-                    <div class="subtopic">Markov Chains</div>
-                    <div class="application">Customer retention forecasting</div>
-                    <div><a href="matrices-markov-chains.html" class="link-placeholder">[link]</a></div>
-                </div>
-                <div class="content-grid">
-                    <div class="subtopic">Input-Output Analysis</div>
-                    <div class="application">Economic impact studies</div>
-                    <div><a href="matrices-input-output.html" class="link-placeholder">[link]</a></div>
-                </div>
-            </div>
-        </div>
+    <div class="container">
+        <header>
+            <h1>Business Mathematics & AI Index</h1>
+            <p class="subtitle">Practical applications of mathematical concepts in business, machine learning, deep learning, and AI</p>
+        </header>
 
-        <!-- Derivatives Card -->
-        <div class="topic-card">
-            <div class="card-header">Derivatives</div>
-            <div class="card-content">
-                <div class="content-grid">
-                    <div class="subtopic">Marginal Cost/Revenue</div>
-                    <div class="application">Pricing strategy optimization</div>
-                    <div><a href="derivatives-marginal.html" class="link-placeholder">[link]</a></div>
+        <section>
+            <h2 class="section-title">Matrices</h2>
+            <p class="section-description">Matrix operations and their applications in business and AI</p>
+            
+            <div class="math-grid">
+                <div class="math-box">
+                    <div class="box-header">Matrix Operations</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Matrix Operations</h3>
+                        <p class="application">Supply chain optimization, ML feature transformations, solving systems of linear equations</p>
+                        <a href="resources/maths/matrix-operations.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
                 </div>
-                <div class="content-grid">
-                    <div class="subtopic">Elasticity of Demand</div>
-                    <div class="application">Market responsiveness analysis</div>
-                    <div><a href="derivatives-elasticity.html" class="link-placeholder">[link]</a></div>
+                
+                <div class="math-box">
+                    <div class="box-header">Eigenvalues & Eigenvectors</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Eigenvalues & Eigenvectors</h3>
+                        <p class="application">Dimensionality reduction, PCA in ML, spectral clustering, Google's PageRank algorithm</p>
+                        <a href="resources/maths/eigen-values-eigen-vectors.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
                 </div>
-                <div class="content-grid">
-                    <div class="subtopic">Optimization</div>
-                    <div class="application">Profit maximization</div>
-                    <div><a href="derivatives-optimization.html" class="link-placeholder">[link]</a></div>
+                
+                <div class="math-box">
+                    <div class="box-header">Matrix Inversion</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Matrix Inversion</h3>
+                        <p class="application">Solving linear systems in optimization, calculating regression coefficients, Kalman filters</p>
+                        <a href="resources/maths/matrix-inversion.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
                 </div>
-                <div class="content-grid">
-                    <div class="subtopic">Sensitivity Analysis</div>
-                    <div class="application">Risk assessment in investments</div>
-                    <div><a href="derivatives-sensitivity.html" class="link-placeholder">[link]</a></div>
+                
+                <div class="math-box">
+                    <div class="box-header">Matrix Factorization</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Matrix Factorization</h3>
+                        <p class="application">Recommender systems, collaborative filtering, NLP topic modeling, image compression</p>
+                        <a href="resources/maths/matrix-factorization.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
                 </div>
-                <div class="content-grid">
-                    <div class="subtopic">Rate of Change</div>
-                    <div class="application">Inventory depletion forecasting</div>
-                    <div><a href="derivatives-rate-change.html" class="link-placeholder">[link]</a></div>
+                
+                <div class="math-box">
+                    <div class="box-header">Sparse Matrices</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Sparse Matrices</h3>
+                        <p class="application">Large-scale data processing, NLP bag-of-words, graph algorithms, memory optimization</p>
+                        <a href="resources/maths/sparse-matrices.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="math-box">
+                    <div class="box-header">Determinants</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Determinants</h3>
+                        <p class="application">Solving linear equations, matrix invertibility, volume calculations, computer graphics</p>
+                        <a href="resources/maths/determinants.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Integration Card -->
-        <div class="topic-card">
-            <div class="card-header">Integration</div>
-            <div class="card-content">
-                <div class="content-grid">
-                    <div class="subtopic">Area Under Curve</div>
-                    <div class="application">Consumer surplus calculation</div>
-                    <div><a href="integration-area-curve.html" class="link-placeholder">[link]</a></div>
+        <section>
+            <h2 class="section-title">Vectors</h2>
+            <p class="section-description">Vector mathematics and their role in AI and business analytics</p>
+            
+            <div class="math-grid">
+                <div class="math-box">
+                    <div class="box-header">Vector Operations</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Vector Operations</h3>
+                        <p class="application">Recommendation systems, feature representation in NLP, computer vision embeddings</p>
+                        <a href="resources/maths/vector-operations.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
                 </div>
-                <div class="content-grid">
-                    <div class="subtopic">Accumulated Change</div>
-                    <div class="application">Total revenue/cost projection</div>
-                    <div><a href="integration-accumulated.html" class="link-placeholder">[link]</a></div>
+                
+                <div class="math-box">
+                    <div class="box-header">Dot & Cross Product</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Dot & Cross Product</h3>
+                        <p class="application">Similarity calculations in ML, neural network attention mechanisms, 3D graphics</p>
+                        <a href="resources/maths/vector-dot-cross.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
                 </div>
-                <div class="content-grid">
-                    <div class="subtopic">Probability Distributions</div>
-                    <div class="application">Risk modeling in finance</div>
-                    <div><a href="integration-probability.html" class="link-placeholder">[link]</a></div>
+                
+                <div class="math-box">
+                    <div class="box-header">Vector Spaces</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Vector Spaces</h3>
+                        <p class="application">Feature spaces in ML, kernel methods, support vector machines, dimensionality reduction</p>
+                        <a href="resources/maths/vector-spaces.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
                 </div>
-                <div class="content-grid">
-                    <div class="subtopic">Expected Value</div>
-                    <div class="application">Investment return analysis</div>
-                    <div><a href="integration-expected-value.html" class="link-placeholder">[link]</a></div>
+                
+                <div class="math-box">
+                    <div class="box-header">Vector Norms</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Vector Norms</h3>
+                        <p class="application">Regularization in ML, distance calculations, optimization constraints, error metrics</p>
+                        <a href="resources/maths/vector-norms.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
                 </div>
-                <div class="content-grid">
-                    <div class="subtopic">Continuous Cash Flow</div>
-                    <div class="application">Net present value (NPV) calculations</div>
-                    <div><a href="integration-cash-flow.html" class="link-placeholder">[link]</a></div>
+                
+                <div class="math-box">
+                    <div class="box-header">Orthogonality</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Orthogonality</h3>
+                        <p class="application">Feature independence, Gram-Schmidt process, QR decomposition, signal processing</p>
+                        <a href="resources/maths/orthogonality.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="math-box">
+                    <div class="box-header">Vector Projections</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Vector Projections</h3>
+                        <p class="application">Dimensionality reduction, feature selection, computer vision, regression analysis</p>
+                        <a href="resources/maths/vector-projections.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Probability Card -->
-        <div class="topic-card">
-            <div class="card-header">Probability & Combinatorics</div>
-            <div class="card-content">
-                <div class="content-grid">
-                    <div class="subtopic">Probability Distributions</div>
-                    <div class="application">Quality control defect rates</div>
-                    <div><a href="probability-distributions.html" class="link-placeholder">[link]</a></div>
+        <section>
+            <h2 class="section-title">Linear Algebra</h2>
+            <p class="section-description">Linear algebra concepts and their applications in modern AI systems</p>
+            
+            <div class="math-grid">
+                <div class="math-box">
+                    <div class="box-header">Linear Systems</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Linear Systems</h3>
+                        <p class="application">Regression, optimization problems, solving for neural network parameters</p>
+                        <a href="resources/maths/linear-systems.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
                 </div>
-                <div class="content-grid">
-                    <div class="subtopic">Permutations</div>
-                    <div class="application">Product bundling options</div>
-                    <div><a href="probability-permutations.html" class="link-placeholder">[link]</a></div>
+                
+                <div class="math-box">
+                    <div class="box-header">Matrix Decomposition</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Matrix Decomposition (LU, SVD)</h3>
+                        <p class="application">PCA, recommender systems, neural network compression, natural language processing</p>
+                        <a href="resources/maths/matrix-decomposition.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
                 </div>
-                <div class="content-grid">
-                    <div class="subtopic">Combinations</div>
-                    <div class="application">Team formation scenarios</div>
-                    <div><a href="probability-combinations.html" class="link-placeholder">[link]</a></div>
+                
+                <div class="math-box">
+                    <div class="box-header">Linear Transformations</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Linear Transformations</h3>
+                        <p class="application">Neural network layers, data augmentation, computer graphics, feature engineering</p>
+                        <a href="resources/maths/linear-transformations.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
                 </div>
-                <div class="content-grid">
-                    <div class="subtopic">Bayes' Theorem</div>
-                    <div class="application">Market segmentation analysis</div>
-                    <div><a href="probability-bayes.html" class="link-placeholder">[link]</a></div>
+                
+                <div class="math-box">
+                    <div class="box-header">Subspaces</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Vector Spaces and Subspaces</h3>
+                        <p class="application">Feature engineering, dimensionality reduction, kernel methods, manifold learning</p>
+                        <a href="resources/maths/subspaces.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
                 </div>
-                <div class="content-grid">
-                    <div class="subtopic">Decision Trees</div>
-                    <div class="application">Project risk evaluation</div>
-                    <div><a href="probability-decision-trees.html" class="link-placeholder">[link]</a></div>
+                
+                <div class="math-box">
+                    <div class="box-header">QR Decomposition</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">QR Decomposition</h3>
+                        <p class="application">Solving linear systems, eigenvalue algorithms, least squares problems, signal processing</p>
+                        <a href="resources/maths/qr-decomposition.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Statistics Card -->
-        <div class="topic-card">
-            <div class="card-header">Statistics</div>
-            <div class="card-content">
-                <div class="content-grid">
-                    <div class="subtopic">Regression Analysis</div>
-                    <div class="application">Sales forecasting</div>
-                    <div><a href="statistics-regression.html" class="link-placeholder">[link]</a></div>
+        <section>
+            <h2 class="section-title">Derivatives</h2>
+            <p class="section-description">Calculus concepts and their role in optimization and machine learning</p>
+            
+            <div class="math-grid">
+                <div class="math-box">
+                    <div class="box-header">Marginal Cost/Revenue</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Marginal Cost/Revenue</h3>
+                        <p class="application">Profit optimization, gradient descent in ML, cost function minimization</p>
+                        <a href="resources/maths/derivatives-marginal.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
                 </div>
-                <div class="content-grid">
-                    <div class="subtopic">Hypothesis Testing</div>
-                    <div class="application">A/B testing for marketing campaigns</div>
-                    <div><a href="statistics-hypothesis.html" class="link-placeholder">[link]</a></div>
+                
+                <div class="math-box">
+                    <div class="box-header">Rate of Change</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Rate of Change</h3>
+                        <p class="application">Sensitivity analysis, learning rate in AI models, dynamic pricing algorithms</p>
+                        <a href="resources/maths/derivatives-rate.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
                 </div>
-                <div class="content-grid">
-                    <div class="subtopic">Time Series Analysis</div>
-                    <div class="application">Demand forecasting</div>
-                    <div><a href="statistics-time-series.html" class="link-placeholder">[link]</a></div>
+                
+                <div class="math-box">
+                    <div class="box-header">Partial Derivatives</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Partial Derivatives</h3>
+                        <p class="application">Multivariable optimization, gradient descent, neural network backpropagation</p>
+                        <a href="resources/maths/partial-derivatives.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
                 </div>
-                <div class="content-grid">
-                    <div class="subtopic">ANOVA</div>
-                    <div class="application">Process efficiency comparison</div>
-                    <div><a href="statistics-anova.html" class="link-placeholder">[link]</a></div>
+                
+                <div class="math-box">
+                    <div class="box-header">Gradient Descent</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Gradient Descent</h3>
+                        <p class="application">Neural network training, optimization algorithms, logistic regression, deep learning</p>
+                        <a href="resources/maths/gradient-descent.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
                 </div>
-                <div class="content-grid">
-                    <div class="subtopic">Confidence Intervals</div>
-                    <div class="application">Market research reliability</div>
-                    <div><a href="statistics-confidence.html" class="link-placeholder">[link]</a></div>
+                
+                <div class="math-box">
+                    <div class="box-header">Chain Rule</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Chain Rule</h3>
+                        <p class="application">Backpropagation in neural networks, composite functions, deep learning architectures</p>
+                        <a href="resources/maths/chain-rule.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="math-box">
+                    <div class="box-header">Optimization Techniques</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Optimization Techniques</h3>
+                        <p class="application">Adam, RMSprop, SGD optimizers, hyperparameter tuning, model training</p>
+                        <a href="resources/maths/optimization-techniques.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">Probability & Statistics</h2>
+            <p class="section-description">Statistical methods and probabilistic reasoning in AI and business</p>
+            
+            <div class="math-grid">
+                <div class="math-box">
+                    <div class="box-header">Probability Distributions</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Probability Distributions</h3>
+                        <p class="application">Predictive modeling, ML classifiers, Bayesian neural networks, generative AI</p>
+                        <a href="resources/maths/probability-distributions.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="math-box">
+                    <div class="box-header">Bayes' Theorem</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Bayes' Theorem</h3>
+                        <p class="application">Spam filtering, probabilistic AI models, medical diagnosis, A/B testing</p>
+                        <a href="resources/maths/bayes-theorem.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="math-box">
+                    <div class="box-header">Regression Analysis</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Regression Analysis</h3>
+                        <p class="application">Sales forecasting, ML prediction, risk assessment, trend analysis</p>
+                        <a href="resources/maths/regression-analysis.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="math-box">
+                    <div class="box-header">Hypothesis Testing</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Hypothesis Testing</h3>
+                        <p class="application">A/B testing, clinical trials, feature selection, model validation</p>
+                        <a href="resources/maths/hypothesis-testing.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="math-box">
+                    <div class="box-header">Confidence Intervals</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Confidence Intervals</h3>
+                        <p class="application">Market research, polling, quality control, uncertainty quantification in ML</p>
+                        <a href="resources/maths/confidence-intervals.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="math-box">
+                    <div class="box-header">ANOVA</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Analysis of Variance (ANOVA)</h3>
+                        <p class="application">Experimental design, marketing campaign analysis, feature importance, model comparison</p>
+                        <a href="resources/maths/anova.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="math-box">
+                    <div class="box-header">Time Series Analysis</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Time Series Analysis</h3>
+                        <p class="application">Stock market prediction, demand forecasting, anomaly detection, IoT data analysis</p>
+                        <a href="resources/maths/time-series-analysis.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">Integration</h2>
+            <p class="section-description">Integral calculus and its applications in AI and business analytics</p>
+            
+            <div class="math-grid">
+                <div class="math-box">
+                    <div class="box-header">Area Under Curve</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Area Under Curve</h3>
+                        <p class="application">Consumer surplus, ROC-AUC in ML, model evaluation, probability calculations</p>
+                        <a href="resources/maths/integration-area-curve.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="math-box">
+                    <div class="box-header">Expected Value</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Expected Value</h3>
+                        <p class="application">Investment analysis, reward expectations in RL, decision theory, risk assessment</p>
+                        <a href="resources/maths/integration-expected-value.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="math-box">
+                    <div class="box-header">Multiple Integrals</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Multiple Integrals</h3>
+                        <p class="application">Multivariate probability distributions, Bayesian inference, physics simulations</p>
+                        <a href="resources/maths/multiple-integrals.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="math-box">
+                    <div class="box-header">Integration by Parts</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Integration by Parts</h3>
+                        <p class="application">Expected value calculations, probability theory, solving differential equations</p>
+                        <a href="resources/maths/integration-by-parts.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="math-box">
+                    <div class="box-header">Monte Carlo Integration</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Monte Carlo Integration</h3>
+                        <p class="application">Reinforcement learning, financial modeling, Bayesian inference, uncertainty estimation</p>
+                        <a href="resources/maths/monte-carlo-integration.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="math-box">
+                    <div class="box-header">Fourier Transforms</div>
+                    <div class="box-content">
+                        <h3 class="topic-title">Fourier Transforms</h3>
+                        <p class="application">Signal processing, image compression, audio analysis, feature extraction in CNNs</p>
+                        <a href="resources/maths/fourier-transforms.html" class="box-link">
+                            <i class="fas fa-arrow-right"></i> Explore
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 </body>
 </html>
