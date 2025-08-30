@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Matrix Operations - Business & AI Applications</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f1f5f9;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .icon-blue {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+        }
+        
+        .icon-green {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+        
+        .icon-yellow {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+        
+        .icon-purple {
+            background-color: rgba(139, 92, 246, 0.1);
+            color: #8b5cf6;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 20px 0 15px;
+            color: var(--dark);
+        }
+        
+        p {
+            margin-bottom: 15px;
+            color: var(--gray);
+        }
+        
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95rem;
+        }
+        
+        .matrix-table th, .matrix-table td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+        
+        .matrix-table th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .matrix-table .row-header {
+            background-color: rgba(37, 99, 235, 0.1);
+            font-weight: 600;
+            text-align: left;
+        }
+        
+        .matrix-table .highlight {
+            background-color: rgba(37, 99, 235, 0.05);
+            font-weight: 500;
+        }
+        
+        .operation-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #0d9f6b;
+            transform: translateY(-2px);
+        }
+        
+        .btn-warning {
+            background-color: var(--warning);
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background-color: #d97706;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #dc2626;
+            transform: translateY(-2px);
+        }
+        
+        .btn-purple {
+            background-color: #8b5cf6;
+            color: white;
+        }
+        
+        .btn-purple:hover {
+            background-color: #7c3aed;
+            transform: translateY(-2px);
+        }
+        
+        .result-container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: rgba(37, 99, 235, 0.05);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            display: none;
+        }
+        
+        .result-container.active {
+            display: block;
+        }
+        
+        .explanation {
+            margin: 15px 0;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+        
+        .insights {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: rgba(16, 185, 129, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid var(--success);
+        }
+        
+        .insights h4 {
+            color: var(--success);
+            margin-bottom: 10px;
+        }
+        
+        .math {
+            font-family: 'Courier New', monospace;
+            background-color: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+            
+            .operation-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Interactive Matrix Operations</h1>
+            <p class="subtitle">Exploring matrix operations with business data and their applications in AI/ML</p>
+        </header>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon icon-blue">
+                    <i class="fas fa-table"></i>
+                </div>
+                <div>
+                    <h2>Business Dataset</h2>
+                    <p>Customer purchases across different product categories</p>
+                </div>
+            </div>
+            
+            <p>This dataset shows the number of items purchased by each customer across three product categories: Electronics, Clothing, and Groceries.</p>
+            
+            <table class="matrix-table">
+                <thead>
+                    <tr>
+                        <th>Customer</th>
+                        <th>Electronics</th>
+                        <th>Clothing</th>
+                        <th>Groceries</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="row-header">Alice</td>
+                        <td>2</td>
+                        <td>5</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td class="row-header">Bob</td>
+                        <td>0</td>
+                        <td>2</td>
+                        <td>7</td>
+                    </tr>
+                    <tr>
+                        <td class="row-header">Carol</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td class="row-header">Dave</td>
+                        <td>3</td>
+                        <td>1</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td class="row-header">Eve</td>
+                        <td>0</td>
+                        <td>3</td>
+                        <td>5</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="math">
+                <strong>Matrix Representation:</strong><br>
+                A =<br>
+                [Alice: [2, 5, 3],<br>
+                &nbsp;&nbsp;Bob: [0, 2, 7],<br>
+                &nbsp;&nbsp;Carol: [1, 0, 4],<br>
+                &nbsp;&nbsp;Dave: [3, 1, 2],<br>
+                &nbsp;&nbsp;Eve: [0, 3, 5]]
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon icon-green">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <div>
+                    <h2>Matrix Operations</h2>
+                    <p>Click on each operation to see the results and explanations</p>
+                </div>
+            </div>
+            
+            <div class="operation-buttons">
+                <button class="btn btn-primary" onclick="showRowSum()">
+                    <i class="fas fa-plus"></i> Row Sum
+                </button>
+                <button class="btn btn-success" onclick="showColumnSum()">
+                    <i class="fas fa-columns"></i> Column Sum
+                </button>
+                <button class="btn btn-warning" onclick="showTranspose()">
+                    <i class="fas fa-exchange-alt"></i> Transpose
+                </button>
+                <button class="btn btn-danger" onclick="showMatrixMultiplication()">
+                    <i class="fas fa-times"></i> Matrix Multiplication
+                </button>
+                <button class="btn btn-purple" onclick="showNormalization()">
+                    <i class="fas fa-chart-pie"></i> Normalization
+                </button>
+            </div>
+            
+            <div id="rowSumResult" class="result-container">
+                <h3>Row-wise Sum (Total purchases per customer)</h3>
+                
+                <table class="matrix-table">
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Total Purchases</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="row-header">Alice</td>
+                            <td class="highlight">10</td>
+                        </tr>
+                        <tr>
+                            <td class="row-header">Bob</td>
+                            <td class="highlight">9</td>
+                        </tr>
+                        <tr>
+                            <td class="row-header">Carol</td>
+                            <td class="highlight">5</td>
+                        </tr>
+                        <tr>
+                            <td class="row-header">Dave</td>
+                            <td class="highlight">6</td>
+                        </tr>
+                        <tr>
+                            <td class="row-header">Eve</td>
+                            <td class="highlight">8</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="math">
+                    <strong>Calculation:</strong><br>
+                    Row Sum =<br>
+                    [Alice: 2+5+3=10,<br>
+                    &nbsp;&nbsp;Bob: 0+2+7=9,<br>
+                    &nbsp;&nbsp;Carol: 1+0+4=5,<br>
+                    &nbsp;&nbsp;Dave: 3+1+2=6,<br>
+                    &nbsp;&nbsp;Eve: 0+3+5=8]
+                </div>
+                
+                <div class="explanation">
+                    <p><strong>Explanation:</strong> We sum each row to know how many total items each customer purchased. This helps the business identify high-value customers for loyalty programs.</p>
+                </div>
+                
+                <div class="insights">
+                    <h4><i class="fas fa-lightbulb"></i> ML/AI Insights</h4>
+                    <p>Row sums can be used as features in customer segmentation models. Customers with higher total purchases (like Alice) can be targeted with premium offers, while those with lower purchases (like Carol) might receive promotions to increase their spending.</p>
+                </div>
+            </div>
+            
+            <div id="columnSumResult" class="result-container">
+                <h3>Column-wise Sum (Total purchases per product)</h3>
+                
+                <table class="matrix-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Total Purchases</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="row-header">Electronics</td>
+                            <td class="highlight">6</td>
+                        </tr>
+                        <tr>
+                            <td class="row-header">Clothing</td>
+                            <td class="highlight">11</td>
+                        </tr>
+                        <tr>
+                            <td class="row-header">Groceries</td>
+                            <td class="highlight">21</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="math">
+                    <strong>Calculation:</strong><br>
+                    Column Sum =<br>
+                    [Electronics: 2+0+1+3+0=6,<br>
+                    &nbsp;&nbsp;Clothing: 5+2+0+1+3=11,<br>
+                    &nbsp;&nbsp;Groceries: 3+7+4+2+5=21]
+                </div>
+                
+                <div class="explanation">
+                    <p><strong>Explanation:</strong> We sum each column to see which product categories sell the most. This guides inventory allocation and promotional strategies.</p>
+                </div>
+                
+                <div class="insights">
+                    <h4><i class="fas fa-lightbulb"></i> ML/AI Insights</h4>
+                    <p>Column sums help identify popular product categories. Groceries being the highest-selling category suggests it could be used as a loss leader to attract customers. In recommendation systems, these sums can inform inventory management and supply chain optimization models.</p>
+                </div>
+            </div>
+            
+            <div id="transposeResult" class="result-container">
+                <h3>Transpose (Swap Rows & Columns)</h3>
+                
+                <table class="matrix-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Alice</th>
+                            <th>Bob</th>
+                            <th>Carol</th>
+                            <th>Dave</th>
+                            <th>Eve</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="row-header">Electronics</td>
+                            <td>2</td>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>3</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td class="row-header">Clothing</td>
+                            <td>5</td>
+                            <td>2</td>
+                            <td>0</td>
+                            <td>1</td>
+                            <td>3</td>
+                        </tr>
+                        <tr>
+                            <td class="row-header">Groceries</td>
+                            <td>3</td>
+                            <td>7</td>
+                            <td>4</td>
+                            <td>2</td>
+                            <td>5</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="math">
+                    <strong>Matrix Representation:</strong><br>
+                    Aᵀ =<br>
+                    [Electronics: [2, 0, 1, 3, 0],<br>
+                    &nbsp;&nbsp;Clothing: [5, 2, 0, 1, 3],<br>
+                    &nbsp;&nbsp;Groceries: [3, 7, 4, 2, 5]]
+                </div>
+                
+                <div class="explanation">
+                    <p><strong>Explanation:</strong> Transposing allows features (products) to become rows, which is required for ML algorithms like PCA. It also makes it easier to compute correlations between products.</p>
+                </div>
+                
+                <div class="insights">
+                    <h4><i class="fas fa-lightbulb"></i> ML/AI Insights</h4>
+                    <p>Transposed data is essential for many ML algorithms that expect features as rows. In collaborative filtering for recommendation systems, the transpose helps identify similar products based on customer purchase patterns. It's also used in dimensionality reduction techniques like PCA.</p>
+                </div>
+            </div>
+            
+            <div id="matrixMultiplicationResult" class="result-container">
+                <h3>Matrix Multiplication (Aᵀ × A)</h3>
+                
+                <table class="matrix-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Electronics</th>
+                            <th>Clothing</th>
+                            <th>Groceries</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="row-header">Electronics</td>
+                            <td class="highlight">14</td>
+                            <td>13</td>
+                            <td>17</td>
+                        </tr>
+                        <tr>
+                            <td class="row-header">Clothing</td>
+                            <td>13</td>
+                            <td class="highlight">39</td>
+                            <td>46</td>
+                        </tr>
+                        <tr>
+                            <td class="row-header">Groceries</td>
+                            <td>17</td>
+                            <td>46</td>
+                            <td class="highlight">87</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="math">
+                    <strong>Calculation:</strong><br>
+                    Aᵀ × A =<br>
+                    [Electronics: [14, 13, 17],<br>
+                    &nbsp;&nbsp;Clothing: [13, 39, 46],<br>
+                    &nbsp;&nbsp;Groceries: [17, 46, 87]]
+                </div>
+                
+                <div class="explanation">
+                    <p><strong>Explanation:</strong> Diagonal values show total squared sales per product, while off-diagonal values indicate co-purchase tendencies. Businesses use this for bundling and cross-selling strategies.</p>
+                </div>
+                
+                <div class="insights">
+                    <h4><i class="fas fa-lightbulb"></i> ML/AI Insights</h4>
+                    <p>The result of Aᵀ × A is a covariance matrix that reveals relationships between products. High off-diagonal values (like 46 between Clothing and Groceries) suggest these products are frequently purchased together. This information is valuable for market basket analysis, product bundling strategies, and recommendation systems.</p>
+                </div>
+            </div>
+            
+            <div id="normalizationResult" class="result-container">
+                <h3>Row-wise Normalization</h3>
+                
+                <table class="matrix-table">
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Electronics</th>
+                            <th>Clothing</th>
+                            <th>Groceries</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="row-header">Alice</td>
+                            <td>0.20</td>
+                            <td>0.50</td>
+                            <td>0.30</td>
+                        </tr>
+                        <tr>
+                            <td class="row-header">Bob</td>
+                            <td>0.00</td>
+                            <td>0.22</td>
+                            <td>0.78</td>
+                        </tr>
+                        <tr>
+                            <td class="row-header">Carol</td>
+                            <td>0.20</td>
+                            <td>0.00</td>
+                            <td>0.80</td>
+                        </tr>
+                        <tr>
+                            <td class="row-header">Dave</td>
+                            <td>0.50</td>
+                            <td>0.17</td>
+                            <td>0.33</td>
+                        </tr>
+                        <tr>
+                            <td class="row-header">Eve</td>
+                            <td>0.00</td>
+                            <td>0.375</td>
+                            <td>0.625</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="math">
+                    <strong>Calculation:</strong><br>
+                    Normalized =<br>
+                    [Alice: [2/10, 5/10, 3/10] = [0.2, 0.5, 0.3],<br>
+                    &nbsp;&nbsp;Bob: [0/9, 2/9, 7/9] = [0, 0.22, 0.78],<br>
+                    &nbsp;&nbsp;Carol: [1/5, 0/5, 4/5] = [0.2, 0, 0.8],<br>
+                    &nbsp;&nbsp;Dave: [3/6, 1/6, 2/6] = [0.5, 0.17, 0.33],<br>
+                    &nbsp;&nbsp;Eve: [0/8, 3/8, 5/8] = [0, 0.375, 0.625]]
+                </div>
+                
+                <div class="explanation">
+                    <p><strong>Explanation:</strong> We divide each row by its total to scale customer purchases between 0 and 1. Normalization prevents categories with high numbers (like Groceries) from dominating ML models.</p>
+                </div>
+                
+                <div class="insights">
+                    <h4><i class="fas fa-lightbulb"></i> ML/AI Insights</h4>
+                    <p>Normalized data is crucial for many ML algorithms as it ensures all features contribute equally to the result. In customer segmentation, normalized vectors represent purchase preferences rather than absolute volumes. For example, Dave's normalized vector [0.5, 0.17, 0.33] shows a strong preference for Electronics, which might not be apparent from raw numbers alone.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon icon-purple">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div>
+                    <h2>Applications in Machine Learning & AI</h2>
+                    <p>How these matrix operations power real-world AI systems</p>
+                </div>
+            </div>
+            
+            <div class="two-column">
+                <div>
+                    <h3>Recommendation Systems</h3>
+                    <p>Normalized customer vectors form the basis of collaborative filtering algorithms. By calculating similarity between these vectors, we can recommend products that similar customers have purchased.</p>
+                    <p>Matrix multiplication helps identify product relationships, enabling "customers who bought X also bought Y" recommendations.</p>
+                </div>
+                <div>
+                    <h3>Customer Segmentation</h3>
+                    <p>Row sums and normalized vectors help identify customer segments. High-value customers (like Alice) can be targeted with premium offers, while occasional shoppers (like Carol) might receive promotions to increase engagement.</p>
+                    <p>Clustering algorithms like K-means use these vectors to group customers with similar purchase patterns.</p>
+                </div>
+            </div>
+            
+            <div class="two-column">
+                <div>
+                    <h3>Inventory Management</h3>
+                    <p>Column sums reveal product popularity, helping optimize inventory levels. High-demand products like Groceries require more stock, while niche products like Electronics might need less inventory space.</p>
+                    <p>Matrix multiplication identifies product relationships, enabling better bundling and cross-selling strategies.</p>
+                </div>
+                <div>
+                    <h3>Market Basket Analysis</h3>
+                    <p>The covariance matrix (Aᵀ × A) is fundamental to market basket analysis. High off-diagonal values indicate products that are frequently purchased together, informing store layout, promotions, and product bundling.</p>
+                    <p>These insights power the "frequently bought together" features on e-commerce platforms.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function hideAllResults() {
+            const results = document.querySelectorAll('.result-container');
+            results.forEach(result => {
+                result.classList.remove('active');
+            });
+        }
+        
+        function showRowSum() {
+            hideAllResults();
+            document.getElementById('rowSumResult').classList.add('active');
+        }
+        
+        function showColumnSum() {
+            hideAllResults();
+            document.getElementById('columnSumResult').classList.add('active');
+        }
+        
+        function showTranspose() {
+            hideAllResults();
+            document.getElementById('transposeResult').classList.add('active');
+        }
+        
+        function showMatrixMultiplication() {
+            hideAllResults();
+            document.getElementById('matrixMultiplicationResult').classList.add('active');
+        }
+        
+        function showNormalization() {
+            hideAllResults();
+            document.getElementById('normalizationResult').classList.add('active');
+        }
+    </script>
+</body>
+</html>
