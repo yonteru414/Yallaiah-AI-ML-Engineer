@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Risk Analysis with PCA - Comprehensive Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f1f5f9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 40px 0;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 80%;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        
+        .btn-primary {
+            background-color: white;
+            color: var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--light-gray);
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .icon-blue {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+        }
+        
+        .icon-green {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+        
+        .icon-yellow {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+        
+        .icon-red {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+        
+        .icon-purple {
+            background-color: rgba(139, 92, 246, 0.1);
+            color: #8b5cf6;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 20px 0 15px;
+            color: var(--dark);
+        }
+        
+        h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 15px 0 10px;
+            color: var(--dark);
+        }
+        
+        p {
+            margin-bottom: 15px;
+            color: var(--gray);
+        }
+        
+        .highlight {
+            background-color: rgba(37, 99, 235, 0.1);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-weight: 500;
+            color: var(--primary);
+        }
+        
+        .math {
+            font-family: 'Courier New', monospace;
+            background-color: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .matrix {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 5px;
+            margin: 15px 0;
+        }
+        
+        .matrix-cell {
+            padding: 8px;
+            text-align: center;
+            background-color: var(--light);
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .matrix-header {
+            font-weight: 600;
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .table th, .table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .table th {
+            background-color: var(--light);
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .table tr:hover {
+            background-color: rgba(37, 99, 235, 0.05);
+        }
+        
+        .customer-profile {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .customer-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .customer-details h4 {
+            margin-bottom: 5px;
+        }
+        
+        .customer-details p {
+            margin-bottom: 0;
+            font-size: 0.9rem;
+        }
+        
+        .risk-low {
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+        
+        .risk-low .customer-icon {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .risk-medium {
+            background-color: rgba(245, 158, 11, 0.1);
+        }
+        
+        .risk-medium .customer-icon {
+            background-color: var(--warning);
+            color: white;
+        }
+        
+        .risk-high {
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+        
+        .risk-high .customer-icon {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-right: 8px;
+        }
+        
+        .tag-blue {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+        }
+        
+        .tag-green {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+        
+        .tag-yellow {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+        
+        .tag-red {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+        
+        .eigenvalue-bar {
+            height: 30px;
+            background-color: var(--light-gray);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        
+        .eigenvalue-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .eigenvalue-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 40px 0;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+            padding-right: 20px;
+        }
+        
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            margin-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            font-weight: 500;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .tab:hover {
+            color: var(--primary);
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .info-box {
+            background-color: rgba(37, 99, 235, 0.05);
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .info-box p {
+            margin-bottom: 0;
+        }
+        
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .covariance-explanation {
+            margin-top: 20px;
+        }
+        
+        .covariance-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: rgba(37, 99, 235, 0.03);
+        }
+        
+        .covariance-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1rem;
+        }
+        
+        .covariance-positive {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+        
+        .covariance-negative {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+        
+        .covariance-neutral {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+        
+        @media (max-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .header-actions {
+                margin-top: 20px;
+            }
+            
+            .matrix {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div>
+                    <h1>Credit Risk Analysis with PCA</h1>
+                    <p class="subtitle">A comprehensive step-by-step analysis of customer credit risk using Principal Component Analysis</p>
+                </div>
+                <div class="header-actions">
+                    <a href="#" class="btn btn-primary"><i class="fas fa-download"></i> Download Report</a>
+                    <a href="#" class="btn btn-outline"><i class="fas fa-share-alt"></i> Share</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon icon-blue">
+                    <i class="fas fa-database"></i>
+                </div>
+                <div>
+                    <h2>Step 0: The Raw Dataset</h2>
+                    <p>Customer credit data with 5 features across 4 customers</p>
+                </div>
+            </div>
+            
+            <p>The dataset contains information about 4 credit card customers across 5 key features:</p>
+            <ul>
+                <li><strong>Customer Name:</strong> Identifier for each customer</li>
+                <li><strong>Income:</strong> Annual income in dollars</li>
+                <li><strong>Credit Utilization %:</strong> Percentage of available credit being used</li>
+                <li><strong>Payment Delay:</strong> Number of delayed payments</li>
+                <li><strong>Transactions/Month:</strong> Average number of monthly transactions</li>
+                <li><strong>Credit Score:</strong> Credit rating score</li>
+            </ul>
+            
+            <div class="math">
+                <strong>X =</strong>
+                <div class="matrix">
+                    <div class="matrix-cell matrix-header">Customer</div>
+                    <div class="matrix-cell matrix-header">Income</div>
+                    <div class="matrix-cell matrix-header">Utilization %</div>
+                    <div class="matrix-cell matrix-header">Payment Delay</div>
+                    <div class="matrix-cell matrix-header">Transactions</div>
+                    <div class="matrix-cell matrix-header">Credit Score</div>
+                    
+                    <div class="matrix-cell">Ramu</div>
+                    <div class="matrix-cell">4000</div>
+                    <div class="matrix-cell">30</div>
+                    <div class="matrix-cell">2</div>
+                    <div class="matrix-cell">40</div>
+                    <div class="matrix-cell">720</div>
+                    
+                    <div class="matrix-cell">Raghu</div>
+                    <div class="matrix-cell">6000</div>
+                    <div class="matrix-cell">70</div>
+                    <div class="matrix-cell">10</div>
+                    <div class="matrix-cell">20</div>
+                    <div class="matrix-cell">640</div>
+                    
+                    <div class="matrix-cell">Somu</div>
+                    <div class="matrix-cell">3500</div>
+                    <div class="matrix-cell">80</div>
+                    <div class="matrix-cell">15</div>
+                    <div class="matrix-cell">10</div>
+                    <div class="matrix-cell">580</div>
+                    
+                    <div class="matrix-cell">Gopu</div>
+                    <div class="matrix-cell">8000</div>
+                    <div class="matrix-cell">20</div>
+                    <div class="matrix-cell">0</div>
+                    <div class="matrix-cell">60</div>
+                    <div class="matrix-cell">750</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon icon-green">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <div>
+                    <h2>Step 1: Compute Column Means</h2>
+                    <p>Calculating the average value for each feature</p>
+                </div>
+            </div>
+            
+            <p>The mean values for each feature are calculated by summing all values in a column and dividing by the number of customers (n=4):</p>
+            
+            <div class="math">
+                <strong>μ =</strong> [5375, 50, 6.75, 32.5, 672.5]
+            </div>
+            
+            <p>These means represent the "average customer" in our dataset and will be used to center the data in the next step.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon icon-yellow">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <div>
+                    <h2>Step 2: Center the Data</h2>
+                    <p>Subtracting the mean from each feature value</p>
+                </div>
+            </div>
+            
+            <p>Centering the data involves subtracting the mean of each feature from every value in that feature's column. This transforms the data so that each feature has a mean of zero:</p>
+            
+            <div class="math">
+                <strong>X<sub>c</sub> =</strong>
+                <div class="matrix">
+                    <div class="matrix-cell matrix-header">Customer</div>
+                    <div class="matrix-cell matrix-header">Income</div>
+                    <div class="matrix-cell matrix-header">Utilization %</div>
+                    <div class="matrix-cell matrix-header">Payment Delay</div>
+                    <div class="matrix-cell matrix-header">Transactions</div>
+                    <div class="matrix-cell matrix-header">Credit Score</div>
+                    
+                    <div class="matrix-cell">Ramu</div>
+                    <div class="matrix-cell">-1375</div>
+                    <div class="matrix-cell">-20</div>
+                    <div class="matrix-cell">-4.75</div>
+                    <div class="matrix-cell">7.5</div>
+                    <div class="matrix-cell">47.5</div>
+                    
+                    <div class="matrix-cell">Raghu</div>
+                    <div class="matrix-cell">625</div>
+                    <div class="matrix-cell">20</div>
+                    <div class="matrix-cell">3.25</div>
+                    <div class="matrix-cell">-12.5</div>
+                    <div class="matrix-cell">-32.5</div>
+                    
+                    <div class="matrix-cell">Somu</div>
+                    <div class="matrix-cell">-1875</div>
+                    <div class="matrix-cell">30</div>
+                    <div class="matrix-cell">8.25</div>
+                    <div class="matrix-cell">-22.5</div>
+                    <div class="matrix-cell">-92.5</div>
+                    
+                    <div class="matrix-cell">Gopu</div>
+                    <div class="matrix-cell">2625</div>
+                    <div class="matrix-cell">-30</div>
+                    <div class="matrix-cell">-6.75</div>
+                    <div class="matrix-cell">27.5</div>
+                    <div class="matrix-cell">77.5</div>
+                </div>
+            </div>
+            
+            <p>Centering is a crucial preprocessing step for PCA as it removes the mean bias from the data.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon icon-purple">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div>
+                    <h2>Step 3: Covariance Matrix</h2>
+                    <p>Measuring how features vary together</p>
+                </div>
+            </div>
+            
+            <p>The covariance matrix quantifies how features change together. The formula for covariance between features i and j is:</p>
+            
+            <div class="math">
+                Cov<sub>ij</sub> = (1/(n-1)) * Σ<sub>k=1</sub><sup>n</sup> (x<sub>k,i</sub> - μ<sub>i</sub>)(x<sub>k,j</sub> - μ<sub>j</sub>), where n=4
+            </div>
+            
+            <p>For example, the covariance between Income and Credit Utilization is calculated as:</p>
+            
+            <div class="math">
+                [(-1375)(-20) + (625)(20) + (-1875)(30) + (2625)(-30)] / 3 = -31,666.67
+            </div>
+            
+            <p>The complete covariance matrix is:</p>
+            
+            <div class="math">
+                <strong>Cov =</strong>
+                <div class="matrix">
+                    <div class="matrix-cell matrix-header">Income</div>
+                    <div class="matrix-cell matrix-header">Utilization %</div>
+                    <div class="matrix-cell matrix-header">Payment Delay</div>
+                    <div class="matrix-cell matrix-header">Transactions</div>
+                    <div class="matrix-cell matrix-header">Credit Score</div>
+                    
+                    <div class="matrix-cell">4,229,166.67</div>
+                    <div class="matrix-cell">-31,666.67</div>
+                    <div class="matrix-cell">-8,208.33</div>
+                    <div class="matrix-cell">32,083.33</div>
+                    <div class="matrix-cell">97,083.33</div>
+                    
+                    <div class="matrix-cell">-31,666.67</div>
+                    <div class="matrix-cell">866.67</div>
+                    <div class="matrix-cell">203.33</div>
+                    <div class="matrix-cell">-633.33</div>
+                    <div class="matrix-cell">-2,233.33</div>
+                    
+                    <div class="matrix-cell">-8,208.33</div>
+                    <div class="matrix-cell">203.33</div>
+                    <div class="matrix-cell">48.92</div>
+                    <div class="matrix-cell">-149.17</div>
+                    <div class="matrix-cell">-539.17</div>
+                    
+                    <div class="matrix-cell">32,083.33</div>
+                    <div class="matrix-cell">-633.33</div>
+                    <div class="matrix-cell">-149.17</div>
+                    <div class="matrix-cell">491.67</div>
+                    <div class="matrix-cell">1,658.33</div>
+                    
+                    <div class="matrix-cell">97,083.33</div>
+                    <div class="matrix-cell">-2,233.33</div>
+                    <div class="matrix-cell">-539.17</div>
+                    <div class="matrix-cell">1,658.33</div>
+                    <div class="matrix-cell">5,958.33</div>
+                </div>
+            </div>
+            
+            <p>The diagonal elements represent the variance of each feature, showing that Income has the highest variance by far.</p>
+            
+            <div class="covariance-explanation">
+                <h3>Covariance Interpretation</h3>
+                <div class="covariance-item">
+                    <div class="covariance-icon covariance-negative">
+                        <i class="fas fa-minus"></i>
+                    </div>
+                    <div>
+                        <strong>Income vs Utilization (-31,666.67):</strong> Negative covariance indicates that as income increases, credit utilization tends to decrease. Ramu and Somu have lower income with higher utilization, while Raghu and Gopu show the opposite pattern.
+                    </div>
+                </div>
+                
+                <div class="covariance-item">
+                    <div class="covariance-icon covariance-negative">
+                        <i class="fas fa-minus"></i>
+                    </div>
+                    <div>
+                        <strong>Income vs Payment Delay (-8,208.33):</strong> Negative covariance suggests higher income correlates with fewer payment delays. Gopu (highest income) has zero delays, while Somu (lowest income) has the most delays.
+                    </div>
+                </div>
+                
+                <div class="covariance-item">
+                    <div class="covariance-icon covariance-positive">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div>
+                        <strong>Income vs Transactions (32,083.33):</strong> Positive covariance shows that higher income customers tend to have more transactions. Gopu has the highest income and most transactions, while Somu has the lowest income and fewest transactions.
+                    </div>
+                </div>
+                
+                <div class="covariance-item">
+                    <div class="covariance-icon covariance-negative">
+                        <i class="fas fa-minus"></i>
+                    </div>
+                    <div>
+                        <strong>Utilization vs Credit Score (-2,233.33):</strong> Strong negative covariance indicates that higher credit utilization is associated with lower credit scores. Somu has the highest utilization (80%) and lowest score (580), while Gopu has the lowest utilization (20%) and highest score (750).
+                    </div>
+                </div>
+                
+                <div class="covariance-item">
+                    <div class="covariance-icon covariance-negative">
+                        <i class="fas fa-minus"></i>
+                    </div>
+                    <div>
+                        <strong>Payment Delay vs Credit Score (-539.17):</strong> Negative covariance shows that more payment delays correlate with lower credit scores. Somu has the most delays (15) and lowest score (580), while Gopu has no delays and the highest score (750).
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon icon-blue">
+                    <i class="fas fa-link"></i>
+                </div>
+                <div>
+                    <h2>Step 4: Correlation Matrix</h2>
+                    <p>Standardizing the relationships between features</p>
+                </div>
+            </div>
+            
+            <p>The correlation matrix standardizes the covariance values to a range of -1 to 1, making it easier to interpret the strength of relationships between features. The formula is:</p>
+            
+            <div class="math">
+                Corr<sub>ij</sub> = Cov<sub>ij</sub> / √(Var<sub>i</sub> * Var<sub>j</sub>)
+            </div>
+            
+            <p>Using the variances from the diagonal of the covariance matrix:</p>
+            <ul>
+                <li>Var(Income) = 4,229,166.67</li>
+                <li>Var(Utilization) = 866.67</li>
+                <li>Var(Delay) = 48.92</li>
+                <li>Var(Transactions) = 491.67</li>
+                <li>Var(CreditScore) = 5,958.33</li>
+            </ul>
+            
+            <p>The complete correlation matrix is:</p>
+            
+            <div class="math">
+                <strong>Corr ≈</strong>
+                <div class="matrix">
+                    <div class="matrix-cell matrix-header">Income</div>
+                    <div class="matrix-cell matrix-header">Utilization %</div>
+                    <div class="matrix-cell matrix-header">Payment Delay</div>
+                    <div class="matrix-cell matrix-header">Transactions</div>
+                    <div class="matrix-cell matrix-header">Credit Score</div>
+                    
+                    <div class="matrix-cell">1.00</div>
+                    <div class="matrix-cell">-0.52</div>
+                    <div class="matrix-cell">-0.57</div>
+                    <div class="matrix-cell">0.70</div>
+                    <div class="matrix-cell">0.61</div>
+                    
+                    <div class="matrix-cell">-0.52</div>
+                    <div class="matrix-cell">1.00</div>
+                    <div class="matrix-cell">0.99</div>
+                    <div class="matrix-cell">-0.97</div>
+                    <div class="matrix-cell">-0.98</div>
+                    
+                    <div class="matrix-cell">-0.57</div>
+                    <div class="matrix-cell">0.99</div>
+                    <div class="matrix-cell">1.00</div>
+                    <div class="matrix-cell">-0.96</div>
+                    <div class="matrix-cell">-1.00</div>
+                    
+                    <div class="matrix-cell">0.70</div>
+                    <div class="matrix-cell">-0.97</div>
+                    <div class="matrix-cell">-0.96</div>
+                    <div class="matrix-cell">1.00</div>
+                    <div class="matrix-cell">0.97</div>
+                    
+                    <div class="matrix-cell">0.61</div>
+                    <div class="matrix-cell">-0.98</div>
+                    <div class="matrix-cell">-1.00</div>
+                    <div class="matrix-cell">0.97</div>
+                    <div class="matrix-cell">1.00</div>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <p><strong>Key Insights from Correlation Matrix:</strong></p>
+                <ul>
+                    <li>Income vs Utilization = -0.52 → Higher income customers use less of their credit</li>
+                    <li>Income vs Delay = -0.57 → Higher income customers have fewer payment delays</li>
+                    <li>Utilization vs Delay = 0.99 → Customers with high utilization almost always delay payments</li>
+                    <li>Delay vs Score = -1.00 → Payment delays have a nearly perfect negative impact on credit score</li>
+                    <li>Transactions vs Score = 0.97 → More transactions correlate strongly with better credit scores</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon icon-green">
+                    <i class="fas fa-vector-square"></i>
+                </div>
+                <div>
+                    <h2>Step 5: Eigenvalues and Eigenvectors</h2>
+                    <p>Principal Component Analysis (PCA) decomposition</p>
+                </div>
+            </div>
+            
+            <p>PCA involves finding the eigenvalues and eigenvectors of the covariance matrix. Eigenvalues represent the amount of variance captured by each principal component, while eigenvectors represent the direction of these components.</p>
+            
+            <h3>Eigenvalue Calculation</h3>
+            <p>The eigenvalues are calculated by solving the characteristic equation det(Cov - λI) = 0, where I is the identity matrix. For our covariance matrix, the eigenvalues are:</p>
+            
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Principal Component</th>
+                        <th>Eigenvalue</th>
+                        <th>% Variance Explained</th>
+                        <th>Cumulative %</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>PC1</td>
+                        <td>4,231,894.65</td>
+                        <td>99.89%</td>
+                        <td>99.89%</td>
+                    </tr>
+                    <tr>
+                        <td>PC2</td>
+                        <td>4,603.28</td>
+                        <td>0.11%</td>
+                        <td>100.00%</td>
+                    </tr>
+                    <tr>
+                        <td>PC3</td>
+                        <td>34.32</td>
+                        <td>0.00%</td>
+                        <td>100.00%</td>
+                    </tr>
+                    <tr>
+                        <td>PC4</td>
+                        <td>~0</td>
+                        <td>0.00%</td>
+                        <td>100.00%</td>
+                    </tr>
+                    <tr>
+                        <td>PC5</td>
+                        <td>~0</td>
+                        <td>0.00%</td>
+                        <td>100.00%</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="eigenvalue-bar">
+                <div class="eigenvalue-fill" style="width: 99.89%;">99.89%</div>
+            </div>
+            <div class="eigenvalue-label">
+                <span>PC1: 4,231,894.65</span>
+                <span>99.89% variance</span>
+            </div>
+            
+            <div class="eigenvalue-bar">
+                <div class="eigenvalue-fill" style="width: 0.11%;">0.11%</div>
+            </div>
+            <div class="eigenvalue-label">
+                <span>PC2: 4,603.28</span>
+                <span>0.11% variance</span>
+            </div>
+            
+            <div class="eigenvalue-bar">
+                <div class="eigenvalue-fill" style="width: 0.00%;">0.00%</div>
+            </div>
+            <div class="eigenvalue-label">
+                <span>PC3: 34.32</span>
+                <span>0.00% variance</span>
+            </div>
+            
+            <h3>Eigenvector Calculation</h3>
+            <p>For each eigenvalue λ, we solve the equation (Cov - λI)v = 0 to find the corresponding eigenvector v. The eigenvectors are normalized to have unit length.</p>
+            
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Feature / PC</th>
+                        <th>PC1</th>
+                        <th>PC2</th>
+                        <th>PC3</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Income</td>
+                        <td>0.999</td>
+                        <td>0.019</td>
+                        <td>-0.002</td>
+                    </tr>
+                    <tr>
+                        <td>Credit Utilization</td>
+                        <td>0.011</td>
+                        <td>0.481</td>
+                        <td>0.796</td>
+                    </tr>
+                    <tr>
+                        <td>Payment Delay</td>
+                        <td>0.002</td>
+                        <td>0.098</td>
+                        <td>0.051</td>
+                    </tr>
+                    <tr>
+                        <td>Transactions</td>
+                        <td>0.011</td>
+                        <td>0.086</td>
+                        <td>-0.450</td>
+                    </tr>
+                    <tr>
+                        <td>Credit Score</td>
+                        <td>-0.014</td>
+                        <td>-0.867</td>
+                        <td>0.402</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="info-box">
+                <p><strong>Interpretation of Principal Components:</strong></p>
+                <ul>
+                    <li><strong>PC1 (99.89% variance):</strong> Dominated by Income (0.999), representing the financial capacity dimension</li>
+                    <li><strong>PC2 (0.11% variance):</strong> Represents credit behavior, with high loadings from Credit Utilization (0.481) and negative loading from Credit Score (-0.867)</li>
+                    <li><strong>PC3 (negligible variance):</strong> Represents a residual pattern with mixed loadings</li>
+                </ul>
+            </div>
+            
+            <h3>Rank Analysis</h3>
+            <p>The rank of the covariance matrix is 3, indicating that only 3 of the 5 features are linearly independent. This suggests that 2 features are redundant and can be expressed as linear combinations of the others.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon icon-yellow">
+                    <i class="fas fa-user-check"></i>
+                </div>
+                <div>
+                    <h2>Step 6: Customer Risk Profiling</h2>
+                    <p>Analyzing individual customer risk based on PCA results</p>
+                </div>
+            </div>
+            
+            <p>Using the insights from PCA and correlation analysis, we can now evaluate each customer's credit risk profile:</p>
+            
+            <div class="customer-profile risk-low">
+                <div class="customer-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="customer-details">
+                    <h4>Ramu: Low Risk</h4>
+                    <p>Income: $4,000 | Utilization: 30% | Payment Delay: 2 | Transactions: 40 | Credit Score: 720</p>
+                    <div>
+                        <span class="tag tag-green">Below-average income</span>
+                        <span class="tag tag-green">Healthy utilization</span>
+                        <span class="tag tag-green">Few delays</span>
+                        <span class="tag tag-green">Strong credit score</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="customer-profile risk-medium">
+                <div class="customer-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="customer-details">
+                    <h4>Raghu: Medium-High Risk</h4>
+                    <p>Income: $6,000 | Utilization: 70% | Payment Delay: 10 | Transactions: 20 | Credit Score: 640</p>
+                    <div>
+                        <span class="tag tag-yellow">Above-average income</span>
+                        <span class="tag tag-red">High utilization</span>
+                        <span class="tag tag-red">Many delays</span>
+                        <span class="tag tag-yellow">Moderate credit score</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="customer-profile risk-high">
+                <div class="customer-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="customer-details">
+                    <h4>Somu: Highest Risk</h4>
+                    <p>Income: $3,500 | Utilization: 80% | Payment Delay: 15 | Transactions: 10 | Credit Score: 580</p>
+                    <div>
+                        <span class="tag tag-red">Lowest income</span>
+                        <span class="tag tag-red">Highest utilization</span>
+                        <span class="tag tag-red">Most delays</span>
+                        <span class="tag tag-red">Lowest credit score</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="customer-profile risk-low">
+                <div class="customer-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="customer-details">
+                    <h4>Gopu: Very Low Risk</h4>
+                    <p>Income: $8,000 | Utilization: 20% | Payment Delay: 0 | Transactions: 60 | Credit Score: 750</p>
+                    <div>
+                        <span class="tag tag-green">Highest income</span>
+                        <span class="tag tag-green">Lowest utilization</span>
+                        <span class="tag tag-green">No delays</span>
+                        <span class="tag tag-green">Highest credit score</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <p><strong>Risk Segmentation Summary:</strong></p>
+                <ul>
+                    <li><strong>Low Risk:</strong> Ramu and Gopu - despite different income levels, both demonstrate responsible credit behavior</li>
+                    <li><strong>Medium-High Risk:</strong> Raghu - higher income but poor credit management habits</li>
+                    <li><strong>Highest Risk:</strong> Somu - exhibits all negative indicators for credit risk</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon icon-red">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <div>
+                    <h2>Step 7: Comprehensive Analysis</h2>
+                    <p>Connecting mathematical results to customer profiles</p>
+                </div>
+            </div>
+            
+            <h3>Mathematical Interpretation of Customer Behavior</h3>
+            
+            <div class="two-column">
+                <div>
+                    <h4>Ramu's Negative Covariance Pattern</h4>
+                    <p>Ramu exhibits a classic negative covariance pattern between income and credit utilization. Despite having below-average income (-$1,375 from mean), Ramu maintains a healthy utilization rate (30%, which is 20% below mean). This negative relationship is mathematically captured by the covariance value of -31,666.67 between Income and Utilization.</p>
+                    
+                    <p>Ramu's centered data shows:</p>
+                    <ul>
+                        <li>Income: -1,375 (below mean)</li>
+                        <li>Utilization: -20 (below mean)</li>
+                        <li>Payment Delay: -4.75 (below mean)</li>
+                        <li>Transactions: +7.5 (above mean)</li>
+                        <li>Credit Score: +47.5 (above mean)</li>
+                    </ul>
+                    
+                    <p>This pattern demonstrates that Ramu manages credit responsibly despite limited income, resulting in a strong credit score (720). The negative covariance between income and utilization is evident as Ramu's lower income correlates with lower utilization.</p>
+                </div>
+                
+                <div>
+                    <h4>Somu's Positive Covariance Pattern</h4>
+                    <p>Somu represents the opposite pattern with strong positive covariance between risk factors. With the lowest income (-$1,875 from mean), Somu shows the highest utilization (+30 from mean) and most payment delays (+8.25 from mean). This positive relationship is reflected in the covariance matrix.</p>
+                    
+                    <p>Somu's centered data shows:</p>
+                    <ul>
+                        <li>Income: -1,875 (lowest)</li>
+                        <li>Utilization: +30 (highest)</li>
+                        <li>Payment Delay: +8.25 (highest)</li>
+                        <li>Transactions: -22.5 (lowest)</li>
+                        <li>Credit Score: -92.5 (lowest)</li>
+                    </ul>
+                    
+                    <p>Somu's data perfectly illustrates the strong positive covariance between utilization and payment delay (203.33), and the negative covariance between these factors and credit score. This combination results in the highest risk profile.</p>
+                </div>
+            </div>
+            
+            <h3>PCA Interpretation of Customer Differences</h3>
+            
+            <p>The PCA results reveal that 99.89% of the variance in customer behavior is captured by PC1, which is dominated by income. This explains why Gopu (highest income) and Somu (lowest income) represent the extremes in our dataset.</p>
+            
+            <p>PC2, though explaining only 0.11% of variance, captures the credit behavior dimension. Here we see:</p>
+            <ul>
+                <li>Ramu and Gopu have negative PC2 scores (responsible credit behavior)</li>
+                <li>Raghu and Somu have positive PC2 scores (risky credit behavior)</li>
+            </ul>
+            
+            <p>This mathematical decomposition aligns perfectly with our risk assessment, showing that while income dominates the variance, credit behavior patterns are still discernible in the secondary component.</p>
+            
+            <h3>Covariance Matrix Insights</h3>
+            
+            <p>The covariance matrix provides several key insights about our customer dataset:</p>
+            
+            <div class="covariance-item">
+                <div class="covariance-icon covariance-negative">
+                    <i class="fas fa-minus"></i>
+                </div>
+                <div>
+                    <strong>Income-Utilization Relationship (-31,666.67):</strong> This negative covariance shows that customers with lower income (like Ramu and Somu) tend to have higher credit utilization, while higher income customers (like Raghu and Gopu) use less of their available credit. This is a key indicator of financial stress in lower-income customers.
+                </div>
+            </div>
+            
+            <div class="covariance-item">
+                <div class="covariance-icon covariance-positive">
+                    <i class="fas fa-plus"></i>
+                </div>
+                <div>
+                    <strong>Utilization-Delay Relationship (203.33):</strong> This positive covariance indicates that customers who use more of their credit (like Raghu and Somu) are more likely to delay payments. This pattern is particularly strong in Somu's case, who has both the highest utilization and most delays.
+                </div>
+            </div>
+            
+            <div class="covariance-item">
+                <div class="covariance-icon covariance-negative">
+                    <i class="fas fa-minus"></i>
+                </div>
+                <div>
+                    <strong>Delay-Score Relationship (-539.17):</strong> This negative covariance demonstrates the severe impact of payment delays on credit scores. Somu's 15 delays correlate with the lowest score (580), while Gopu's zero delays correlate with the highest score (750).
+                </div>
+            </div>
+            
+            <h3>Mathematical Confirmation of Risk Assessment</h3>
+            
+            <p>Our risk assessment is mathematically confirmed by the eigenvalue decomposition. The fact that PC1 captures 99.89% of variance (primarily income) explains why:</p>
+            <ul>
+                <li>Gopu (highest income) is classified as very low risk</li>
+                <li>Somu (lowest income) is classified as highest risk</li>
+            </ul>
+            
+            <p>However, the secondary component (PC2) reveals that income alone doesn't tell the whole story. Ramu, despite lower income, demonstrates responsible behavior (negative PC2 score), resulting in a low-risk classification. Conversely, Raghu, despite higher income, shows risky behavior (positive PC2 score), resulting in a medium-high risk classification.</p>
+            
+            <div class="info-box">
+                <p><strong>Key Mathematical Takeaways:</strong></p>
+                <ul>
+                    <li>The covariance matrix quantifies the relationships between financial behaviors, showing clear patterns of risk factors</li>
+                    <li>PCA decomposition reveals that income dominates the variance (99.89%), but credit behavior patterns are still discernible</li>
+                    <li>The rank of 3 indicates that only 3 independent factors drive customer behavior, with 2 features being redundant</li>
+                    <li>Customer risk profiles align perfectly with the mathematical patterns observed in covariance and PCA results</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon icon-green">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+                <div>
+                    <h2>Step 8: Key Takeaways</h2>
+                    <p>Summary of insights from the PCA analysis</p>
+                </div>
+            </div>
+            
+            <div class="two-column">
+                <div>
+                    <h3>Technical Insights</h3>
+                    <ul>
+                        <li><strong>Covariance Matrix:</strong> Shows absolute scale relationships, with Income dominating due to its large variance</li>
+                        <li><strong>Correlation Matrix:</strong> Reveals strong behavioral links between credit utilization, payment delays, and credit scores</li>
+                        <li><strong>PCA Results:</strong> Identifies 3 independent factors in the data, with 2 redundant features</li>
+                        <li><strong>Dominant Component:</strong> PC1 captures 99.89% of variance, primarily driven by Income</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Business Insights</h3>
+                    <ul>
+                        <li><strong>Risk Indicators:</strong> Payment delays and high credit utilization are the strongest predictors of credit risk</li>
+                        <li><strong>Income Impact:</strong> Higher income correlates with better credit behavior but doesn't guarantee low risk</li>
+                        <li><strong>Customer Segmentation:</strong> Clear risk profiles emerge: low risk (Ramu, Gopu), medium-high risk (Raghu), and highest risk (Somu)</li>
+                        <li><strong>Feature Redundancy:</strong> Payment delays and credit scores are nearly perfectly correlated, suggesting one could potentially be dropped</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <p><strong>Recommendations:</strong></p>
+                <ul>
+                    <li>Focus monitoring on customers with high credit utilization and payment delays</li>
+                    <li>Consider developing targeted interventions for medium-risk customers like Raghu to prevent escalation</li>
+                    <li>For future modeling, consider standardizing features to reduce income's dominance in PCA</li>
+                    <li>Explore if transaction volume can be incentivized for higher-risk customers to potentially improve credit scores</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Documentation</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Analysis Methodology</a></li>
+                        <li><a href="#">Data Sources</a></li>
+                        <li><a href="#">Mathematical Foundations</a></li>
+                        <li><a href="#">API Reference</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">PCA Tutorial</a></li>
+                        <li><a href="#">Credit Risk Models</a></li>
+                        <li><a href="#">Case Studies</a></li>
+                        <li><a href="#">Research Papers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Tools</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">PCA Calculator</a></li>
+                        <li><a href="#">Risk Assessment Tool</a></li>
+                        <li><a href="#">Data Visualization</a></li>
+                        <li><a href="#">Model Templates</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>About</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Our Team</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Credit Risk Analysis with PCA. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
